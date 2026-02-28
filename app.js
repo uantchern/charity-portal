@@ -136,7 +136,7 @@ const Sidebar = () => {
         <aside className="sidebar">
             <div className="brand">
                 <div className="brand-icon"><Layers size={24} /></div>
-                Charity<span style={{ color: "var(--accent-emerald)" }}>Portal</span>
+                Govern<span style={{ color: "var(--accent-emerald)" }}>Up</span>
             </div>
 
             <div className="nav-scroll">
@@ -306,7 +306,7 @@ const DashboardHome = () => {
             </div>
             <h1>
                 Welcome to the <br />
-                <span>Charity Portal OS</span>
+                <span>GovernUp OS</span>
             </h1>
             <p>
                 Phase 1 constraints acknowledged. The dashboard architectural shell, strict routing,
