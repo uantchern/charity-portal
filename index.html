@@ -132,10 +132,10 @@
                 }
             ],
             GlobalApps: [
-                { id: "D1", label: "Question Stormer", icon: <CloudLightning size={20} strokeWidth={2.5} /> },
-                { id: "D2", label: "Wayfinder", icon: <MapIcon size={20} strokeWidth={2.5} /> },
-                { id: "D3", label: "Survey", icon: <ClipboardList size={20} strokeWidth={2.5} /> },
-                { id: "D4", label: "Analyser", icon: <BarChart2 size={20} strokeWidth={2.5} /> }
+                { id: "D1", label: "D1 QUESTION STORMER" },
+                { id: "D2", label: "D2 WAYFINDER" },
+                { id: "D3", label: "D3 SURVEY" },
+                { id: "D4", label: "D4 ANALYZER" }
             ]
         };
 
@@ -228,11 +228,10 @@
                         {NAVIGATION.GlobalApps.map(app => (
                             <button
                                 key={app.id}
-                                className="dock-btn"
-                                data-tip={app.label}
+                                className="dock-btn text-dock-btn"
                                 onClick={() => openApp(app.id)}
                             >
-                                {app.icon}
+                                {app.label}
                             </button>
                         ))}
                     </div>
@@ -254,7 +253,7 @@
                             <div className="drawer-header">
                                 <div className="drawer-title-group">
                                     <h3 style={{ color: "var(--accent-cyan)" }}>
-                                        {appData.icon} {appData.label}
+                                        {appData.label}
                                     </h3>
                                     <div className="drawer-subtitle">Complementary Application Plugin</div>
                                 </div>

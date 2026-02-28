@@ -253,6 +253,16 @@ body {
     overflow: hidden;
 }
 
+.text-dock-btn {
+    width: auto;
+    padding: 0 1.25rem;
+    font-size: 0.8rem;
+    font-family: var(--font-mono);
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+}
+
 .dock-btn i {
     z-index: 2;
     transition: transform 0.3s;
