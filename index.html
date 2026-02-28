@@ -810,6 +810,256 @@
             );
         };
 
+        const A2Inputs = () => {
+            const { setActivePage } = useContext(AppContext);
+            const [inputs, setInputs] = useState([
+                { id: 1, category: "Financial", type: "Grants & Funding", value: 50000, description: "NCSS Grant" },
+                { id: 2, category: "Human", type: "Paid Staff Time", value: 3, description: "FTE Social Workers" },
+                { id: 3, category: "Human", type: "Volunteer Time", value: 120, description: "Hours per month" },
+                { id: 4, category: "Physical", type: "Facilities & Equipment", value: 2, description: "Training rooms" },
+                { id: 5, category: "Intellectual", type: "Curriculum/Knowledge", value: 1, description: "Proprietary therapy program" },
+            ]);
+
+            useEffect(() => {
+                setActivePage("A2 Inputs");
+            }, [setActivePage]);
+
+            const totalFinancial = inputs.filter(i => i.category === "Financial").reduce((sum, i) => sum + Number(i.value || 0), 0);
+
+            return (
+                <div className="fade-in" style={{ paddingBottom: "2rem", height: "100%", overflowY: "auto", paddingRight: "10px" }}>
+                    <div style={{ marginBottom: "2.5rem" }}>
+                        <h1 style={{ fontSize: "2.2rem", fontWeight: 800, marginBottom: "0.75rem", color: "var(--text-main)" }}>A2 Inputs Matrix</h1>
+                        <p style={{ color: "var(--text-muted)", fontSize: "1.05rem", maxWidth: "800px", lineHeight: 1.6 }}>
+                            Inputs are the resources committed to your programme. Select, map, and measure your financial, human, physical, and intellectual capital to understand the true cost of delivery.
+                        </p>
+                    </div>
+
+                    <div style={{ background: "rgba(255,255,255,0.03)", borderRadius: "12px", border: "1px solid var(--border-color)", padding: "1.5rem", overflowX: "auto" }}>
+                        <table style={{ width: "100%", borderCollapse: "collapse", color: "var(--text-main)", fontSize: "0.95rem" }}>
+                            <thead>
+                                <tr style={{ borderBottom: "1px solid rgba(255,255,255,0.1)", textAlign: "left", color: "var(--text-muted)" }}>
+                                    <th style={{ padding: "1rem" }}>Category</th>
+                                    <th style={{ padding: "1rem" }}>Resource Type</th>
+                                    <th style={{ padding: "1rem" }}>Description</th>
+                                    <th style={{ padding: "1rem", textAlign: "right" }}>Value/Quantity</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {inputs.map((input, idx) => (
+                                    <tr key={input.id} style={{ borderBottom: "1px solid rgba(255,255,255,0.05)", background: idx % 2 === 0 ? "rgba(0,0,0,0.1)" : "transparent" }}>
+                                        <td style={{ padding: "1rem", fontWeight: 600, color: "var(--accent-emerald)" }}>{input.category}</td>
+                                        <td style={{ padding: "1rem" }}>{input.type}</td>
+                                        <td style={{ padding: "1rem", color: "var(--text-muted)" }}>{input.description}</td>
+                                        <td style={{ padding: "1rem", textAlign: "right", fontFamily: "var(--font-mono)" }}>
+                                            {input.category === "Financial" ? `$${input.value.toLocaleString()}` : input.value}
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+
+                        <div style={{ display: "flex", justifyContent: "flex-end", marginTop: "1.5rem" }}>
+                            <div style={{ background: "rgba(16, 185, 129, 0.1)", border: "1px solid var(--accent-emerald)", padding: "1rem 1.5rem", borderRadius: "8px", display: "inline-flex", gap: "2rem" }}>
+                                <span style={{ color: "var(--text-muted)", textTransform: "uppercase", fontSize: "0.85rem", letterSpacing: "0.05em" }}>Total Financial Capital:</span>
+                                <span style={{ color: "var(--accent-emerald)", fontFamily: "var(--font-mono)", fontWeight: 700, fontSize: "1.1rem" }}>${totalFinancial.toLocaleString()}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const A3Outputs = () => {
+            const { setActivePage } = useContext(AppContext);
+            const [outputs, setOutputs] = useState([
+                { id: 1, type: "Sessions Delivered", value: 45, target: 50, unit: "Sessions" },
+                { id: 2, type: "Unique Beneficiaries", value: 120, target: 100, unit: "Individuals" },
+                { id: 3, type: "Training Hours", value: 850, target: 800, unit: "Hours" },
+                { id: 4, type: "Care Packages Distributed", value: 300, target: 300, unit: "Packages" },
+            ]);
+
+            useEffect(() => {
+                setActivePage("A3 Outputs");
+            }, [setActivePage]);
+
+            return (
+                <div className="fade-in" style={{ paddingBottom: "2rem", height: "100%", overflowY: "auto", paddingRight: "10px" }}>
+                    <div style={{ marginBottom: "2.5rem" }}>
+                        <h1 style={{ fontSize: "2.2rem", fontWeight: 800, marginBottom: "0.75rem", color: "var(--text-main)" }}>A3 Outputs Tracker</h1>
+                        <p style={{ color: "var(--text-muted)", fontSize: "1.05rem", maxWidth: "800px", lineHeight: 1.6 }}>
+                            Outputs are the direct, quantifiable products of your activities. Track the volume of work delivered against your operational targets to ensure efficient execution of your Theory of Change.
+                        </p>
+                    </div>
+
+                    <div style={{ background: "rgba(255,255,255,0.03)", borderRadius: "12px", border: "1px solid var(--border-color)", padding: "1.5rem", overflowX: "auto" }}>
+                        <table style={{ width: "100%", borderCollapse: "collapse", color: "var(--text-main)", fontSize: "0.95rem" }}>
+                            <thead>
+                                <tr style={{ borderBottom: "1px solid rgba(255,255,255,0.1)", textAlign: "left", color: "var(--text-muted)" }}>
+                                    <th style={{ padding: "1rem" }}>Output Type</th>
+                                    <th style={{ padding: "1rem", textAlign: "right" }}>Actual Value</th>
+                                    <th style={{ padding: "1rem", textAlign: "right" }}>Target</th>
+                                    <th style={{ padding: "1rem", textAlign: "right" }}>Progress</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {outputs.map((output, idx) => {
+                                    const progress = Math.min((output.value / output.target) * 100, 100).toFixed(0);
+                                    const isComplete = output.value >= output.target;
+                                    return (
+                                        <tr key={output.id} style={{ borderBottom: "1px solid rgba(255,255,255,0.05)", background: idx % 2 === 0 ? "rgba(0,0,0,0.1)" : "transparent" }}>
+                                            <td style={{ padding: "1rem", fontWeight: 600, color: "var(--accent-cyan)" }}>{output.type}</td>
+                                            <td style={{ padding: "1rem", textAlign: "right", fontFamily: "var(--font-mono)" }}>{output.value} {output.unit}</td>
+                                            <td style={{ padding: "1rem", textAlign: "right", fontFamily: "var(--font-mono)", color: "var(--text-muted)" }}>{output.target} {output.unit}</td>
+                                            <td style={{ padding: "1rem", width: "30%" }}>
+                                                <div style={{ display: "flex", alignItems: "center", gap: "1rem", justifyContent: "flex-end" }}>
+                                                    <span style={{ fontFamily: "var(--font-mono)", color: isComplete ? "var(--accent-emerald)" : "var(--text-main)" }}>{progress}%</span>
+                                                    <div style={{ height: "6px", width: "100px", background: "rgba(255,255,255,0.1)", borderRadius: "3px", overflow: "hidden" }}>
+                                                        <div style={{ height: "100%", width: `${progress}%`, background: isComplete ? "var(--accent-emerald)" : "var(--accent-cyan)", transition: "width 0.5s ease" }} />
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    );
+                                })}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            );
+        };
+
+        const A4Outcomes = () => {
+            const { setActivePage } = useContext(AppContext);
+            const [outcomes, setOutcomes] = useState([
+                { id: 1, domain: "Knowledge & Skills", indicator: "% participants demonstrating improved financial literacy", baseline: 25, current: 65, goal: 70 },
+                { id: 2, domain: "Behaviour & Action", indicator: "% clients maintaining steady employment for 6+ months", baseline: 40, current: 55, goal: 60 },
+                { id: 3, domain: "Condition & Status", indicator: "Average reduction in anxiety symptom scores (GAD-7)", baseline: 14.5, current: 8.2, goal: 9.0 },
+            ]);
+
+            useEffect(() => {
+                setActivePage("A4 Outcomes");
+            }, [setActivePage]);
+
+            return (
+                <div className="fade-in" style={{ paddingBottom: "2rem", height: "100%", overflowY: "auto", paddingRight: "10px" }}>
+                    <div style={{ marginBottom: "2.5rem" }}>
+                        <h1 style={{ fontSize: "2.2rem", fontWeight: 800, marginBottom: "0.75rem", color: "var(--text-main)" }}>A4 Outcomes Dashboard</h1>
+                        <p style={{ color: "var(--text-muted)", fontSize: "1.05rem", maxWidth: "800px", lineHeight: 1.6 }}>
+                            Outcomes reflect the actual changes in your beneficiaries as a result of your outputs. Measure shifts in knowledge, behaviour, and condition against established baselines to prove programmatic efficacy.
+                        </p>
+                    </div>
+
+                    <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: "1.5rem" }}>
+                        {outcomes.map((outcome) => (
+                            <div key={outcome.id} style={{ background: "rgba(255,255,255,0.03)", borderRadius: "12px", border: "1px solid var(--border-color)", borderLeft: "4px solid var(--accent-purple)", padding: "1.5rem" }}>
+                                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "1rem" }}>
+                                    <div>
+                                        <div style={{ fontSize: "0.8rem", color: "var(--accent-purple)", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: "0.25rem", fontWeight: 600 }}>{outcome.domain}</div>
+                                        <div style={{ fontSize: "1.1rem", color: "var(--text-main)", fontWeight: 500 }}>{outcome.indicator}</div>
+                                    </div>
+                                </div>
+
+                                <div style={{ display: "flex", gap: "2rem", background: "rgba(0,0,0,0.2)", padding: "1rem", borderRadius: "8px" }}>
+                                    <div>
+                                        <div style={{ fontSize: "0.75rem", color: "var(--text-muted)", marginBottom: "0.25rem" }}>Baseline</div>
+                                        <div style={{ fontSize: "1.2rem", fontFamily: "var(--font-mono)", color: "var(--text-main)" }}>{outcome.baseline}</div>
+                                    </div>
+                                    <div style={{ width: "1px", background: "rgba(255,255,255,0.1)" }}></div>
+                                    <div>
+                                        <div style={{ fontSize: "0.75rem", color: "var(--text-muted)", marginBottom: "0.25rem" }}>Current Evaluation</div>
+                                        <div style={{ fontSize: "1.2rem", fontFamily: "var(--font-mono)", color: "var(--accent-emerald)", fontWeight: 700 }}>{outcome.current}</div>
+                                    </div>
+                                    <div style={{ width: "1px", background: "rgba(255,255,255,0.1)" }}></div>
+                                    <div>
+                                        <div style={{ fontSize: "0.75rem", color: "var(--text-muted)", marginBottom: "0.25rem" }}>Target Goal</div>
+                                        <div style={{ fontSize: "1.2rem", fontFamily: "var(--font-mono)", color: "var(--text-muted)" }}>{outcome.goal}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            );
+        };
+
+        const A5Impact = () => {
+            const { setActivePage } = useContext(AppContext);
+            const [beneficiaries, setBeneficiaries] = useState(150);
+            const [satisfactionChange, setSatisfactionChange] = useState(1.5);
+            const [durationYears, setDurationYears] = useState(1);
+
+            // Reference proxy valuation
+            const valuePerWellby = 22000;
+
+            useEffect(() => {
+                setActivePage("A5 Impact");
+            }, [setActivePage]);
+
+            const wellbys = beneficiaries * satisfactionChange * durationYears;
+            const socialValue = wellbys * valuePerWellby;
+
+            return (
+                <div className="fade-in" style={{ paddingBottom: "2rem", height: "100%", overflowY: "auto", paddingRight: "10px" }}>
+                    <div style={{ marginBottom: "2.5rem" }}>
+                        <h1 style={{ fontSize: "2.2rem", fontWeight: 800, marginBottom: "0.75rem", color: "var(--text-main)" }}>A5 Impact: WELLBY Calculator</h1>
+                        <p style={{ color: "var(--text-muted)", fontSize: "1.05rem", maxWidth: "800px", lineHeight: 1.6 }}>
+                            A WELLBY (Wellbeing Adjusted Life Year) measures changes in life satisfaction over time. This standard formula helps charities quantify their social impact by monetising the human value they create.
+                        </p>
+                    </div>
+
+                    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "2rem" }}>
+                        {/* Calculator Inputs */}
+                        <div style={{ background: "rgba(255,255,255,0.03)", borderRadius: "12px", border: "1px solid var(--border-color)", padding: "2rem" }}>
+                            <h3 style={{ color: "var(--accent-cyan)", marginBottom: "1.5rem", fontSize: "1.1rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                                <Settings size={20} /> Impact Metrics
+                            </h3>
+
+                            <div style={{ marginBottom: "1.5rem" }}>
+                                <label style={{ display: "block", marginBottom: "0.5rem", color: "var(--text-main)", fontSize: "0.9rem" }}>Number of Beneficiaries Affected</label>
+                                <input type="number" value={beneficiaries} onChange={e => setBeneficiaries(Number(e.target.value))} style={{ width: "100%", padding: "0.75rem", borderRadius: "8px", background: "rgba(0,0,0,0.3)", border: "1px solid var(--border-color)", color: "white", fontFamily: "var(--font-mono)", outline: "none" }} />
+                            </div>
+
+                            <div style={{ marginBottom: "1.5rem" }}>
+                                <label style={{ display: "block", marginBottom: "0.5rem", color: "var(--text-main)", fontSize: "0.9rem" }}>Average Increase in Life Satisfaction (0-10 Scale)</label>
+                                <input type="number" step="0.1" value={satisfactionChange} onChange={e => setSatisfactionChange(Number(e.target.value))} style={{ width: "100%", padding: "0.75rem", borderRadius: "8px", background: "rgba(0,0,0,0.3)", border: "1px solid var(--border-color)", color: "white", fontFamily: "var(--font-mono)", outline: "none" }} />
+                                <p style={{ fontSize: "0.75rem", color: "var(--text-muted)", marginTop: "0.5rem" }}>Based on pre/post surveys comparing how satisfied they are with their lives.</p>
+                            </div>
+
+                            <div style={{ marginBottom: "1.5rem" }}>
+                                <label style={{ display: "block", marginBottom: "0.5rem", color: "var(--text-main)", fontSize: "0.9rem" }}>Duration of Impact (Years)</label>
+                                <input type="number" step="0.5" value={durationYears} onChange={e => setDurationYears(Number(e.target.value))} style={{ width: "100%", padding: "0.75rem", borderRadius: "8px", background: "rgba(0,0,0,0.3)", border: "1px solid var(--border-color)", color: "white", fontFamily: "var(--font-mono)", outline: "none" }} />
+                            </div>
+                        </div>
+
+                        {/* Calculator Output */}
+                        <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+                            <div style={{ background: "rgba(255,255,255,0.03)", borderRadius: "12px", border: "1px solid var(--border-color)", padding: "2rem", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", flex: 1 }}>
+                                <div style={{ fontSize: "0.9rem", color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: "0.5rem" }}>Gross WELLBYs Generated</div>
+                                <div style={{ fontSize: "3rem", fontWeight: 800, color: "var(--text-main)", fontFamily: "var(--font-mono)" }}>{wellbys.toLocaleString(undefined, { maximumFractionDigits: 1 })}</div>
+                                <div style={{ background: "rgba(16, 185, 129, 0.1)", color: "var(--accent-emerald)", padding: "0.5rem 1rem", borderRadius: "20px", fontSize: "0.8rem", marginTop: "1rem", fontWeight: 600 }}>
+                                    Human Impact Scale
+                                </div>
+                            </div>
+
+                            <div style={{ background: "linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(6, 182, 212, 0.1))", borderRadius: "12px", border: "1px solid rgba(139, 92, 246, 0.3)", padding: "2rem", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", flex: 1, position: "relative", overflow: "hidden" }}>
+                                <div style={{ position: "absolute", top: "-20%", right: "-10%", opacity: 0.05 }}>
+                                    <Target size={150} />
+                                </div>
+                                <div style={{ fontSize: "0.9rem", color: "var(--text-main)", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: "0.5rem", zIndex: 1 }}>Estimated Social Value Exchanged</div>
+                                <div style={{ fontSize: "3.5rem", fontWeight: 800, background: "linear-gradient(90deg, var(--accent-purple), var(--accent-cyan))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", fontFamily: "var(--font-mono)", zIndex: 1 }}>
+                                    ${socialValue.toLocaleString(undefined, { maximumFractionDigits: 0 })}
+                                </div>
+                                <div style={{ fontSize: "0.75rem", color: "var(--text-muted)", marginTop: "1rem", textAlign: "center", maxWidth: "250px", zIndex: 1 }}>
+                                    *Based on a proxy valuation of SGD $22,000 per 1-point increase in well-being per person per year.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
         const DashboardHome = () => {
             const { setActivePage } = useContext(AppContext);
 
@@ -881,7 +1131,12 @@
                                             key={item.id}
                                             path={item.path}
                                             element={
-                                                item.id === "A1" ? <A1ServiceDelivery /> : <PlaceholderView title={item.label} pillarName={pillar.title} />
+                                                item.id === "A1" ? <A1ServiceDelivery /> :
+                                                    item.id === "A2" ? <A2Inputs /> :
+                                                        item.id === "A3" ? <A3Outputs /> :
+                                                            item.id === "A4" ? <A4Outcomes /> :
+                                                                item.id === "A5" ? <A5Impact /> :
+                                                                    <PlaceholderView title={item.label} pillarName={pillar.title} />
                                             }
                                         />
                                     ))
