@@ -118,11 +118,11 @@
                     title: "B Operations",
                     icon: <Settings size={20} />,
                     items: [
-                        { id: "B1", path: "/b1", label: "B1 Finance & Grants" },
-                        { id: "B2", path: "/b2", label: "B2 Fund Raising" },
-                        { id: "B3", path: "/b3", label: "B3 Volunteer Management" },
-                        { id: "B4", path: "/b4", label: "B4 Marketing & Communications" },
-                        { id: "B5", path: "/b5", label: "B5 Human Resource" }
+                        { id: "B1", path: "/b1", label: "B1 Finance & Grants", description: "Manage financial sustainability. Track core funding, project grants, budgets, and financial reporting compliance to ensure long-term viability." },
+                        { id: "B2", path: "/b2", label: "B2 Fund Raising", description: "Cultivate donor relationships and manage fundraising campaigns. Track donor retention, campaign ROI, and adherence to fundraising regulations." },
+                        { id: "B3", path: "/b3", label: "B3 Volunteer Management", description: "Attract, retain, and develop volunteers. Manage recruitment, training, scheduling, and volunteer impact measurement." },
+                        { id: "B4", path: "/b4", label: "B4 Marketing & Communications", description: "Amplify your charity's voice. Manage public relations, social media, campaign reach, and brand reputation to drive awareness and engagement." },
+                        { id: "B5", path: "/b5", label: "B5 Human Resource", description: "Build a strong team. Manage staff recruitment, retention, professional development, well-being, and compliance with employment laws." }
                     ]
                 },
                 {
@@ -130,12 +130,12 @@
                     title: "C Governance",
                     icon: <Shield size={20} />,
                     items: [
-                        { id: "C1", path: "/c1", label: "C1 Charity Governance Code" },
-                        { id: "C2", path: "/c2", label: "C2 Governance Evaluation Checklist" },
-                        { id: "C3", path: "/c3", label: "C3 Standard Operating Procedures" },
-                        { id: "C4", path: "/c4", label: "C4 Constitution" },
-                        { id: "C5", path: "/c5", label: "C5 Terms of Reference" },
-                        { id: "C6", path: "/c6", label: "C6 Strategic Plans" }
+                        { id: "C1", path: "/c1", label: "C1 Charity Governance Code", description: "Align with the Code of Governance for Charities and IPCs. Ensure board effectiveness, transparency, and accountability." },
+                        { id: "C2", path: "/c2", label: "C2 Governance Evaluation Checklist", description: "Prepare for and manage the mandatory annual GEC submission. Track compliance status across key governance principles." },
+                        { id: "C3", path: "/c3", label: "C3 Standard Operating Procedures", description: "Standardise internal processes. Maintain a central repository of operational guidelines to ensure consistency and mitigate risks." },
+                        { id: "C4", path: "/c4", label: "C4 Constitution", description: "Manage the foundation of your charity. Track updates to the governing instrument and ensure all activities align with the defined charitable objects." },
+                        { id: "C5", path: "/c5", label: "C5 Terms of Reference", description: "Define committee scopes. Manage the roles, responsibilities, and authority limits of sub-committees supporting the Board." },
+                        { id: "C6", path: "/c6", label: "C6 Strategic Plans", description: "Chart the long-term course. Document multi-year strategic goals, align resources, and track progress against strategic milestones." }
                     ]
                 }
             ],
@@ -689,7 +689,7 @@
         };
 
         // Represents pages A1-C6
-        const PlaceholderView = ({ title, pillarName }) => {
+        const PlaceholderView = ({ title, pillarName, description }) => {
             const { setActivePage } = useContext(AppContext);
             const location = useLocation();
 
@@ -703,7 +703,12 @@
                     <div className="placeholder-icon">
                         {getIconForPath(location.pathname)}
                     </div>
-                    <h2 className="placeholder-title">{title}</h2>
+                    <h2 className="placeholder-title" style={{ marginBottom: "1rem" }}>{title}</h2>
+                    {description && (
+                        <p style={{ color: "var(--text-main)", fontSize: "1.05rem", lineHeight: 1.6, marginBottom: "1.5rem", maxWidth: "600px", marginInline: "auto" }}>
+                            {description}
+                        </p>
+                    )}
                     <p className="placeholder-subtitle">
                         Architectural shell verified. This interface route is stabilized and reserved for Phase 2 functional development of the {pillarName} module.
                     </p>
@@ -1136,7 +1141,7 @@
                                                         item.id === "A3" ? <A3Outputs /> :
                                                             item.id === "A4" ? <A4Outcomes /> :
                                                                 item.id === "A5" ? <A5Impact /> :
-                                                                    <PlaceholderView title={item.label} pillarName={pillar.title} />
+                                                                    <PlaceholderView title={item.label} pillarName={pillar.title} description={item.description} />
                                             }
                                         />
                                     ))
