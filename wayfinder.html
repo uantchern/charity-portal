@@ -330,17 +330,11 @@
                                     {childCharities.map(char => (
                                         <div key={char.id} className="bg-neutral-900/60 p-4 rounded-xl border border-neutral-700/50 hover:border-rose-800/50 transition-colors">
                                             <h4 className="font-bold text-rose-400 text-sm mb-1">{char.name}</h4>
-                                            {char.url && (
-                                                <a href={char.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-sky-400 hover:text-sky-300 text-xs mb-2 transition-colors font-medium">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
-                                                    {char.url}
-                                                </a>
-                                            )}
                                             <p className="text-xs text-neutral-400 mb-3 leading-relaxed">{char.description}</p>
-                                            {char.gec && (
-                                                <a href={`https://www.charities.gov.sg`} target="_blank" className="inline-flex flex-row items-center gap-1.5 bg-sky-900/30 hover:bg-sky-500/20 text-sky-400 px-3 py-1.5 rounded-lg text-[11px] font-semibold transition-all border border-sky-800/50">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16c0 1.1.9 2 2 2h12a2 2 0 0 0 2-2V8l-6-6z" /><path d="M14 3v5h5M16 13H8M16 17H8M10 9H8" /></svg>
-                                                    View {char.gec.name} (Search on Charities Portal)
+                                            {char.url && (
+                                                <a href={char.url} target="_blank" rel="noopener noreferrer" className="inline-flex flex-row items-center gap-1.5 bg-sky-900/30 hover:bg-sky-500/20 text-sky-400 px-3 py-1.5 rounded-lg text-[11px] font-semibold transition-all border border-sky-800/50">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+                                                    Visit Official Website
                                                 </a>
                                             )}
                                         </div>
