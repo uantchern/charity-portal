@@ -78,6 +78,16 @@
                 setDrawerOpen(true);
             };
 
+            useEffect(() => {
+                const handleMessage = (event) => {
+                    if (event.data && event.data.type === 'OPEN_APP') {
+                        openApp(event.data.appId, event.data.context);
+                    }
+                };
+                window.addEventListener('message', handleMessage);
+                return () => window.removeEventListener('message', handleMessage);
+            }, []);
+
             const closeDrawer = () => {
                 setDrawerOpen(false);
                 setTimeout(() => {

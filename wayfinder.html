@@ -306,12 +306,29 @@
                                 {node.group}
                             </span>
                             <h2 className="text-2xl font-bold text-white mt-1 mb-2">{node.name}</h2>
-                            {node.url && (
-                                <a href={node.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-sky-400 hover:text-sky-300 text-sm mb-3 font-medium transition-colors">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
-                                    {node.url}
-                                </a>
-                            )}
+                            <div className="flex flex-col gap-2 mb-4">
+                                {node.url && (
+                                    <a href={node.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-sky-400 hover:text-sky-300 text-sm font-medium transition-colors w-fit">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+                                        Visit Official Site
+                                    </a>
+                                )}
+                                <button
+                                    onClick={() => {
+                                        if (window.parent) {
+                                            window.parent.postMessage({
+                                                type: 'OPEN_APP',
+                                                appId: 'D1',
+                                                context: { question: `What are the key ecosystem dependencies and hidden blindspots associated with ${node.name}?` }
+                                            }, '*');
+                                        }
+                                    }}
+                                    className="inline-flex items-center gap-1.5 text-emerald-400 hover:text-emerald-300 bg-emerald-950/30 hover:bg-emerald-900/40 border border-emerald-800/50 px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-all w-fit mt-1"
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 16.9A5 5 0 0 0 18 7h-1.26a8 8 0 1 0-11.62 9"></path><polyline points="13 11 9 17 15 17 11 23"></polyline></svg>
+                                    Storm Questions in D1
+                                </button>
+                            </div>
                             <p className="text-neutral-400 text-sm leading-relaxed">{node.description}</p>
                         </div>
                         <button onClick={onClose} className="p-2 bg-neutral-800/50 hover:bg-neutral-700 rounded-full text-neutral-300 transition-colors">
