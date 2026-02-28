@@ -462,6 +462,11 @@ body {
     right: 0;
 }
 
+.drawer.open.maximized {
+    width: 100vw;
+    right: 0;
+}
+
 .drawer-header {
     padding: 2rem;
     border-bottom: 1px solid var(--border-color);

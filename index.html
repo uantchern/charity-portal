@@ -462,7 +462,7 @@
             return (
                 <>
                     <div className={`drawer-overlay ${drawerOpen ? 'open' : ''}`} onClick={closeDrawer}></div>
-                    <div className={`drawer ${drawerOpen ? 'open' : ''}`}>
+                    <div className={`drawer ${drawerOpen ? 'open' : ''} ${activeGlobalApp === 'D2' ? 'maximized' : ''}`}>
 
                         {appData && (
                             <div className="drawer-header">
