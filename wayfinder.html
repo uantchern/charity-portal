@@ -523,6 +523,27 @@
             }, [expandedIds]);
 
             useEffect(() => {
+                // Apply a much stronger force layout to prevent any overlapping
+                const timer = setTimeout(() => {
+                    if (fgRef.current) {
+                        const chargeForce = fgRef.current.d3Force('charge');
+                        if (chargeForce) {
+                            chargeForce.strength(-2500); // Maximum repulsion
+                            chargeForce.distanceMax(3000); // Act over larger distance
+                        }
+                        const linkForce = fgRef.current.d3Force('link');
+                        if (linkForce) {
+                            linkForce.distance(180); // Spread connections out
+                        }
+                        // Re-kick the simulation to apply new forces
+                        fgRef.current.d3ReheatSimulation();
+                    }
+                }, 300);
+
+                return () => clearTimeout(timer);
+            }, [graphData]);
+
+            useEffect(() => {
                 if (searchQuery.length < 3) return;
 
                 const foundNode = window.ecosystemData.nodes.find(n => n.name.toLowerCase().includes(searchQuery.toLowerCase()));
@@ -700,9 +721,9 @@
                                 linkCanvasObject={linkCanvasObject}
                                 onNodeClick={handleNodeClick}
                                 onBackgroundClick={handleBackgroundClick}
-                                d3VelocityDecay={0.4}
+                                d3VelocityDecay={0.2}
                                 d3AlphaDecay={0.01}
-                                cooldownTicks={100}
+                                cooldownTicks={400}
                             />
                         </div>
                     )}

@@ -1261,11 +1261,13 @@
                     </h3>
                     <div style={{ display: "flex", flexDirection: "column", gap: "1rem", overflowY: "auto", flexGrow: 1 }} className="scrollbar-hide">
                         {newsItems.map((item, idx) => (
-                            <a
+                            <div
                                 key={idx}
-                                href={item.url}
-                                target="_blank"
-                                rel="noopener noreferrer"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    window.open(item.url, "_blank", "noopener,noreferrer");
+                                }}
                                 className="news-card"
                             >
                                 <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.75rem", color: "var(--text-muted)", marginBottom: "0.5rem" }}>
@@ -1285,7 +1287,7 @@
                                 }}>
                                     {item.category}
                                 </span>
-                            </a>
+                            </div>
                         ))}
                     </div>
                 </div>
