@@ -1394,6 +1394,91 @@
             );
         };
 
+        const B1Finance = () => {
+            const { setActivePage } = useContext(AppContext);
+            useEffect(() => setActivePage("B1 Finance & Grants"), []);
+            return (
+                <OutlineView
+                    title="B1 Finance & Grants"
+                    desc="Manage financial sustainability. Track core funding, project grants, budgets, and financial reporting compliance."
+                    sections={[
+                        { title: "Budget & Financial Planning", content: "Annual budget preparation, forecasting tools, and departmental allocations." },
+                        { title: "Grant Management", content: "Proposal writing methodologies, grant tracking cycles, and funder reporting mandates." },
+                        { title: "Financial Controls & Audits", content: "Internal control policies, statutory audit preparations, and routine financial reconciliations." },
+                        { title: "Reserves Policy", content: "Establishing target reserves ratio, liquidity requirements, and surplus investment policies." }
+                    ]}
+                />
+            );
+        };
+
+        const B2FundRaising = () => {
+            const { setActivePage } = useContext(AppContext);
+            useEffect(() => setActivePage("B2 Fund Raising"), []);
+            return (
+                <OutlineView
+                    title="B2 Fund Raising"
+                    desc="Cultivate donor relationships and manage fundraising campaigns. Track donor retention and campaign ROI."
+                    sections={[
+                        { title: "Fundraising Strategy", content: "Target donor segmentation, campaign themes, and Return on Investment (ROI) expectations." },
+                        { title: "Donor Management", content: "CRM utilization, tiered stewardship programs, and long-term retention strategies." },
+                        { title: "Compliance & Regulations", content: "Fund-raising permit applications, House to House and Street Collections Act adherence, and IPC compliance." },
+                        { title: "Event Execution", content: "Logistical planning, sponsorship securement, ticketing, and peer-to-peer campaign management." }
+                    ]}
+                />
+            );
+        };
+
+        const B3Volunteer = () => {
+            const { setActivePage } = useContext(AppContext);
+            useEffect(() => setActivePage("B3 Volunteer Management"), []);
+            return (
+                <OutlineView
+                    title="B3 Volunteer Management"
+                    desc="Attract, retain, and develop volunteers. Manage recruitment, training, scheduling, and impact."
+                    sections={[
+                        { title: "Recruitment & Screening", content: "Role descriptions, interviewing protocols, and requisite background checks (e.g., safeguarding)." },
+                        { title: "Orientation & Training", content: "Comprehensive onboarding procedures, skills development programs, and safety guidelines." },
+                        { title: "Engagement & Supervision", content: "Shift scheduling systems, active feedback loops, and on-the-ground support mechanisms." },
+                        { title: "Recognition & Retention", content: "Service awards, appreciation events, impact sharing, and alumni volunteer networks." }
+                    ]}
+                />
+            );
+        };
+
+        const B4Marketing = () => {
+            const { setActivePage } = useContext(AppContext);
+            useEffect(() => setActivePage("B4 Marketing & Communications"), []);
+            return (
+                <OutlineView
+                    title="B4 Marketing & Communications"
+                    desc="Amplify your charity's voice. Manage public relations, social media, campaign reach, and brand reputation."
+                    sections={[
+                        { title: "Brand Identity", content: "Official logo usage guidelines, unified tone of voice, typography, and visual brand assets." },
+                        { title: "Digital & Social Media Strategy", content: "Content calendars, platform focus (e.g., LinkedIn vs. Instagram), and engagement metrics analytics." },
+                        { title: "Public Relations & Media", content: "Press release templates, established media contacts, and rapid-response crisis communication plans." },
+                        { title: "Impact Reporting", content: "Annual report structure, recurring newsletters, and compelling beneficiary storytelling frameworks." }
+                    ]}
+                />
+            );
+        };
+
+        const B5HR = () => {
+            const { setActivePage } = useContext(AppContext);
+            useEffect(() => setActivePage("B5 Human Resource"), []);
+            return (
+                <OutlineView
+                    title="B5 Human Resource"
+                    desc="Build a strong team. Manage staff recruitment, retention, professional development, well-being, and compliance."
+                    sections={[
+                        { title: "Recruitment Policies", content: "Standardized job postings, unbiased interviewing guidelines, and systematic orientation programs." },
+                        { title: "Compensation & Benefits", content: "Defined salary banding, comprehensive leave policies, health/insurance benefits, and flexible work guidelines." },
+                        { title: "Performance Management", content: "Bi-annual appraisal cycles, actionable KPIs, and individualized professional development (Training & Development) pathways." },
+                        { title: "Employee Wellbeing & Culture", content: "Grievance handling procedures, team building initiatives, and proactive mental health support." }
+                    ]}
+                />
+            );
+        };
+
         const DashboardHome = () => {
             const { setActivePage } = useContext(AppContext);
 
@@ -1470,13 +1555,18 @@
                                                         item.id === "A3" ? <A3Outputs /> :
                                                             item.id === "A4" ? <A4Outcomes /> :
                                                                 item.id === "A5" ? <A5Impact /> :
-                                                                    item.id === "C1" ? <C1Code /> :
-                                                                        item.id === "C2" ? <C2GEC /> :
-                                                                            item.id === "C3" ? <C3SOP /> :
-                                                                                item.id === "C4" ? <C4Constitution /> :
-                                                                                    item.id === "C5" ? <C5TOR /> :
-                                                                                        item.id === "C6" ? <C6StrategicPlan /> :
-                                                                                            <PlaceholderView title={item.label} pillarName={pillar.title} description={item.description} />
+                                                                    item.id === "B1" ? <B1Finance /> :
+                                                                        item.id === "B2" ? <B2FundRaising /> :
+                                                                            item.id === "B3" ? <B3Volunteer /> :
+                                                                                item.id === "B4" ? <B4Marketing /> :
+                                                                                    item.id === "B5" ? <B5HR /> :
+                                                                                        item.id === "C1" ? <C1Code /> :
+                                                                                            item.id === "C2" ? <C2GEC /> :
+                                                                                                item.id === "C3" ? <C3SOP /> :
+                                                                                                    item.id === "C4" ? <C4Constitution /> :
+                                                                                                        item.id === "C5" ? <C5TOR /> :
+                                                                                                            item.id === "C6" ? <C6StrategicPlan /> :
+                                                                                                                <PlaceholderView title={item.label} pillarName={pillar.title} description={item.description} />
                                             }
                                         />
                                     ))
