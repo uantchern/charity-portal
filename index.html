@@ -285,11 +285,21 @@
                     "What metrics should we establish to bridge the connection between cost and mission effectiveness?"
                 ];
             } else if (selectedNodes.length > 0) {
-                insight = "You have selected a unique cross-section of organizational nodes.";
+                const names = selectedNodes.map(code => {
+                    const node = allNodes.find(n => n.code === code);
+                    return node ? node.label : code;
+                });
+
+                let namesStr = "";
+                if (names.length === 1) namesStr = names[0];
+                else if (names.length === 2) namesStr = `${names[0]} and ${names[1]}`;
+                else namesStr = names.slice(0, -1).join(', ') + ', and ' + names[names.length - 1];
+
+                insight = `It appears you are exploring the intersection of ${namesStr}. Consider how these specific components interact and influence each other.`;
                 questions = [
-                    `How does ${selectedNodes[0]} directly influence our other selected areas?`,
-                    "Are there systemic bottlenecks between these operational pillars?",
-                    "What question would best challenge our assumptions here?"
+                    `How does our approach to ${names[0]} directly impact our goals in the other selected areas?`,
+                    `Are there systemic bottlenecks or misalignments between these specific pillars?`,
+                    `If we significantly improved ${names[0]}, what secondary effects would we see across the related modules?`
                 ];
             }
 
