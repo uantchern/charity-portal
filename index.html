@@ -1195,32 +1195,32 @@
         const NewsFeed = () => {
             const newsItems = [
                 {
-                    source: "The Straits Times",
-                    time: "2 hours ago",
+                    source: "MSF News",
+                    time: "3 hours ago",
                     title: "New Enhanced Grant Unveiled for Social Service Agencies",
                     category: "Funding",
-                    url: "https://www.straitstimes.com/singapore/8m-enhanced-volunteer-manager-funding-scheme-launched"
+                    url: "https://www.msf.gov.sg/media-room"
                 },
                 {
-                    source: "Charity Council",
+                    source: "MCCY Press Room",
                     time: "5 hours ago",
-                    title: "Charity Council Launches Updated Governance Guidelines for 2026",
+                    title: "New Charity Governance Framework to be launched in 2026",
                     category: "Governance",
-                    url: "https://www.charities.gov.sg/manage-your-charity/getting-started-on-governance"
+                    url: "https://www.mccy.gov.sg/about-us/news-and-resources/press-room"
                 },
                 {
-                    source: "Channel News Asia",
+                    source: "NCSS Tech-and-GO",
                     time: "1 day ago",
                     title: "Fresh Initiative to Boost Digital Inclusion in VWOs Announced",
                     category: "Digitalization",
-                    url: "https://www.channelnewsasia.com/singapore/social-service-agencies-charities-digital-fund-tech-tools-ncss-3298641"
+                    url: "https://www.ncss.gov.sg/our-initiatives/tech-and-go"
                 },
                 {
                     source: "Giving.sg Insights",
                     time: "2 days ago",
                     title: "Record Volunteer Sign-ups Recorded Amid Holiday Season",
                     category: "Volunteering",
-                    url: "https://www.giving.sg/about-us"
+                    url: "https://www.giving.sg/"
                 }
 
             ];
@@ -1261,13 +1261,11 @@
                     </h3>
                     <div style={{ display: "flex", flexDirection: "column", gap: "1rem", overflowY: "auto", flexGrow: 1 }} className="scrollbar-hide">
                         {newsItems.map((item, idx) => (
-                            <div
+                            <a
                                 key={idx}
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    e.stopPropagation();
-                                    window.open(item.url, "_blank", "noopener,noreferrer");
-                                }}
+                                href={item.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
                                 className="news-card"
                             >
                                 <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.75rem", color: "var(--text-muted)", marginBottom: "0.5rem" }}>
@@ -1287,7 +1285,7 @@
                                 }}>
                                     {item.category}
                                 </span>
-                            </div>
+                            </a>
                         ))}
                     </div>
                 </div>
