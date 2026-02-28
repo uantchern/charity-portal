@@ -29,7 +29,7 @@
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
 
-    <link rel="stylesheet" href="styles.css?v=639079026967841443">
+    <link rel="stylesheet" href="styles.css?v=639079039784801283">
 </head>
 
 <body>
@@ -68,21 +68,26 @@
             const [activePillar, setActivePillar] = useState(null);
             const [drawerOpen, setDrawerOpen] = useState(false);
             const [activeGlobalApp, setActiveGlobalApp] = useState(null);
+            const [globalAppContext, setGlobalAppContext] = useState({});
 
-            const openApp = (appId) => {
+            const openApp = (appId, context = {}) => {
                 setActiveGlobalApp(appId);
+                setGlobalAppContext(context);
                 setDrawerOpen(true);
             };
 
             const closeDrawer = () => {
                 setDrawerOpen(false);
-                setTimeout(() => setActiveGlobalApp(null), 400); // Wait for transition
+                setTimeout(() => {
+                    setActiveGlobalApp(null);
+                    setGlobalAppContext({});
+                }, 400); // Wait for transition
             };
 
             const value = {
                 activePage, setActivePage,
                 activePillar, setActivePillar,
-                drawerOpen, openApp, closeDrawer, activeGlobalApp
+                drawerOpen, openApp, closeDrawer, activeGlobalApp, globalAppContext
             };
 
             return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
@@ -335,9 +340,80 @@
                                 {questions.map((q, idx) => (
                                     <li key={idx}>
                                         <div style={{ color: "var(--text-main)", fontWeight: 500 }}>"{q}"</div>
-                                        <button className="storm-btn" onClick={() => openApp('D1')}>
+                                        <button className="storm-btn" onClick={() => openApp('D1', { question: q })}>
                                             <CloudLightning size={16} /> Storm This
                                         </button>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
+                </div>
+            );
+        };
+
+        const D1QuestionStormer = () => {
+            const { activePage, globalAppContext } = useContext(AppContext);
+            const [inputValue, setInputValue] = useState("");
+            const [storms, setStorms] = useState([]);
+
+            // Generate initial prompt based on usage context or D4 passthrough
+            const defaultPrompt = (globalAppContext && globalAppContext.question)
+                ? globalAppContext.question
+                : `How does our ${activePage} framework align with our core impact goals?`;
+
+            useEffect(() => {
+                setInputValue(defaultPrompt);
+            }, [defaultPrompt]);
+
+            const handleStorm = (qToStorm) => {
+                const query = typeof qToStorm === 'string' ? qToStorm : inputValue;
+                if (!query.trim()) return;
+
+                const newStorm = {
+                    question: query,
+                    answer: `Insight: Addressing "${query}" often reveals new strategic pathways. Try exploring the Governance cross-sections for structural answers.`,
+                    link: "#/c1", // Simulated link
+                    timestamp: new Date().toLocaleTimeString()
+                };
+
+                setStorms([newStorm, ...storms]);
+                if (typeof qToStorm !== 'string') setInputValue("");
+            };
+
+            return (
+                <div className="analyzer-container fade-in">
+                    <p style={{ color: "var(--text-muted)", marginBottom: "1.5rem", lineHeight: 1.6 }}>
+                        Question Storming generates answers by challenging existing constraints.
+                        Start with the contextual prompt or enter your own.
+                    </p>
+
+                    <div className="storm-input-group">
+                        <textarea
+                            className="storm-textarea textarea"
+                            rows="3"
+                            value={inputValue}
+                            onChange={(e) => setInputValue(e.target.value)}
+                            placeholder="Type a strategic question to storm..."
+                            style={{ width: "100%", padding: "1rem", borderRadius: "8px", background: "rgba(0,0,0,0.2)", border: "1px solid var(--border-color)", color: "var(--text-main)", fontFamily: "var(--font-mono)", fontSize: "0.9rem", resize: "none" }}
+                        />
+                        <div style={{ display: "flex", justifyContent: "flex-end", marginTop: "1rem" }}>
+                            <button className="storm-btn" onClick={handleStorm}>
+                                <CloudLightning size={16} /> Storm Now
+                            </button>
+                        </div>
+                    </div>
+
+                    {storms.length > 0 && (
+                        <div className="analyzer-result fade-in" style={{ marginTop: "3rem" }}>
+                            <h4 style={{ color: "var(--accent-cyan)", marginBottom: "1.25rem", fontFamily: "var(--font-mono)", textTransform: "uppercase", fontSize: "0.85rem", letterSpacing: "0.05em" }}>Session History</h4>
+                            <ul className="suggested-questions">
+                                {storms.map((storm, idx) => (
+                                    <li key={idx} style={{ borderLeft: "3px solid var(--accent-emerald)" }}>
+                                        <div style={{ fontSize: "0.8rem", color: "var(--text-muted)", marginBottom: "0.5rem" }}>{storm.timestamp}</div>
+                                        <div style={{ color: "var(--text-main)", fontWeight: 600, marginBottom: "0.5rem", fontSize: "1.05rem" }}>Q: {storm.question}</div>
+                                        <div style={{ color: "var(--accent-emerald-glow)", lineHeight: 1.5 }}>A: {storm.answer}</div>
+                                        <a href={storm.link} target="_blank" style={{ color: "var(--accent-cyan)", textDecoration: "none", fontSize: "0.85rem", marginTop: "0.5rem", fontWeight: 600 }}>Explore Resource &rarr;</a>
                                     </li>
                                 ))}
                             </ul>
@@ -373,6 +449,8 @@
                         <div className="drawer-content">
                             {activeGlobalApp === "D4" ? (
                                 <D4Analyzer />
+                            ) : activeGlobalApp === "D1" ? (
+                                <D1QuestionStormer />
                             ) : appData ? (
                                 <div className="system-card">
                                     <div className="system-card-header">
