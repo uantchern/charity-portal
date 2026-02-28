@@ -368,34 +368,7 @@
                         </div>
                     </div>
 
-                    <div className="p-6 border-t border-neutral-800/50 bg-neutral-900">
-                        <form onSubmit={handleLogSubmit} className="space-y-3">
-                            <input
-                                type="text"
-                                placeholder="Your Designation (e.g. Agency Admin)"
-                                value={authorName}
-                                onChange={(e) => setAuthorName(e.target.value)}
-                                className="w-full bg-neutral-950 border border-neutral-800 text-white text-sm rounded-lg px-4 py-2 focus:outline-none focus:border-emerald-500 transition-colors"
-                                required
-                            />
-                            <div className="relative">
-                                <textarea
-                                    placeholder="Leave your tactical tip or insight..."
-                                    value={newLogText}
-                                    onChange={(e) => setNewLogText(e.target.value)}
-                                    className="w-full bg-neutral-950 border border-neutral-800 text-white text-sm rounded-lg px-4 py-3 min-h-[100px] focus:outline-none focus:border-emerald-500 transition-colors resize-none"
-                                    required
-                                />
-                                <button
-                                    type="submit"
-                                    className="absolute bottom-3 right-3 p-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-md transition-colors"
-                                    disabled={!newLogText.trim() || !authorName.trim()}
-                                >
-                                    <SendIcon />
-                                </button>
-                            </div>
-                        </form>
-                    </div>
+
                 </div>
             );
         };
