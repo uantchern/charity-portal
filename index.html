@@ -170,7 +170,7 @@
         // -----------------------------------------------------------------------------
 
         const Sidebar = () => {
-            const { activePillar, setActivePillar } = useContext(AppContext);
+            const { activePillar, setActivePillar, setMobileMenuOpen } = useContext(AppContext);
             const location = useLocation();
 
             const toggleAccordion = (id) => {
@@ -178,7 +178,6 @@
             };
 
             const handleNavigate = () => {
-                const { setMobileMenuOpen } = useContext(AppContext);
                 if (window.innerWidth <= 768) {
                     setMobileMenuOpen(false);
                 }
@@ -196,7 +195,7 @@
 
             return (
                 <aside className="sidebar">
-                    <Link to="/" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+                    <Link to="/" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }} onClick={handleNavigate}>
                         <div className="brand">
                             <div className="brand-icon"><Layers size={24} /></div>
                             Charity<span style={{ color: "var(--accent-emerald)" }}>Portal</span>
@@ -227,10 +226,7 @@
                                                     key={item.id}
                                                     to={item.path}
                                                     className={`nav-item ${isActive ? 'active' : ''}`}
-                                                    onClick={() => {
-                                                        const { setMobileMenuOpen } = useContext(AppContext);
-                                                        setMobileMenuOpen(false);
-                                                    }}
+                                                    onClick={handleNavigate}
                                                 >
                                                     {item.label}
                                                 </Link>
