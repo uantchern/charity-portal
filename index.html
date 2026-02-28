@@ -455,10 +455,23 @@
                 ];
                 const randomPrompt = followUpPrompts[Math.floor(Math.random() * followUpPrompts.length)];
 
+                let matchedNode = "c1";
+                const qMatch = query.match(/\b([a-c][1-6])\b/i);
+                const pageMatch = activePage.match(/^([a-c][1-6])/i);
+
+                if (qMatch) {
+                    matchedNode = qMatch[1].toLowerCase();
+                } else if (pageMatch) {
+                    matchedNode = pageMatch[1].toLowerCase();
+                } else {
+                    const codes = ["a1", "a2", "a3", "a4", "a5", "b1", "b2", "b3", "b4", "b5", "c1", "c2", "c3", "c4", "c5", "c6"];
+                    matchedNode = codes[Math.floor(Math.random() * codes.length)];
+                }
+
                 const newStorm = {
                     question: query,
-                    answer: `Insight: Addressing "${query}" often reveals new strategic pathways. Try exploring the Governance cross-sections for structural answers.`,
-                    link: "#/c1", // Simulated link
+                    answer: `Insight: Addressing "${query}" often reveals new strategic pathways. Try exploring the ${matchedNode.toUpperCase()} module for structural answers.`,
+                    link: `#/${matchedNode}`, // Dynamic link
                     timestamp: new Date().toLocaleTimeString(),
                     suggestedQuestion: randomPrompt
                 };
