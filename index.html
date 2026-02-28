@@ -1198,25 +1198,29 @@
                     source: "The Straits Times",
                     time: "2 hours ago",
                     title: "New Enhanced Grant Unveiled for Social Service Agencies",
-                    category: "Funding"
+                    category: "Funding",
+                    url: "https://www.straitstimes.com/"
                 },
                 {
                     source: "Channel News Asia",
                     time: "5 hours ago",
                     title: "Charity Council Launches Updated Governance Guidelines for 2026",
-                    category: "Governance"
+                    category: "Governance",
+                    url: "https://www.channelnewsasia.com/"
                 },
                 {
                     source: "MSF Press Room",
                     time: "1 day ago",
                     title: "Fresh Initiative to Boost Digital Inclusion in VWOs Announced",
-                    category: "Digitalization"
+                    category: "Digitalization",
+                    url: "https://www.msf.gov.sg/media-room"
                 },
                 {
                     source: "Giving.sg Insights",
                     time: "2 days ago",
                     title: "Record Volunteer Sign-ups Recorded Amid Holiday Season",
-                    category: "Volunteering"
+                    category: "Volunteering",
+                    url: "https://www.giving.sg/"
                 }
 
             ];
@@ -1232,19 +1236,38 @@
                     gap: "1rem",
                     height: "100%",
                 }}>
+                    <style>
+                        {`
+                        .news-card {
+                            display: block;
+                            padding: 1.2rem;
+                            background: rgba(255,255,255,0.02);
+                            border-radius: 8px;
+                            border-left: 3px solid var(--accent-cyan);
+                            transition: all 0.2s ease-in-out;
+                            text-decoration: none;
+                            cursor: pointer;
+                        }
+                        .news-card:hover {
+                            background: rgba(255,255,255,0.06) !important;
+                            transform: translateX(4px);
+                            border-left: 3px solid var(--accent-emerald);
+                        }
+                        `}
+                    </style>
                     <h3 style={{ color: "var(--text-main)", display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "1.1rem", marginBottom: "0.5rem" }}>
                         <Activity size={18} color="var(--accent-purple)" />
                         Sector News Feed
                     </h3>
                     <div style={{ display: "flex", flexDirection: "column", gap: "1rem", overflowY: "auto", flexGrow: 1 }} className="scrollbar-hide">
                         {newsItems.map((item, idx) => (
-                            <div key={idx} style={{
-                                padding: "1.2rem",
-                                background: "rgba(255,255,255,0.02)",
-                                borderRadius: "8px",
-                                borderLeft: "3px solid var(--accent-cyan)",
-                                transition: "background 0.2s"
-                            }}>
+                            <a
+                                key={idx}
+                                href={item.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="news-card"
+                            >
                                 <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.75rem", color: "var(--text-muted)", marginBottom: "0.5rem" }}>
                                     <span>{item.source}</span>
                                     <span>{item.time}</span>
@@ -1262,7 +1285,7 @@
                                 }}>
                                     {item.category}
                                 </span>
-                            </div>
+                            </a>
                         ))}
                     </div>
                 </div>
