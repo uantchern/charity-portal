@@ -794,7 +794,7 @@ body {
     }
 
     .top-bar {
-        padding: 1rem 1.5rem;
+        padding: 1rem;
         height: auto;
         min-height: 80px;
         flex-direction: column;
@@ -804,16 +804,27 @@ body {
 
     .global-dock {
         width: 100%;
-        justify-content: space-between;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.5rem;
     }
 
     .dock-btn {
-        flex: 1;
+        width: 100%;
         font-size: 0.70rem;
     }
 
+    .text-dock-btn {
+        min-width: 0 !important;
+        white-space: normal !important;
+        padding: 0.5rem !important;
+        height: 100% !important;
+        min-height: 44px;
+        line-height: 1.2;
+    }
+
     .content-area {
-        padding: 1.5rem;
+        padding: 1.5rem 1rem;
     }
 
     .hero-welcome h1 {
