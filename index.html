@@ -1206,6 +1206,194 @@
             );
         };
 
+        const C1Code = () => {
+            const { setActivePage } = useContext(AppContext);
+            useEffect(() => {
+                setActivePage("C1 Charity Governance Code");
+            }, [setActivePage]);
+
+            const [complianceState, setComplianceState] = useState({});
+
+            const toggleCompliance = (id) => {
+                setComplianceState(prev => ({ ...prev, [id]: !prev[id] }));
+            };
+
+            const principles = [
+                { id: "p1", title: "Principle 1: Board Governance", desc: "The Board provides strategic direction, exercises independent judgment, and oversees the charity." },
+                { id: "p2", title: "Principle 2: Conflict of Interest", desc: "The Charity has policies to handle conflicts of interest, ensuring decisions are made in the best interest of the charity." },
+                { id: "p3", title: "Principle 3: Strategic Planning", desc: "The Board periodically reviews and approves the charity's strategic plan and monitors its progress." },
+                { id: "p4", title: "Principle 4: Human Resources", desc: "The charity has documented HR policies and a Code of Conduct." },
+                { id: "p5", title: "Principle 5: Financial Management", desc: "The charity maintains sound financial management and internal controls." },
+                { id: "p6", title: "Principle 6: Public Image & Comm", desc: "The charity communicates effectively with its stakeholders to maintain public trust." },
+            ];
+
+            return (
+                <div className="fade-in" style={{ paddingBottom: "2rem", height: "100%", overflowY: "auto", paddingRight: "10px" }}>
+                    <div style={{ marginBottom: "2.5rem" }}>
+                        <h1 style={{ fontSize: "2.2rem", fontWeight: 800, marginBottom: "0.75rem", color: "var(--text-main)", display: "flex", alignItems: "center", gap: "1rem" }}>
+                            <Shield size={32} color="var(--accent-purple)" />
+                            Charity Governance Code Principles
+                        </h1>
+                        <p style={{ color: "var(--text-muted)", fontSize: "1.05rem", maxWidth: "800px", lineHeight: 1.6 }}>
+                            A set of guidelines to ensure the charity serves its mission, maintains effective leadership, and operates transparently.
+                        </p>
+                    </div>
+
+                    <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+                        {principles.map((p) => {
+                            const isCompliant = complianceState[p.id] || false;
+                            return (
+                                <div key={p.id} style={{
+                                    display: "flex",
+                                    justifyContent: "space-between",
+                                    alignItems: "center",
+                                    padding: "1.5rem",
+                                    borderRadius: "12px",
+                                    border: "1px solid var(--border-color)",
+                                    background: isCompliant ? "rgba(16, 185, 129, 0.05)" : "rgba(255,255,255,0.03)",
+                                    transition: "all 0.3s ease"
+                                }}>
+                                    <div style={{ flex: 1, paddingRight: "2rem" }}>
+                                        <h3 style={{ color: "var(--text-main)", fontSize: "1.1rem", marginBottom: "0.5rem" }}>{p.title}</h3>
+                                        <p style={{ color: "var(--text-muted)", fontSize: "0.9rem" }}>{p.desc}</p>
+                                    </div>
+                                    <button
+                                        onClick={() => toggleCompliance(p.id)}
+                                        className={isCompliant ? "btn-comply" : "btn-not-comply"}
+                                    >
+                                        {isCompliant ? "COMPLY" : "NOT COMPLY"}
+                                    </button>
+                                </div>
+                            );
+                        })}
+                    </div>
+                </div>
+            );
+        };
+
+        const OutlineView = ({ title, desc, sections }) => (
+            <div className="fade-in" style={{ paddingBottom: "2rem", height: "100%", overflowY: "auto", paddingRight: "10px" }}>
+                <div style={{ marginBottom: "2.5rem" }}>
+                    <h1 style={{ fontSize: "2.2rem", fontWeight: 800, marginBottom: "0.75rem", color: "var(--text-main)", display: "flex", alignItems: "center", gap: "1rem" }}>
+                        <ClipboardList size={32} color="var(--accent-cyan)" />
+                        {title}
+                    </h1>
+                    <p style={{ color: "var(--text-muted)", fontSize: "1.05rem", maxWidth: "800px", lineHeight: 1.6 }}>
+                        {desc}
+                    </p>
+                </div>
+
+                <div style={{ background: "rgba(255,255,255,0.03)", borderRadius: "12px", border: "1px solid var(--border-color)", overflow: "hidden" }}>
+                    <div style={{ background: "rgba(0,0,0,0.3)", padding: "1rem 1.5rem", borderBottom: "1px solid var(--border-color)" }}>
+                        <h3 style={{ color: "var(--accent-cyan)", fontSize: "1.1rem", fontWeight: 600 }}>Standard Proforma Sections</h3>
+                    </div>
+                    <div style={{ padding: "1.5rem", display: "flex", flexDirection: "column", gap: "1rem" }}>
+                        {sections.map((section, idx) => (
+                            <div key={idx} style={{
+                                display: "flex",
+                                gap: "1rem",
+                                alignItems: "flex-start",
+                                paddingBottom: "1rem",
+                                borderBottom: idx < sections.length - 1 ? "1px dashed rgba(255,255,255,0.1)" : "none"
+                            }}>
+                                <div style={{
+                                    minWidth: "30px",
+                                    height: "30px",
+                                    background: "rgba(6, 182, 212, 0.1)",
+                                    color: "var(--accent-cyan)",
+                                    borderRadius: "50%",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    fontSize: "0.9rem",
+                                    fontWeight: "bold"
+                                }}>
+                                    {idx + 1}
+                                </div>
+                                <div style={{ flex: 1 }}>
+                                    <h4 style={{ color: "var(--text-main)", fontSize: "1.05rem", marginBottom: "0.25rem" }}>{section.title}</h4>
+                                    <p style={{ color: "var(--text-muted)", fontSize: "0.9rem", lineHeight: 1.5 }}>{section.content}</p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+        );
+
+        const C3SOP = () => {
+            const { setActivePage } = useContext(AppContext);
+            useEffect(() => setActivePage("C3 SOP"), []);
+            return (
+                <OutlineView
+                    title="C3 Standard Operating Procedures"
+                    desc="Standardize internal processes. A central repository of operational guidelines to ensure consistency and mitigate risks."
+                    sections={[
+                        { title: "Financial Procedures", content: "Procurement, Payment Authorization, Expense Claims, Payroll processing." },
+                        { title: "Cash Book Management", content: "Handling of petty cash, donations, and bank reconciliation routines." },
+                        { title: "Human Resources", content: "Recruitment flows, employee onboarding, leave management, and performance appraisal cycles." },
+                        { title: "Program Operations", content: "Client intake procedures, dispute resolution, and emergency response plans." }
+                    ]}
+                />
+            );
+        };
+
+        const C4Constitution = () => {
+            const { setActivePage } = useContext(AppContext);
+            useEffect(() => setActivePage("C4 Constitution"), []);
+            return (
+                <OutlineView
+                    title="C4 Constitution"
+                    desc="Manage the foundation of your charity. Track updates to the governing instrument."
+                    sections={[
+                        { title: "Name and Office", content: "The official registered name and the location of the registered office." },
+                        { title: "Objects", content: "The primary purpose and specific charitable activities the organization is authorized to perform." },
+                        { title: "Membership", content: "Rules regarding admission, subscription, and expulsion of members." },
+                        { title: "Management Committee / Board", content: "Composition, term limits, office bearers, and the procedure for electing committee members." },
+                        { title: "General Meetings", content: "Quorum definitions, voting procedures, and AGM schedules." },
+                        { title: "Financial Controls", content: "Audit requirements, check signing authority, and banking authorizations." }
+                    ]}
+                />
+            );
+        };
+
+        const C5TOR = () => {
+            const { setActivePage } = useContext(AppContext);
+            useEffect(() => setActivePage("C5 Terms of Reference"), []);
+            return (
+                <OutlineView
+                    title="C5 Terms of Reference (TOR)"
+                    desc="Define committee scopes. Manage the roles, responsibilities, and authority limits of sub-committees."
+                    sections={[
+                        { title: "Objectives & Purpose", content: "Clearly defined mandate indicating what the committee is expected to achieve." },
+                        { title: "Composition", content: "Number of members, required skill sets, and appointment/removal procedures." },
+                        { title: "Scope of Authority", content: "Distinction between advisory capacity and decision-making powers." },
+                        { title: "Roles and Responsibilities", content: "Specific tasks, reporting requirements, and deliverables for the committee." },
+                        { title: "Meeting Frequency", content: "Minimum number of meetings per year, quorum requirements, and agenda-setting formats." }
+                    ]}
+                />
+            );
+        };
+
+        const C6StrategicPlan = () => {
+            const { setActivePage } = useContext(AppContext);
+            useEffect(() => setActivePage("C6 Strategic Plans"), []);
+            return (
+                <OutlineView
+                    title="C6 Strategic Plans"
+                    desc="Chart the long-term course. Document multi-year strategic goals, align resources, and track progress."
+                    sections={[
+                        { title: "Executive Summary", content: "High-level overview of the strategic direction and main priorities." },
+                        { title: "Vision & Mission Statement", content: "Reiteration of the organizational North Star." },
+                        { title: "Environmental Scan (SWOT)", content: "Analysis of Internal Strengths/Weaknesses and External Opportunities/Threats." },
+                        { title: "Strategic Goals & Objectives", content: "3-5 key focus areas translating the mission into actionable and measurable targets." },
+                        { title: "Implementation Plan (Roadmap)", content: "Phased timeline detailing specific initiatives, KPIs, and assigning ownership." },
+                        { title: "Resource Allocation", content: "Budgetary forecasts and human capital required to achieve the plan." }
+                    ]}
+                />
+            );
+        };
+
         const DashboardHome = () => {
             const { setActivePage } = useContext(AppContext);
 
@@ -1282,8 +1470,13 @@
                                                         item.id === "A3" ? <A3Outputs /> :
                                                             item.id === "A4" ? <A4Outcomes /> :
                                                                 item.id === "A5" ? <A5Impact /> :
-                                                                    item.id === "C2" ? <C2GEC /> :
-                                                                        <PlaceholderView title={item.label} pillarName={pillar.title} description={item.description} />
+                                                                    item.id === "C1" ? <C1Code /> :
+                                                                        item.id === "C2" ? <C2GEC /> :
+                                                                            item.id === "C3" ? <C3SOP /> :
+                                                                                item.id === "C4" ? <C4Constitution /> :
+                                                                                    item.id === "C5" ? <C5TOR /> :
+                                                                                        item.id === "C6" ? <C6StrategicPlan /> :
+                                                                                            <PlaceholderView title={item.label} pillarName={pillar.title} description={item.description} />
                                             }
                                         />
                                     ))
