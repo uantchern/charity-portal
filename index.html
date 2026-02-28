@@ -443,6 +443,18 @@
             );
         };
 
+        const D2Wayfinder = () => {
+            return (
+                <div className="analyzer-container fade-in" style={{ padding: 0, height: 'calc(100vh - 120px)', border: '1px solid var(--border-color)', borderRadius: '12px', overflow: 'hidden' }}>
+                    <iframe
+                        src="./wayfinder.html"
+                        style={{ width: '100%', height: '100%', border: 'none' }}
+                        title="D2 Wayfinder Ecosystem Mapping"
+                    />
+                </div>
+            );
+        };
+
         const AppDrawer = () => {
             const { drawerOpen, closeDrawer, activeGlobalApp, activePage } = useContext(AppContext);
             const appData = NAVIGATION.GlobalApps.find(app => app.id === activeGlobalApp);
@@ -471,6 +483,8 @@
                                 <D4Analyzer />
                             ) : activeGlobalApp === "D1" ? (
                                 <D1QuestionStormer />
+                            ) : activeGlobalApp === "D2" ? (
+                                <D2Wayfinder />
                             ) : appData ? (
                                 <div className="system-card">
                                     <div className="system-card-header">
