@@ -243,6 +243,14 @@
 
         const TopBar = () => {
             const { activePage, openApp, setMobileMenuOpen } = useContext(AppContext);
+            const location = useLocation();
+
+            // Find current pillar based on route
+            let currentPillarTitle = "";
+            NAVIGATION.Pillars.forEach(pillar => {
+                const match = pillar.items.find(item => item.path === location.pathname);
+                if (match) currentPillarTitle = pillar.title;
+            });
 
             return (
                 <header className="top-bar">
@@ -250,9 +258,36 @@
                         <button className="mobile-menu-btn" onClick={() => setMobileMenuOpen(prev => !prev)}>
                             <MenuIcon size={24} />
                         </button>
-                        <div className="context-badge">
-                            <div className="pulse-dot"></div>
-                            ACTIVE_CONTEXT // {activePage.toUpperCase()}
+
+                        <div className="breadcrumbs" style={{
+                            display: "flex", flexWrap: "wrap", alignItems: "center", gap: "0.5rem",
+                            fontSize: "0.80rem", color: "var(--text-muted)", fontFamily: "var(--font-mono)",
+                            textTransform: "uppercase", letterSpacing: "0.05em"
+                        }}>
+                            <Link to="/" style={{ color: "var(--text-muted)", textDecoration: "none", display: "flex", alignItems: "center", gap: "0.25rem", transition: "color 0.2s" }} onMouseOver={(e) => e.currentTarget.style.color = "var(--text-main)"} onMouseOut={(e) => e.currentTarget.style.color = "var(--text-muted)"}>
+                                <Layers size={14} /> PORTAL
+                            </Link>
+
+                            {currentPillarTitle && (
+                                <>
+                                    <ChevronRight size={14} style={{ color: "rgba(255,255,255,0.2)" }} />
+                                    <span style={{ color: "var(--text-main)" }}>{currentPillarTitle}</span>
+                                </>
+                            )}
+
+                            {activePage && activePage !== "Global Overview" && (
+                                <>
+                                    <ChevronRight size={14} style={{ color: "rgba(255,255,255,0.2)" }} />
+                                    <span style={{ color: "var(--accent-cyan)", fontWeight: 600 }}>{activePage}</span>
+                                </>
+                            )}
+
+                            {activePage === "Global Overview" && (
+                                <>
+                                    <ChevronRight size={14} style={{ color: "rgba(255,255,255,0.2)" }} />
+                                    <span style={{ color: "var(--text-main)", fontWeight: 600 }}>OVERVIEW</span>
+                                </>
+                            )}
                         </div>
                     </div>
 
