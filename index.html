@@ -176,22 +176,14 @@
 
             return (
                 <aside className="sidebar">
-                    <div className="brand">
-                        <div className="brand-icon"><Layers size={24} /></div>
-                        Charity<span style={{ color: "var(--accent-emerald)" }}>Portal</span>
-                    </div>
+                    <Link to="/" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+                        <div className="brand">
+                            <div className="brand-icon"><Layers size={24} /></div>
+                            Charity<span style={{ color: "var(--accent-emerald)" }}>Portal</span>
+                        </div>
+                    </Link>
 
                     <div className="nav-scroll">
-                        <div className="nav-pillar">
-                            <Link to="/" style={{ textDecoration: 'none' }}>
-                                <div className={`pillar-header ${location.pathname === '/' ? 'active' : ''}`}>
-                                    <div className="pillar-title">
-                                        <i><LayoutDashboard size={20} /></i>
-                                        Home
-                                    </div>
-                                </div>
-                            </Link>
-                        </div>
                         {NAVIGATION.Pillars.map((pillar) => {
                             const isOpen = activePillar === pillar.id;
                             return (
