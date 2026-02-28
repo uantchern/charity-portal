@@ -57,6 +57,7 @@
         const LayoutDashboard = ({ size }) => <IconSvg size={size}><rect x="3" y="3" width="7" height="9" /><rect x="14" y="3" width="7" height="5" /><rect x="14" y="12" width="7" height="9" /><rect x="3" y="16" width="7" height="5" /></IconSvg>;
         const Activity = ({ size }) => <IconSvg size={size}><polyline points="22 12 18 12 15 21 9 3 6 12 2 12" /></IconSvg>;
         const Users = ({ size }) => <IconSvg size={size}><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></IconSvg>;
+        const MenuIcon = ({ size }) => <IconSvg size={size}><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="18" x2="21" y2="18" /></IconSvg>;
 
         // -----------------------------------------------------------------------------
         // Global Context / State Management
@@ -69,6 +70,7 @@
             const [drawerOpen, setDrawerOpen] = useState(false);
             const [activeGlobalApp, setActiveGlobalApp] = useState(null);
             const [globalAppContext, setGlobalAppContext] = useState({});
+            const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
             const openApp = (appId, context = {}) => {
                 setActiveGlobalApp(appId);
@@ -87,7 +89,8 @@
             const value = {
                 activePage, setActivePage,
                 activePillar, setActivePillar,
-                drawerOpen, openApp, closeDrawer, activeGlobalApp, globalAppContext
+                drawerOpen, openApp, closeDrawer, activeGlobalApp, globalAppContext,
+                mobileMenuOpen, setMobileMenuOpen
             };
 
             return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
@@ -164,6 +167,13 @@
                 setActivePillar(activePillar === id ? null : id);
             };
 
+            const handleNavigate = () => {
+                const { setMobileMenuOpen } = useContext(AppContext);
+                if (window.innerWidth <= 768) {
+                    setMobileMenuOpen(false);
+                }
+            };
+
             // Auto-expand pillar based on current route
             useEffect(() => {
                 NAVIGATION.Pillars.forEach(pillar => {
@@ -207,6 +217,10 @@
                                                     key={item.id}
                                                     to={item.path}
                                                     className={`nav-item ${isActive ? 'active' : ''}`}
+                                                    onClick={() => {
+                                                        const { setMobileMenuOpen } = useContext(AppContext);
+                                                        setMobileMenuOpen(false);
+                                                    }}
                                                 >
                                                     {item.label}
                                                 </Link>
@@ -222,13 +236,18 @@
         };
 
         const TopBar = () => {
-            const { activePage, openApp } = useContext(AppContext);
+            const { activePage, openApp, setMobileMenuOpen } = useContext(AppContext);
 
             return (
                 <header className="top-bar">
-                    <div className="context-badge">
-                        <div className="pulse-dot"></div>
-                        ACTIVE_CONTEXT // {activePage.toUpperCase()}
+                    <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+                        <button className="mobile-menu-btn" onClick={() => setMobileMenuOpen(prev => !prev)}>
+                            <MenuIcon size={24} />
+                        </button>
+                        <div className="context-badge">
+                            <div className="pulse-dot"></div>
+                            ACTIVE_CONTEXT // {activePage.toUpperCase()}
+                        </div>
                     </div>
 
                     <div className="global-dock">
@@ -753,9 +772,14 @@
 
         // Main Layout
         const Layout = () => {
+            const { mobileMenuOpen, setMobileMenuOpen } = useContext(AppContext);
+
             return (
                 <div className="app-container">
-                    <Sidebar />
+                    <div className={`mobile-overlay ${mobileMenuOpen ? 'open' : ''}`} onClick={() => setMobileMenuOpen(false)}></div>
+                    <div className={`sidebar-container ${mobileMenuOpen ? 'open' : ''}`}>
+                        <Sidebar />
+                    </div>
                     <main className="main-wrapper">
                         <TopBar />
                         <div className="content-area">
