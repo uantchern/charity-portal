@@ -29,7 +29,7 @@
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
 
-    <link rel="stylesheet" href="styles.css?v=639079013221874730">
+    <link rel="stylesheet" href="styles.css?v=639079026967841443">
 </head>
 
 <body>
@@ -240,6 +240,103 @@
         };
 
         // Context-Aware Sliding Drawer Output
+        const D4Analyzer = () => {
+            const { openApp } = useContext(AppContext);
+            const [selectedNodes, setSelectedNodes] = useState([]);
+
+            const allNodes = [
+                { code: "A1", label: "Service Delivery" },
+                { code: "A2", label: "Inputs" },
+                { code: "A3", label: "Outputs" },
+                { code: "A4", label: "Outcomes" },
+                { code: "A5", label: "Impact" },
+                { code: "B1", label: "Finance & Grants" },
+                { code: "B2", label: "Fund Raising" },
+                { code: "B3", label: "Volunteer Mgt" },
+                { code: "B4", label: "Marketing & Comms" },
+                { code: "B5", label: "HR" },
+                { code: "C1", label: "Gov. Code" },
+                { code: "C2", label: "Eval Checklist" },
+                { code: "C3", label: "SOPs" },
+                { code: "C4", label: "Constitution" },
+                { code: "C5", label: "Terms of Ref" },
+                { code: "C6", label: "Strategic Plans" }
+            ];
+
+            const toggleNode = (code) => {
+                setSelectedNodes(prev =>
+                    prev.includes(code) ? prev.filter(p => p !== code) : [...prev, code]
+                );
+            };
+
+            // Evaluate Insight
+            let insight = "";
+            let questions = [];
+
+            const hasA2 = selectedNodes.includes("A2");
+            const hasA5 = selectedNodes.includes("A5");
+            const hasB1 = selectedNodes.includes("B1");
+
+            if (hasA2 && hasA5 && hasB1) {
+                insight = "It appears that you are interested in whether the TOC (Theory of Change) is aligned with the impact and whether money was well spent.";
+                questions = [
+                    "How do our current inputs directly translate into our measured outcomes?",
+                    "Are there gaps between our financial spending and our perceived impact?",
+                    "What metrics should we establish to bridge the connection between cost and mission effectiveness?"
+                ];
+            } else if (selectedNodes.length > 0) {
+                insight = "You have selected a unique cross-section of organizational nodes.";
+                questions = [
+                    `How does ${selectedNodes[0]} directly influence our other selected areas?`,
+                    "Are there systemic bottlenecks between these operational pillars?",
+                    "What question would best challenge our assumptions here?"
+                ];
+            }
+
+            return (
+                <div className="analyzer-container fade-in">
+                    <p style={{ color: "var(--text-muted)", marginBottom: "1.5rem", lineHeight: 1.6 }}>
+                        Select a combination of nodes below. The portal will respond with prompts for you to consider, letting the paths reveal the destination.
+                    </p>
+                    <div className="nodes-grid">
+                        {allNodes.map(node => (
+                            <button
+                                key={node.code}
+                                className={`node-pill ${selectedNodes.includes(node.code) ? 'active' : ''}`}
+                                onClick={() => toggleNode(node.code)}
+                            >
+                                <span className="node-code">{node.code}</span>
+                                {node.label}
+                            </button>
+                        ))}
+                    </div>
+
+                    {selectedNodes.length > 0 && (
+                        <div className="analyzer-result fade-in" style={{ marginTop: "3rem" }}>
+                            <h4 style={{ color: "var(--accent-purple)", marginBottom: "0.75rem", fontFamily: "var(--font-mono)", textTransform: "uppercase", fontSize: "0.85rem", letterSpacing: "0.05em" }}>Analysis Synthesis</h4>
+                            <div className="insight-box">
+                                {insight}
+                            </div>
+
+                            <h4 style={{ color: "var(--text-main)", marginBottom: "1rem", marginTop: "2.5rem", fontWeight: 600, fontSize: "1.05rem" }}>
+                                Would you like to question storm any of the following suggested questions?
+                            </h4>
+                            <ul className="suggested-questions">
+                                {questions.map((q, idx) => (
+                                    <li key={idx}>
+                                        <div style={{ color: "var(--text-main)", fontWeight: 500 }}>"{q}"</div>
+                                        <button className="storm-btn" onClick={() => openApp('D1')}>
+                                            <CloudLightning size={16} /> Storm This
+                                        </button>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
+                </div>
+            );
+        };
+
         const AppDrawer = () => {
             const { drawerOpen, closeDrawer, activeGlobalApp, activePage } = useContext(AppContext);
             const appData = NAVIGATION.GlobalApps.find(app => app.id === activeGlobalApp);
@@ -264,7 +361,9 @@
                         )}
 
                         <div className="drawer-content">
-                            {appData ? (
+                            {activeGlobalApp === "D4" ? (
+                                <D4Analyzer />
+                            ) : appData ? (
                                 <div className="system-card">
                                     <div className="system-card-header">
                                         <span>System Analytics</span>
