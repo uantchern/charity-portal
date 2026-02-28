@@ -446,7 +446,7 @@ body {
     top: 0;
     right: -500px;
     width: 500px;
-    height: 100vh;
+    height: 100dvh;
     background: rgba(12, 16, 26, 0.95);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
@@ -759,7 +759,7 @@ body {
         position: fixed;
         top: 0;
         left: -320px;
-        height: 100vh;
+        height: 100dvh;
         z-index: 100;
         transition: left 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         width: 300px;
@@ -834,5 +834,22 @@ body {
     .context-badge {
         font-size: 0.75rem;
         padding: 0.4rem 0.8rem;
+    }
+
+    .drawer {
+        width: 100vw;
+        right: -100vw;
+    }
+
+    .drawer.open {
+        right: 0;
+    }
+
+    .drawer-content {
+        padding: 1.25rem;
+    }
+
+    .drawer-header {
+        padding: 1.25rem;
     }
 }

@@ -279,7 +279,7 @@
             const { activePage } = useContext(AppContext);
             // Replace local survey builder with our external survey app
             return (
-                <div className="analyzer-container fade-in" style={{ padding: 0, height: 'calc(100vh - 120px)', border: 'none', borderRadius: '12px', overflow: 'hidden' }}>
+                <div className="analyzer-container fade-in" style={{ padding: 0, height: 'calc(100dvh - 120px)', border: 'none', borderRadius: '12px', overflow: 'hidden' }}>
                     <iframe
                         src="./survey.html"
                         style={{ width: '100%', height: '100%', border: 'none', background: 'transparent' }}
@@ -405,7 +405,7 @@
                 : `How does our ${activePage} framework align with our core impact goals?`;
 
             return (
-                <div className="analyzer-container fade-in" style={{ padding: 0, height: 'calc(100vh - 120px)', border: 'none', borderRadius: '12px', overflow: 'hidden' }}>
+                <div className="analyzer-container fade-in" style={{ padding: 0, height: 'calc(100dvh - 120px)', border: 'none', borderRadius: '12px', overflow: 'hidden' }}>
                     <iframe
                         src={`./question-stormer.html?prompt=${encodeURIComponent(defaultPrompt)}`}
                         style={{ width: '100%', height: '100%', border: 'none', background: 'transparent' }}
@@ -417,7 +417,7 @@
 
         const D2Wayfinder = () => {
             return (
-                <div className="analyzer-container fade-in" style={{ padding: 0, height: 'calc(100vh - 120px)', border: '1px solid var(--border-color)', borderRadius: '12px', overflow: 'hidden' }}>
+                <div className="analyzer-container fade-in" style={{ padding: 0, height: 'calc(100dvh - 120px)', border: '1px solid var(--border-color)', borderRadius: '12px', overflow: 'hidden' }}>
                     <iframe
                         src="./wayfinder.html"
                         style={{ width: '100%', height: '100%', border: 'none' }}
