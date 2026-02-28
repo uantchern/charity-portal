@@ -696,7 +696,7 @@
                         </p>
                     </div>
 
-                    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "1.5rem" }}>
+                    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 280px), 1fr))", gap: "1.5rem" }}>
                         {frameworks.map((fw) => (
                             <div key={fw.id} style={{
                                 background: "rgba(255,255,255,0.03)",
@@ -979,15 +979,17 @@
                             return (
                                 <div key={p.id} style={{
                                     display: "flex",
+                                    flexWrap: "wrap",
                                     justifyContent: "space-between",
                                     alignItems: "center",
+                                    gap: "1rem",
                                     padding: "1.5rem",
                                     borderRadius: "12px",
                                     border: "1px solid var(--border-color)",
                                     background: isCompliant ? "rgba(16, 185, 129, 0.05)" : "rgba(255,255,255,0.03)",
                                     transition: "all 0.3s ease"
                                 }}>
-                                    <div style={{ flex: 1, paddingRight: "2rem" }}>
+                                    <div style={{ flex: "1 1 200px", minWidth: 0 }}>
                                         <h3 style={{ color: "var(--text-main)", fontSize: "1.1rem", marginBottom: "0.5rem" }}>{p.title}</h3>
                                         <p style={{ color: "var(--text-muted)", fontSize: "0.9rem" }}>{p.desc}</p>
                                     </div>
@@ -1019,7 +1021,7 @@
 
                 <div style={{ background: "rgba(255,255,255,0.03)", borderRadius: "12px", border: "1px solid var(--border-color)", overflow: "hidden" }}>
                     <div style={{ background: "rgba(0,0,0,0.3)", padding: "1rem 1.5rem", borderBottom: "1px solid var(--border-color)" }}>
-                        <h3 style={{ color: "var(--accent-cyan)", fontSize: "1.1rem", fontWeight: 600 }}>Standard Proforma Sections</h3>
+                        <h3 style={{ color: "var(--accent-cyan)", fontSize: "1.1rem", fontWeight: 600 }}>Key Concepts & Resources</h3>
                     </div>
                     <div style={{ padding: "1.5rem", display: "flex", flexDirection: "column", gap: "1rem" }}>
                         {sections.map((section, idx) => (
@@ -1190,6 +1192,83 @@
             );
         };
 
+        const NewsFeed = () => {
+            const newsItems = [
+                {
+                    source: "The Straits Times",
+                    time: "2 hours ago",
+                    title: "New Enhanced Grant Unveiled for Social Service Agencies",
+                    category: "Funding"
+                },
+                {
+                    source: "Channel News Asia",
+                    time: "5 hours ago",
+                    title: "Charity Council Launches Updated Governance Guidelines for 2026",
+                    category: "Governance"
+                },
+                {
+                    source: "MSF Press Room",
+                    time: "1 day ago",
+                    title: "Fresh Initiative to Boost Digital Inclusion in VWOs Announced",
+                    category: "Digitalization"
+                },
+                {
+                    source: "Giving.sg Insights",
+                    time: "2 days ago",
+                    title: "Record Volunteer Sign-ups Recorded Amid Holiday Season",
+                    category: "Volunteering"
+                }
+
+            ];
+
+            return (
+                <div style={{
+                    background: "rgba(255,255,255,0.03)",
+                    border: "1px solid var(--border-color)",
+                    borderRadius: "12px",
+                    padding: "1.5rem",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "1rem",
+                    height: "100%",
+                }}>
+                    <h3 style={{ color: "var(--text-main)", display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "1.1rem", marginBottom: "0.5rem" }}>
+                        <Activity size={18} color="var(--accent-purple)" />
+                        Sector News Feed
+                    </h3>
+                    <div style={{ display: "flex", flexDirection: "column", gap: "1rem", overflowY: "auto", flexGrow: 1 }} className="scrollbar-hide">
+                        {newsItems.map((item, idx) => (
+                            <div key={idx} style={{
+                                padding: "1.2rem",
+                                background: "rgba(255,255,255,0.02)",
+                                borderRadius: "8px",
+                                borderLeft: "3px solid var(--accent-cyan)",
+                                transition: "background 0.2s"
+                            }}>
+                                <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.75rem", color: "var(--text-muted)", marginBottom: "0.5rem" }}>
+                                    <span>{item.source}</span>
+                                    <span>{item.time}</span>
+                                </div>
+                                <h4 style={{ fontSize: "0.95rem", color: "var(--text-main)", marginBottom: "0.5rem", lineHeight: 1.4, fontWeight: "500" }}>{item.title}</h4>
+                                <span style={{
+                                    display: "inline-block",
+                                    padding: "0.2rem 0.5rem",
+                                    borderRadius: "4px",
+                                    background: "rgba(255,255,255,0.05)",
+                                    fontSize: "0.7rem",
+                                    color: "var(--text-muted)",
+                                    textTransform: "uppercase",
+                                    letterSpacing: "0.05em"
+                                }}>
+                                    {item.category}
+                                </span>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            );
+        };
+
         const DashboardHome = () => {
             const { setActivePage, openApp } = useContext(AppContext);
 
@@ -1203,7 +1282,8 @@
                 borderRadius: "12px",
                 border: "1px solid var(--border-color)",
                 cursor: "pointer",
-                transition: "var(--transition-smooth)"
+                transition: "var(--transition-smooth)",
+                height: "100%"
             };
 
             return (
@@ -1225,33 +1305,39 @@
                         <span>Charity Portal OS</span>
                     </h1>
 
-                    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 280px), 1fr))", gap: "1.5rem", width: "100%", maxWidth: "900px" }}>
-                        <div className="hover-card" style={{ ...cardStyle, borderTop: "3px solid var(--accent-emerald)" }} onClick={() => openApp('D1')}>
-                            <h3 style={{ color: "var(--text-main)", marginBottom: "0.5rem", display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "1.1rem" }}>
-                                <span style={{ color: "var(--accent-emerald)", fontFamily: "var(--font-mono)" }}>D1</span> Question Stormer
-                            </h3>
-                            <p style={{ fontSize: "0.9rem", color: "var(--text-muted)", lineHeight: 1.6 }}>Challenge your assumptions. Start with context-aware prompts in any domain and let the engine fire back counter-intuitive follow-ups to break mental blocks before you lock in a strategy.</p>
+                    <div style={{ display: "flex", gap: "2rem", flexWrap: "wrap", alignItems: "stretch", width: "100%", maxWidth: "1400px" }}>
+                        <div style={{ flex: "1 1 min(100%, 700px)", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 280px), 1fr))", gap: "1.5rem" }}>
+                            <div className="hover-card" style={{ ...cardStyle, borderTop: "3px solid var(--accent-emerald)" }} onClick={() => openApp('D1')}>
+                                <h3 style={{ color: "var(--text-main)", marginBottom: "0.5rem", display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "1.1rem" }}>
+                                    <span style={{ color: "var(--accent-emerald)", fontFamily: "var(--font-mono)" }}>D1</span> Question Stormer
+                                </h3>
+                                <p style={{ fontSize: "0.9rem", color: "var(--text-muted)", lineHeight: 1.6 }}>Challenge your assumptions. Start with context-aware prompts in any domain and let the engine fire back counter-intuitive follow-ups to break mental blocks before you lock in a strategy.</p>
+                            </div>
+
+                            <div className="hover-card" style={{ ...cardStyle, borderTop: "3px solid var(--accent-cyan)" }} onClick={() => openApp('D2')}>
+                                <h3 style={{ color: "var(--text-main)", marginBottom: "0.5rem", display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "1.1rem" }}>
+                                    <span style={{ color: "var(--accent-cyan)", fontFamily: "var(--font-mono)" }}>D2</span> Wayfinder
+                                </h3>
+                                <p style={{ fontSize: "0.9rem", color: "var(--text-muted)", lineHeight: 1.6 }}>Visualize the broader ecosystem. This interactive force-directed map connects you to governing bodies, cross-sector stakeholders, and critical regulations to safely navigate the charity sector.</p>
+                            </div>
+
+                            <div className="hover-card" style={{ ...cardStyle, borderTop: "3px solid #f59e0b" }} onClick={() => openApp('D3')}>
+                                <h3 style={{ color: "var(--text-main)", marginBottom: "0.5rem", display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "1.1rem" }}>
+                                    <span style={{ color: "#f59e0b", fontFamily: "var(--font-mono)" }}>D3</span> Survey
+                                </h3>
+                                <p style={{ fontSize: "0.9rem", color: "var(--text-muted)", lineHeight: 1.6 }}>Take the pulse of your stakeholders. Automatically generate 6-question targeted surveys for any specific pillar and instantly dispatch them via WhatsApp for highly-responsive feedback.</p>
+                            </div>
+
+                            <div className="hover-card" style={{ ...cardStyle, borderTop: "3px solid var(--accent-purple)" }} onClick={() => openApp('D4')}>
+                                <h3 style={{ color: "var(--text-main)", marginBottom: "0.5rem", display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "1.1rem" }}>
+                                    <span style={{ color: "var(--accent-purple)", fontFamily: "var(--font-mono)" }}>D4</span> Analyzer
+                                </h3>
+                                <p style={{ fontSize: "0.9rem", color: "var(--text-muted)", lineHeight: 1.6 }}>Synthesize the noise. Cross-pollinate inputs from multiple silos (e.g., HR + Finance + Strategy) to auto-generate unique prompts that uncover hidden thematic vulnerabilities and opportunities.</p>
+                            </div>
                         </div>
 
-                        <div className="hover-card" style={{ ...cardStyle, borderTop: "3px solid var(--accent-cyan)" }} onClick={() => openApp('D2')}>
-                            <h3 style={{ color: "var(--text-main)", marginBottom: "0.5rem", display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "1.1rem" }}>
-                                <span style={{ color: "var(--accent-cyan)", fontFamily: "var(--font-mono)" }}>D2</span> Wayfinder
-                            </h3>
-                            <p style={{ fontSize: "0.9rem", color: "var(--text-muted)", lineHeight: 1.6 }}>Visualize the broader ecosystem. This interactive force-directed map connects you to governing bodies, cross-sector stakeholders, and critical regulations to safely navigate the charity sector.</p>
-                        </div>
-
-                        <div className="hover-card" style={{ ...cardStyle, borderTop: "3px solid #f59e0b" }} onClick={() => openApp('D3')}>
-                            <h3 style={{ color: "var(--text-main)", marginBottom: "0.5rem", display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "1.1rem" }}>
-                                <span style={{ color: "#f59e0b", fontFamily: "var(--font-mono)" }}>D3</span> Survey
-                            </h3>
-                            <p style={{ fontSize: "0.9rem", color: "var(--text-muted)", lineHeight: 1.6 }}>Take the pulse of your stakeholders. Automatically generate 6-question targeted surveys for any specific pillar and instantly dispatch them via WhatsApp for highly-responsive feedback.</p>
-                        </div>
-
-                        <div className="hover-card" style={{ ...cardStyle, borderTop: "3px solid var(--accent-purple)" }} onClick={() => openApp('D4')}>
-                            <h3 style={{ color: "var(--text-main)", marginBottom: "0.5rem", display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "1.1rem" }}>
-                                <span style={{ color: "var(--accent-purple)", fontFamily: "var(--font-mono)" }}>D4</span> Analyzer
-                            </h3>
-                            <p style={{ fontSize: "0.9rem", color: "var(--text-muted)", lineHeight: 1.6 }}>Synthesize the noise. Cross-pollinate inputs from multiple silos (e.g., HR + Finance + Strategy) to auto-generate unique prompts that uncover hidden thematic vulnerabilities and opportunities.</p>
+                        <div style={{ flex: "1 1 300px", minWidth: "300px", maxWidth: "450px" }}>
+                            <NewsFeed />
                         </div>
                     </div>
                 </div>
