@@ -254,13 +254,15 @@ body {
 }
 
 .text-dock-btn {
-    width: auto;
+    width: auto !important;
+    min-width: max-content;
     padding: 0 1.25rem;
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     font-family: var(--font-mono);
     font-weight: 600;
     letter-spacing: 0.05em;
-    white-space: nowrap;
+    white-space: nowrap !important;
+    flex-shrink: 0;
 }
 
 .dock-btn i {
