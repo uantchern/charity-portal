@@ -716,6 +716,100 @@
             );
         };
 
+        const A1ServiceDelivery = () => {
+            const { setActivePage } = useContext(AppContext);
+
+            useEffect(() => {
+                setActivePage("A1 Service Delivery");
+            }, [setActivePage]);
+
+            const frameworks = [
+                {
+                    id: "purpose",
+                    title: "Purpose & Mission",
+                    icon: <Target size={24} />,
+                    color: "var(--accent-emerald)",
+                    description: "The fundamental 'Why'. This defines your organisation's core existence beyond just delivering services, providing a guiding north star.",
+                    sectorContext: "A well-defined purpose aligns stakeholders, inspires volunteers, and sets crucial boundaries for what the charity will and will not do in a crowded ecosystem."
+                },
+                {
+                    id: "toc",
+                    title: "Theory of Change (TOC)",
+                    icon: <Layers size={24} />,
+                    color: "var(--accent-cyan)",
+                    description: "The 'How'. A logical roadmap that illustrates how and why a desired change is expected to happen in a particular context.",
+                    sectorContext: "TOC maps the causal links between Inputs, Activities, Outputs, Outcomes, and Impacts. It is essential for strategic planning and demonstrating social value to funders."
+                },
+                {
+                    id: "sef",
+                    title: "Sector Evaluation Framework (SEF)",
+                    icon: <BarChart2 size={24} />,
+                    color: "#f59e0b",
+                    description: "The 'Measurement'. Developed by NCSS, SEF establishes a common language for measuring outcomes and impact across the social service sector.",
+                    sectorContext: "It recommends standardised, validated outcome metrics for common programmes. It monitors Quality of Life (QOL) for service users, ensuring high-quality interventions and aiding landscape planning."
+                },
+                {
+                    id: "impact",
+                    title: "Social Impact",
+                    icon: <Users size={24} />,
+                    color: "var(--accent-purple)",
+                    description: "The 'Result'. The ultimate, long-term, or systemic change brought about by the charity's interventions.",
+                    sectorContext: "Impact involves moving beyond simply measuring 'activities done' (outputs) to understanding the sustained change in beneficiaries' lives or societal structures, driven by the TOC and measured via SEF."
+                }
+            ];
+
+            return (
+                <div className="fade-in" style={{ paddingBottom: "2rem", height: "100%", overflowY: "auto", paddingRight: "10px" }}>
+                    <div style={{ marginBottom: "2.5rem" }}>
+                        <h1 style={{ fontSize: "2.2rem", fontWeight: 800, marginBottom: "0.75rem", color: "var(--text-main)" }}>A1 Service Delivery</h1>
+                        <p style={{ color: "var(--text-muted)", fontSize: "1.05rem", maxWidth: "800px", lineHeight: 1.6 }}>
+                            Service Delivery is the heartbeat of a charity. To be effective, it must be anchored in four interrelated strategic foundations. Review the industry standard frameworks below to align your delivery model.
+                        </p>
+                    </div>
+
+                    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "1.5rem" }}>
+                        {frameworks.map((fw) => (
+                            <div key={fw.id} style={{
+                                background: "rgba(255,255,255,0.03)",
+                                borderRadius: "16px",
+                                border: "1px solid var(--border-color)",
+                                borderTop: `4px solid ${fw.color}`,
+                                padding: "1.5rem",
+                                display: "flex",
+                                flexDirection: "column",
+                                gap: "1rem",
+                                transition: "var(--transition-smooth)"
+                            }} className="system-card">
+                                <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+                                    <div style={{ color: fw.color, background: "rgba(0,0,0,0.3)", padding: "0.75rem", borderRadius: "12px", border: "1px solid rgba(255,255,255,0.05)" }}>
+                                        {fw.icon}
+                                    </div>
+                                    <h3 style={{ color: "var(--text-main)", fontSize: "1.2rem", fontWeight: 700 }}>
+                                        {fw.title}
+                                    </h3>
+                                </div>
+                                <p style={{ color: "var(--text-main)", fontSize: "0.95rem", lineHeight: 1.6, fontWeight: 500, minHeight: "80px" }}>
+                                    {fw.description}
+                                </p>
+                                <div style={{
+                                    background: "rgba(0,0,0,0.2)",
+                                    padding: "1rem",
+                                    borderRadius: "8px",
+                                    borderLeft: `2px solid ${fw.color}`,
+                                    marginTop: "auto"
+                                }}>
+                                    <h4 style={{ color: "var(--text-muted)", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: "0.5rem" }}>Sector Context</h4>
+                                    <p style={{ color: "var(--text-muted)", fontSize: "0.85rem", lineHeight: 1.5 }}>
+                                        {fw.sectorContext}
+                                    </p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            );
+        };
+
         const DashboardHome = () => {
             const { setActivePage } = useContext(AppContext);
 
@@ -786,7 +880,9 @@
                                         <Route
                                             key={item.id}
                                             path={item.path}
-                                            element={<PlaceholderView title={item.label} pillarName={pillar.title} />}
+                                            element={
+                                                item.id === "A1" ? <A1ServiceDelivery /> : <PlaceholderView title={item.label} pillarName={pillar.title} />
+                                            }
                                         />
                                     ))
                                 )}
