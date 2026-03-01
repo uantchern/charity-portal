@@ -559,7 +559,11 @@
                                     <h3 style={{ color: "var(--accent-cyan)" }}>
                                         {appData.label}
                                     </h3>
-                                    <div className="drawer-subtitle">Complementary Application Plugin</div>
+                                    {appData.id === 'D2' && (
+                                        <div className="drawer-subtitle">
+                                            "You don’t pick the path because of the destination; you discover the destination because of the path."
+                                        </div>
+                                    )}
                                 </div>
                                 <button className="close-btn" onClick={closeDrawer}>
                                     <X size={20} />
