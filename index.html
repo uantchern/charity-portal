@@ -962,136 +962,174 @@
                 setActivePage("C1 Governance Evaluation Checklist (GEC)");
             }, [setActivePage]);
 
-            const [complianceState, setComplianceState] = useState({});
+            const [selectedTier, setSelectedTier] = useState(1);
 
-            const toggleCompliance = (id) => {
-                setComplianceState(prev => ({
+            // Store compliance stats as an object keyed by tier and then by principle id
+            const [complianceStats, setComplianceStats] = useState({
+                1: { p1: 0, p2: 0, p3: 0, p4: 0, p5: 0, p6: 0 },
+                2: { p1: 0, p2: 0, p3: 0, p4: 0, p5: 0, p6: 0 }
+            });
+
+            const principles = [
+                { id: "p1", name: "Principle 1", desc: "The charity serves its mission and achieves its objectives.", tier1: 3, tier2: 4 },
+                { id: "p2", name: "Principle 2", desc: "The charity has an effective Board and Management.", tier1: 8, tier2: 10 },
+                { id: "p3", name: "Principle 3", desc: "The charity acts responsibly, fairly and with integrity.", tier1: 6, tier2: 6 },
+                { id: "p4", name: "Principle 4", desc: "The charity is well-managed and plans for the future.", tier1: 4, tier2: 7 },
+                { id: "p5", name: "Principle 5", desc: "The charity is accountable and transparent.", tier1: 7, tier2: 8 },
+                { id: "p6", name: "Principle 6", desc: "The charity communicates actively to instill public confidence.", tier1: 2, tier2: 3 }
+            ];
+
+            const currentStats = complianceStats[selectedTier];
+
+            const handleUpdate = (id, delta) => {
+                const p = principles.find(x => x.id === id);
+                const max = selectedTier === 1 ? p.tier1 : p.tier2;
+                const current = currentStats[id];
+                let newVal = current + delta;
+                if (newVal < 0) newVal = 0;
+                if (newVal > max) newVal = max;
+
+                setComplianceStats(prev => ({
                     ...prev,
-                    [id]: !prev[id]
+                    [selectedTier]: {
+                        ...prev[selectedTier],
+                        [id]: newVal
+                    }
                 }));
             };
 
-            const checklistCategories = [
-                {
-                    title: "Board Governance",
-                    items: [
-                        { id: "bg1", text: "Are there documented terms of reference for the Board and each of its committees?" },
-                        { id: "bg2", text: "Are governing board members submitting themselves for re-nomination and re-appointment at least once every 3 years?" },
-                        { id: "bg3", text: "Does the Board conduct a self-evaluation to assess its performance and effectiveness?" }
-                    ]
-                },
-                {
-                    title: "Conflict of Interest",
-                    items: [
-                        { id: "coi1", text: "Are there documented procedures for board members and staff to declare actual or potential conflicts of interest?" },
-                        { id: "coi2", text: "Do board members abstain from voting or participating in decision-making on matters where they have a conflict of interest?" }
-                    ]
-                },
-                {
-                    title: "Human Resources",
-                    items: [
-                        { id: "hr1", text: "Has the Board approved documented human resource policies for staff?" },
-                        { id: "hr2", text: "Is there a documented Code of Conduct for governing board members, staff, and volunteers?" }
-                    ]
-                },
-                {
-                    title: "Financial Management and Controls",
-                    items: [
-                        { id: "fin1", text: "Does the Board approve an annual budget and regularly monitor the charity's expenditure?" },
-                        { id: "fin2", text: "Does the Board review the charity's internal controls, processes, key programs, and events regularly?" }
-                    ]
-                },
-                {
-                    title: "Transparency and Disclosure",
-                    items: [
-                        { id: "td1", text: "Is the exact remuneration and benefits received by each governing board member disclosed?" },
-                        { id: "td2", text: "Are all donations in kind properly recorded and accounted for?" }
-                    ]
-                }
-            ];
+            const totalMax = principles.reduce((sum, p) => sum + (selectedTier === 1 ? p.tier1 : p.tier2), 0);
+            const totalCompliant = principles.reduce((sum, p) => sum + currentStats[p.id], 0);
+            const percentage = Math.round((totalCompliant / totalMax) * 100) || 0;
 
             return (
                 <div className="fade-in" style={{ paddingBottom: "2rem", height: "100%", overflowY: "auto", paddingRight: "10px" }}>
-                    <style>
-                        {`
-                        @keyframes blinkRed {
-                            0% { background-color: rgba(220, 38, 38, 0.2); border-color: rgba(220, 38, 38, 0.4); color: #f87171; box-shadow: 0 0 0px rgba(220, 38, 38, 0); }
-                            50% { background-color: rgba(220, 38, 38, 0.4); border-color: rgba(220, 38, 38, 0.8); color: #fca5a5; box-shadow: 0 0 10px rgba(220, 38, 38, 0.6); }
-                            100% { background-color: rgba(220, 38, 38, 0.2); border-color: rgba(220, 38, 38, 0.4); color: #f87171; box-shadow: 0 0 0px rgba(220, 38, 38, 0); }
-                        }
-                        .btn-not-comply {
-                            animation: blinkRed 1.5s infinite;
-                            padding: 0.5rem 1rem;
-                            border-radius: 6px;
-                            font-size: 0.85rem;
-                            font-weight: 700;
-                            border: 1px solid transparent;
-                            cursor: pointer;
-                            transition: all 0.2s ease;
-                            width: 130px;
-                            text-align: center;
-                        }
-                        .btn-comply {
-                            background-color: rgba(16, 185, 129, 0.2);
-                            border: 1px solid rgba(16, 185, 129, 0.6);
-                            color: var(--accent-emerald);
-                            padding: 0.5rem 1rem;
-                            border-radius: 6px;
-                            font-size: 0.85rem;
-                            font-weight: 700;
-                            cursor: pointer;
-                            transition: all 0.2s ease;
-                            width: 130px;
-                            text-align: center;
-                        }
-                        .btn-comply:hover {
-                            background-color: rgba(16, 185, 129, 0.3);
-                        }
-                        `}
-                    </style>
-
                     <div style={{ marginBottom: "2.5rem" }}>
                         <h1 style={{ fontSize: "2.2rem", fontWeight: 800, marginBottom: "0.75rem", color: "var(--text-main)", display: "flex", alignItems: "center", gap: "1rem" }}>
                             <Shield size={32} color="var(--accent-purple)" />
-                            Governance Evaluation Checklist (GEC)
+                            GOVERNANCE EVALUATION CHECKLIST (GEC)
                         </h1>
                         <p style={{ color: "var(--text-muted)", fontSize: "1.05rem", maxWidth: "800px", lineHeight: 1.6 }}>
-                            A mandatory annual review evaluating adherence to the Code of Governance for Charities. Review your compliance status below across all key operational pillars.
+                            Select your charity's tier to determine the relevant GEC guidelines, and track your compliance progress across the 6 core principles.
                         </p>
                     </div>
 
-                    <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
-                        {checklistCategories.map((cat, idx) => (
-                            <div key={idx} style={{ background: "rgba(255,255,255,0.03)", borderRadius: "12px", border: "1px solid var(--border-color)", overflow: "hidden" }}>
-                                <div style={{ background: "rgba(0,0,0,0.3)", padding: "1rem 1.5rem", borderBottom: "1px solid var(--border-color)" }}>
-                                    <h3 style={{ color: "var(--accent-purple)", fontSize: "1.1rem", fontWeight: 600 }}>{cat.title}</h3>
-                                </div>
-                                <div style={{ display: "flex", flexDirection: "column" }}>
-                                    {cat.items.map((item, itemIdx) => {
-                                        const isCompliant = complianceState[item.id] || false;
-                                        return (
-                                            <div key={item.id} style={{
-                                                display: "flex",
-                                                justifyContent: "space-between",
-                                                alignItems: "center",
-                                                gap: "2rem",
-                                                padding: "1.25rem 1.5rem",
-                                                borderBottom: itemIdx < cat.items.length - 1 ? "1px solid rgba(255,255,255,0.05)" : "none",
-                                                background: isCompliant ? "rgba(16, 185, 129, 0.02)" : "transparent"
-                                            }}>
-                                                <p style={{ color: "var(--text-main)", fontSize: "0.95rem", lineHeight: 1.5, flex: 1 }}>{item.text}</p>
-                                                <button
-                                                    onClick={() => toggleCompliance(item.id)}
-                                                    className={isCompliant ? "btn-comply" : "btn-not-comply"}
-                                                >
-                                                    {isCompliant ? "COMPLY" : "NOT COMPLY"}
-                                                </button>
-                                            </div>
-                                        );
-                                    })}
-                                </div>
+                    {/* Tier Selector */}
+                    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1.5rem", marginBottom: "2.5rem" }}>
+                        <div
+                            onClick={() => setSelectedTier(1)}
+                            style={{
+                                background: selectedTier === 1 ? "rgba(56, 189, 248, 0.15)" : "rgba(255,255,255,0.03)",
+                                border: selectedTier === 1 ? "2px solid var(--accent-cyan)" : "1px solid var(--border-color)",
+                                borderRadius: "12px",
+                                padding: "1.5rem",
+                                cursor: "pointer",
+                                transition: "all 0.2s ease",
+                                textAlign: "center"
+                            }}
+                        >
+                            <div style={{ background: selectedTier === 1 ? "var(--accent-cyan)" : "rgba(255,255,255,0.1)", color: selectedTier === 1 ? "#000" : "white", display: "inline-block", padding: "0.4rem 1.5rem", borderRadius: "20px", fontWeight: "bold", marginBottom: "1rem", fontSize: "0.95rem" }}>TIER 1</div>
+                            <h3 style={{ color: selectedTier === 1 ? "var(--accent-cyan)" : "var(--text-main)", fontSize: "1.1rem", marginBottom: "0.25rem" }}>Small and Medium</h3>
+                            <p style={{ color: "var(--text-muted)", fontSize: "0.95rem", margin: 0 }}>Non-IPC Charities</p>
+                        </div>
+
+                        <div
+                            onClick={() => setSelectedTier(2)}
+                            style={{
+                                background: selectedTier === 2 ? "rgba(56, 189, 248, 0.15)" : "rgba(255,255,255,0.03)",
+                                border: selectedTier === 2 ? "2px solid var(--accent-cyan)" : "1px solid var(--border-color)",
+                                borderRadius: "12px",
+                                padding: "1.5rem",
+                                cursor: "pointer",
+                                transition: "all 0.2s ease",
+                                textAlign: "center"
+                            }}
+                        >
+                            <div style={{ background: selectedTier === 2 ? "var(--accent-cyan)" : "rgba(255,255,255,0.1)", color: selectedTier === 2 ? "#000" : "white", display: "inline-block", padding: "0.4rem 1.5rem", borderRadius: "20px", fontWeight: "bold", marginBottom: "1rem", fontSize: "0.95rem" }}>TIER 2</div>
+                            <h3 style={{ color: selectedTier === 2 ? "var(--accent-cyan)" : "var(--text-main)", fontSize: "1.1rem", marginBottom: "0.25rem" }}>(i) All IPCs</h3>
+                            <p style={{ color: "var(--text-muted)", fontSize: "0.95rem", margin: 0 }}>(ii) Large Non-IPC Charities</p>
+                        </div>
+                    </div>
+
+                    {/* Total Compliance Gauge */}
+                    <div style={{ background: "rgba(0,0,0,0.2)", borderRadius: "12px", padding: "1.5rem", marginBottom: "2.5rem", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "1.5rem", border: "1px solid rgba(56, 189, 248, 0.3)" }}>
+                        <div>
+                            <h2 style={{ color: "var(--accent-cyan)", margin: 0, fontSize: "1.4rem" }}>Compliance Progress for Tier {selectedTier}</h2>
+                            <p style={{ color: "var(--text-muted)", margin: "0.5rem 0 0 0", fontSize: "0.95rem" }}>Ensure all required guidelines are met for submission.</p>
+                        </div>
+                        <div style={{ textAlign: "right" }}>
+                            <div style={{ fontSize: "2.8rem", fontWeight: "800", color: percentage === 100 ? "var(--accent-emerald)" : "var(--accent-cyan)", fontFamily: "var(--font-mono)", lineHeight: 1 }}>
+                                {percentage}%
                             </div>
-                        ))}
+                            <div style={{ color: "var(--text-muted)", fontSize: "0.95rem", marginTop: "0.25rem" }}>{totalCompliant} of {totalMax} Guidelines Met</div>
+                        </div>
+                    </div>
+
+                    {/* Principles Interactive Section */}
+                    <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+                        <div style={{ display: "flex", background: "rgba(0,0,0,0.4)", padding: "1rem 1.5rem", borderRadius: "8px", borderBottom: "1px solid var(--border-color)", fontWeight: "bold", color: "var(--accent-purple)", fontSize: "0.95rem" }}>
+                            <div style={{ flex: 1 }}>PRINCIPLES</div>
+                            <div style={{ width: "220px", textAlign: "center", display: "none", '@media (min-width: 600px)': { display: "block" } }}>GEC GUIDELINE TRACKER</div>
+                        </div>
+
+                        {principles.map(p => {
+                            const max = selectedTier === 1 ? p.tier1 : p.tier2;
+                            const val = currentStats[p.id];
+                            const isFull = val === max;
+
+                            return (
+                                <div key={p.id} style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    flexWrap: "wrap",
+                                    gap: "1.5rem",
+                                    background: isFull ? "rgba(16, 185, 129, 0.05)" : "rgba(255,255,255,0.03)",
+                                    border: isFull ? "1px solid rgba(16, 185, 129, 0.3)" : "1px solid var(--border-color)",
+                                    padding: "1.5rem",
+                                    borderRadius: "12px",
+                                    transition: "all 0.3s ease"
+                                }}>
+                                    <div style={{ flex: "1 1 min(100%, 400px)" }}>
+                                        <h3 style={{ color: "var(--text-main)", fontSize: "1.05rem", marginBottom: "0.4rem", lineHeight: 1.5 }}>
+                                            <strong style={{ color: isFull ? "var(--accent-emerald)" : "var(--text-main)", transition: "color 0.3s" }}>{p.name}:</strong> {p.desc}
+                                        </h3>
+                                    </div>
+
+                                    <div style={{ flex: "0 0 auto", width: "100%", maxWidth: "220px", margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "center", gap: "1rem" }}>
+                                        <button
+                                            onClick={() => handleUpdate(p.id, -1)}
+                                            disabled={val === 0}
+                                            style={{
+                                                background: "rgba(255,255,255,0.1)", border: "none", color: "white", width: "40px", height: "40px", borderRadius: "50%", cursor: val === 0 ? "not-allowed" : "pointer", opacity: val === 0 ? 0.3 : 1, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.5rem", transition: "all 0.2s"
+                                            }}
+                                        >−</button>
+
+                                        <div style={{
+                                            background: isFull ? "var(--accent-emerald)" : "#f59e0b", /* Orange circle from PDF */
+                                            color: isFull ? "#000" : "#fff",
+                                            width: "70px", height: "70px",
+                                            borderRadius: "50%",
+                                            display: "flex", flexDirection: "column",
+                                            alignItems: "center", justifyContent: "center",
+                                            fontWeight: "bold",
+                                            boxShadow: isFull ? "0 0 20px rgba(16, 185, 129, 0.3)" : "0 0 15px rgba(245, 158, 11, 0.3)",
+                                            transition: "all 0.3s"
+                                        }}>
+                                            <span style={{ fontSize: "1.6rem", lineHeight: 1 }}>{val}</span>
+                                            <span style={{ fontSize: "0.75rem", opacity: 0.8 }}>of {max}</span>
+                                        </div>
+
+                                        <button
+                                            onClick={() => handleUpdate(p.id, 1)}
+                                            disabled={isFull}
+                                            style={{
+                                                background: "rgba(255,255,255,0.1)", border: "none", color: "white", width: "40px", height: "40px", borderRadius: "50%", cursor: isFull ? "not-allowed" : "pointer", opacity: isFull ? 0.3 : 1, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.5rem", transition: "all 0.2s"
+                                            }}
+                                        >+</button>
+                                    </div>
+                                </div>
+                            );
+                        })}
                     </div>
                 </div>
             );
