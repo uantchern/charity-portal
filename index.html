@@ -128,7 +128,7 @@
                     title: "B Operations",
                     icon: <Settings size={20} />,
                     items: [
-                        { id: "B1", path: "/b1", label: "B1 Finance & Grants", description: "Manage financial sustainability. Track core funding, project grants, budgets, and financial reporting compliance to ensure long-term viability." },
+                        { id: "B1", path: "/b1", label: "B1 Financial Sustainability", description: "Manage financial sustainability. Track core funding, project grants, budgets, and financial reporting compliance to ensure long-term viability." },
                         { id: "B2", path: "/b2", label: "B2 Fund Raising", description: "Cultivate donor relationships and manage fundraising campaigns. Track donor retention, campaign ROI, and adherence to fundraising regulations." },
                         { id: "B3", path: "/b3", label: "B3 Volunteer Management", description: "Attract, retain, and develop volunteers. Manage recruitment, training, scheduling, and volunteer impact measurement." },
                         { id: "B4", path: "/b4", label: "B4 Marketing & Communications", description: "Amplify your charity's voice. Manage public relations, social media, campaign reach, and brand reputation to drive awareness and engagement." },
@@ -484,7 +484,7 @@
                 { code: "A3", label: "Outputs" },
                 { code: "A4", label: "Outcomes" },
                 { code: "A5", label: "Impact" },
-                { code: "B1", label: "Finance & Grants" },
+                { code: "B1", label: "Financial Sustainability" },
                 { code: "B2", label: "Fund Raising" },
                 { code: "B3", label: "Volunteer Mgt" },
                 { code: "B4", label: "Marketing & Comms" },
@@ -1276,7 +1276,7 @@
 
         const B1Finance = () => {
             const { setActivePage } = useContext(AppContext);
-            useEffect(() => setActivePage("B1 Finance: 6-Month Simulator"), []);
+            useEffect(() => setActivePage("B1: Financial Sustainability"), []);
 
             // Sliders
             const [cashOnHand, setCashOnHand] = useState(500000);
@@ -1323,7 +1323,7 @@
                 <div className="analyzer-container fade-in" style={{ padding: "1.5rem", maxWidth: "800px", margin: "0 auto", paddingBottom: "4rem" }}>
                     <div style={{ marginBottom: "2rem" }}>
                         <h2 style={{ color: "var(--accent-cyan)", marginBottom: "0.5rem", fontSize: "1.8rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
-                            <Layers size={24} color="#38bdf8" /> B1: 6-Month Cash Flow Simulator
+                            <Layers size={24} color="#38bdf8" /> B1: Financial Sustainability
                         </h2>
                         <p style={{ color: "var(--text-muted)", fontSize: "1.05rem", lineHeight: "1.6" }}>
                             What's in the tank? How much is being pumped in? How fast is it leaking out?<br />

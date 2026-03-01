@@ -73,7 +73,7 @@ const NAVIGATION = {
             title: "Operations",
             icon: <Settings size={20} />,
             items: [
-                { id: "B1", path: "/b1", label: "Finance & Grants" },
+                { id: "B1", path: "/b1", label: "Financial Sustainability" },
                 { id: "B2", path: "/b2", label: "Fund Raising" },
                 { id: "B3", path: "/b3", label: "Volunteer Management" },
                 { id: "B4", path: "/b4", label: "Marketing & Communications" },
