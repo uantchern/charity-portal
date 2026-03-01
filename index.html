@@ -1486,10 +1486,95 @@
                     </h1>
 
                     <div style={{ marginBottom: "3rem" }}>
-                        <a href="https://charityops.org" target="_blank" rel="noopener noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", padding: "0.75rem 1.5rem", background: "rgba(6, 182, 212, 0.1)", border: "1px solid rgba(6, 182, 212, 0.3)", borderRadius: "8px", color: "var(--accent-cyan)", textDecoration: "none", fontWeight: "600", transition: "all 0.2s" }}>
+                        <button
+                            onClick={() => {
+                                const modal = document.createElement('div');
+                                modal.className = 'modal-overlay fade-in';
+                                modal.style.position = 'fixed';
+                                modal.style.top = '0';
+                                modal.style.left = '0';
+                                modal.style.width = '100vw';
+                                modal.style.height = '100vh';
+                                modal.style.background = 'rgba(0, 0, 0, 0.8)';
+                                modal.style.zIndex = '9999';
+                                modal.style.display = 'flex';
+                                modal.style.alignItems = 'center';
+                                modal.style.justifyContent = 'center';
+                                modal.style.padding = '2rem';
+
+                                const content = document.createElement('div');
+                                content.className = 'modal-content';
+                                content.style.background = 'var(--bg-panel)';
+                                content.style.border = '1px solid var(--border-color)';
+                                content.style.borderRadius = '12px';
+                                content.style.padding = '2rem';
+                                content.style.maxWidth = '800px';
+                                content.style.width = '100%';
+                                content.style.maxHeight = '90vh';
+                                content.style.overflowY = 'auto';
+                                content.style.position = 'relative';
+
+                                const closeBtn = document.createElement('button');
+                                closeBtn.innerHTML = '✕';
+                                closeBtn.style.position = 'absolute';
+                                closeBtn.style.top = '1rem';
+                                closeBtn.style.right = '1rem';
+                                closeBtn.style.background = 'none';
+                                closeBtn.style.border = 'none';
+                                closeBtn.style.color = 'var(--text-muted)';
+                                closeBtn.style.fontSize = '1.2rem';
+                                closeBtn.style.cursor = 'pointer';
+                                closeBtn.onclick = () => document.body.removeChild(modal);
+
+                                content.innerHTML = `
+                                    <h2 style="color: var(--accent-cyan); margin-bottom: 1.5rem; font-size: 1.8rem;">About GovernUp 2026</h2>
+                                    <div style="color: var(--text-main); font-size: 1.05rem; line-height: 1.7;">
+                                        <p style="margin-bottom: 1.5rem; font-size: 1.1rem; color: #fff;">
+                                            GovernUp 2026 is like having a Chief Operating Officer sitting in the boardroom with you. It doesn't just tell you what the policies are; it actively helps you challenge assumptions, visualize the environment, and confidently plan for the future.
+                                        </p>
+                                        
+                                        <p style="margin-bottom: 1rem;">
+                                            The platform organizes everything a charity does into three simple, logical buckets so leaders can easily manage the big picture:
+                                        </p>
+                                        
+                                        <ul style="list-style-type: none; padding-left: 0; margin-bottom: 1.5rem;">
+                                            <li style="margin-bottom: 0.75rem; padding-left: 1.5rem; position: relative;">
+                                                <span style="color: var(--accent-emerald); position: absolute; left: 0; font-weight: bold;">A.</span>
+                                                <strong>Purpose & Mission:</strong> Why do we exist? (Focuses on the charity's goals, vision, and social impact).
+                                            </li>
+                                            <li style="margin-bottom: 0.75rem; padding-left: 1.5rem; position: relative;">
+                                                <span style="color: var(--accent-cyan); position: absolute; left: 0; font-weight: bold;">B.</span>
+                                                <strong>Operations:</strong> How do we run things? (Focuses on the day-to-day management of staff, volunteers, fundraising, and programs).
+                                            </li>
+                                            <li style="margin-bottom: 0.75rem; padding-left: 1.5rem; position: relative;">
+                                                <span style="color: var(--accent-purple); position: absolute; left: 0; font-weight: bold;">C.</span>
+                                                <strong>Governance:</strong> How do we stay safe? (Focuses on compliance, strict rules, audits, and board oversight).
+                                            </li>
+                                        </ul>
+                                        
+                                        <div style="background: rgba(255, 255, 255, 0.03); padding: 1.25rem; border-radius: 8px; border-left: 4px solid #f59e0b;">
+                                            <strong style="color: #f59e0b; display: block; margin-bottom: 0.5rem; font-size: 1.1rem;">The New "Smart Tools"</strong>
+                                            The biggest upgrades in the 2026 version are the interactive tools (the D-Series) visible on the dashboard. These act like a digital consulting team built right into the software to help boards solve complex problems.
+                                        </div>
+                                    </div>
+                                `;
+
+                                content.appendChild(closeBtn);
+                                modal.appendChild(content);
+
+                                // Close on outside click
+                                modal.onclick = (e) => {
+                                    if (e.target === modal) document.body.removeChild(modal);
+                                };
+
+                                document.body.appendChild(modal);
+                            }}
+                            className="dock-btn text-dock-btn"
+                            style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", padding: "0.75rem 1.5rem", background: "rgba(6, 182, 212, 0.1)", border: "1px solid rgba(6, 182, 212, 0.3)", borderRadius: "8px", color: "var(--accent-cyan)", fontWeight: "600", cursor: "pointer", fontSize: "1rem" }}
+                        >
                             <Layers size={18} />
                             About GovernUp
-                        </a>
+                        </button>
                     </div>
 
                     <div style={{ display: "flex", gap: "2rem", flexWrap: "wrap", alignItems: "stretch", width: "100%", maxWidth: "1400px" }}>
