@@ -809,38 +809,48 @@
                 setActivePage("A1 Service Delivery");
             }, [setActivePage]);
 
+            const [tocData, setTocData] = useState({
+                problem: '',
+                audience: '',
+                inputs: '',
+                activities: '',
+                outputs: '',
+                outcomes: '',
+                impact: ''
+            });
+
+            const handleTocChange = (field, value) => {
+                setTocData(prev => ({ ...prev, [field]: value }));
+            };
+
             const frameworks = [
                 {
                     id: "purpose",
                     title: "Purpose & Mission",
                     icon: <Target size={24} />,
                     color: "var(--accent-emerald)",
-                    description: "The fundamental 'Why'. This defines your organisation's core existence beyond just delivering services, providing a guiding north star.",
-                    sectorContext: "A well-defined purpose aligns stakeholders, inspires volunteers, and sets crucial boundaries for what the charity will and will not do in a crowded ecosystem."
+                    description: "The fundamental 'Why'. This defines your organisation's core existence beyond just delivering services."
                 },
                 {
                     id: "toc",
-                    title: "Theory of Change (TOC)",
+                    title: "Theory of Change",
                     icon: <Layers size={24} />,
                     color: "var(--accent-cyan)",
-                    description: "The 'How'. A logical roadmap that illustrates how and why a desired change is expected to happen in a particular context.",
-                    sectorContext: "TOC maps the causal links between Inputs, Activities, Outputs, Outcomes, and Impacts. It is essential for strategic planning and demonstrating social value to funders."
+                    description: "The 'How'. A logical roadmap illustrating how desired change is expected to happen in a context."
                 },
                 {
                     id: "sef",
-                    title: "Sector Evaluation Framework (SEF)",
+                    title: "Sector Evaluation Framework",
                     icon: <BarChart2 size={24} />,
                     color: "#f59e0b",
-                    description: "The 'Measurement'. Developed by NCSS, SEF establishes a common language for measuring outcomes and impact across the social service sector.",
-                    sectorContext: "It recommends standardised, validated outcome metrics for common programmes. It monitors Quality of Life (QOL) for service users, ensuring high-quality interventions and aiding landscape planning."
+                    description: "Developed by NCSS, standardising outcome metrics for common programmes across the sector."
                 },
                 {
                     id: "impact",
                     title: "Social Impact",
                     icon: <Users size={24} />,
                     color: "var(--accent-purple)",
-                    description: "The 'Result'. The ultimate, long-term, or systemic change brought about by the charity's interventions.",
-                    sectorContext: "Impact involves moving beyond simply measuring 'activities done' (outputs) to understanding the sustained change in beneficiaries' lives or societal structures, driven by the TOC and measured via SEF."
+                    description: "The ultimate, long-term, or systemic change brought about by the charity's interventions."
                 }
             ];
 
@@ -849,48 +859,163 @@
                     <div style={{ marginBottom: "2.5rem" }}>
                         <h1 style={{ fontSize: "2.2rem", fontWeight: 800, marginBottom: "0.75rem", color: "var(--text-main)" }}>A1 Service Delivery</h1>
                         <p style={{ color: "var(--text-muted)", fontSize: "1.05rem", maxWidth: "800px", lineHeight: 1.6 }}>
-                            Service Delivery is the heartbeat of a charity. To be effective, it must be anchored in four interrelated strategic foundations. Review the industry standard frameworks below to align your delivery model.
+                            Service Delivery is the heartbeat of a charity. To be effective, it must be anchored in strategic foundations, measured correctly, and aligned with NCSS guidelines.
                         </p>
                     </div>
 
-                    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 280px), 1fr))", gap: "1.5rem" }}>
+                    <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "1rem", marginBottom: "3rem", overflowX: "auto", minWidth: "100%" }}>
                         {frameworks.map((fw) => (
                             <div key={fw.id} style={{
-                                background: "rgba(255,255,255,0.03)",
-                                borderRadius: "16px",
+                                background: "rgba(255,255,255,0.02)",
+                                borderRadius: "12px",
                                 border: "1px solid var(--border-color)",
-                                borderTop: `4px solid ${fw.color}`,
-                                padding: "1.5rem",
+                                borderTop: `3px solid ${fw.color}`,
+                                padding: "1.25rem",
+                                minWidth: "220px",
                                 display: "flex",
                                 flexDirection: "column",
-                                gap: "1rem",
-                                transition: "var(--transition-smooth)"
-                            }} className="system-card">
-                                <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-                                    <div style={{ color: fw.color, background: "rgba(0,0,0,0.3)", padding: "0.75rem", borderRadius: "12px", border: "1px solid rgba(255,255,255,0.05)" }}>
-                                        {fw.icon}
-                                    </div>
-                                    <h3 style={{ color: "var(--text-main)", fontSize: "1.2rem", fontWeight: 700 }}>
-                                        {fw.title}
-                                    </h3>
+                                gap: "0.75rem"
+                            }}>
+                                <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", color: fw.color }}>
+                                    {fw.icon}
+                                    <h3 style={{ color: "var(--text-main)", fontSize: "1.05rem", fontWeight: 700, margin: 0 }}>{fw.title}</h3>
                                 </div>
-                                <p style={{ color: "var(--text-main)", fontSize: "0.95rem", lineHeight: 1.6, fontWeight: 500, minHeight: "80px" }}>
+                                <p style={{ color: "var(--text-muted)", fontSize: "0.85rem", lineHeight: 1.5, margin: 0 }}>
                                     {fw.description}
                                 </p>
-                                <div style={{
-                                    background: "rgba(0,0,0,0.2)",
-                                    padding: "1rem",
-                                    borderRadius: "8px",
-                                    borderLeft: `2px solid ${fw.color}`,
-                                    marginTop: "auto"
-                                }}>
-                                    <h4 style={{ color: "var(--text-muted)", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: "0.5rem" }}>Sector Context</h4>
-                                    <p style={{ color: "var(--text-muted)", fontSize: "0.85rem", lineHeight: 1.5 }}>
-                                        {fw.sectorContext}
-                                    </p>
-                                </div>
                             </div>
                         ))}
+                    </div>
+
+                    <div style={{ background: "var(--bg-panel)", borderRadius: "12px", border: "1px solid var(--border-color)", padding: "2rem", boxShadow: "0 4px 20px rgba(0,0,0,0.1)" }}>
+                        <div style={{ marginBottom: "2rem", display: "flex", justifyContent: "space-between", alignItems: "flex-end", flexWrap: "wrap", gap: "1rem" }}>
+                            <div>
+                                <h2 style={{ fontSize: "1.8rem", color: "var(--accent-cyan)", marginBottom: "0.5rem", display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                                    <LayoutDashboard size={28} />
+                                    Theory of Change (TOC) Builder
+                                </h2>
+                                <p style={{ color: "var(--text-muted)", margin: 0, fontSize: "0.95rem" }}>
+                                    Draft your logic model in compliance with National Council of Social Service (NCSS) guidance.
+                                </p>
+                            </div>
+                            <button style={{ background: "var(--accent-cyan)", color: "#fff", border: "none", padding: "0.6rem 1.25rem", borderRadius: "8px", fontWeight: "bold", cursor: "pointer", transition: "all 0.2s" }} onMouseEnter={(e) => e.target.style.opacity = 0.9} onMouseLeave={(e) => e.target.style.opacity = 1}>
+                                Export to PDF
+                            </button>
+                        </div>
+
+                        {/* Foundation Row */}
+                        <div style={{ display: "grid", gridTemplateColumns: "minmax(300px, 1fr) minmax(300px, 1fr)", gap: "1.5rem", marginBottom: "2rem" }}>
+                            <div style={{ background: "rgba(255,255,255,0.02)", padding: "1.25rem", borderRadius: "12px", border: "1px solid rgba(255,255,255,0.05)" }}>
+                                <label style={{ display: "block", color: "var(--text-main)", marginBottom: "0.75rem", fontWeight: 600, fontSize: "1rem" }}>
+                                    1. Needs & Problem Statement
+                                </label>
+                                <textarea
+                                    value={tocData.problem}
+                                    onChange={(e) => handleTocChange('problem', e.target.value)}
+                                    placeholder="Describe the specific social issue, gap, or need your charity is addressing..."
+                                    style={{ width: "100%", height: "100px", padding: "0.75rem", borderRadius: "8px", background: "rgba(0,0,0,0.2)", border: "1px solid var(--border-color)", color: "var(--text-main)", resize: "none", outline: "none", transition: "border 0.2s" }}
+                                    onFocus={(e) => e.target.style.borderColor = "var(--accent-cyan)"}
+                                    onBlur={(e) => e.target.style.borderColor = "var(--border-color)"}
+                                />
+                            </div>
+                            <div style={{ background: "rgba(255,255,255,0.02)", padding: "1.25rem", borderRadius: "12px", border: "1px solid rgba(255,255,255,0.05)" }}>
+                                <label style={{ display: "block", color: "var(--text-main)", marginBottom: "0.75rem", fontWeight: 600, fontSize: "1rem" }}>
+                                    2. Target Audience
+                                </label>
+                                <textarea
+                                    value={tocData.audience}
+                                    onChange={(e) => handleTocChange('audience', e.target.value)}
+                                    placeholder="Who are the specific beneficiaries? Define their demographics, psychographics, or criteria..."
+                                    style={{ width: "100%", height: "100px", padding: "0.75rem", borderRadius: "8px", background: "rgba(0,0,0,0.2)", border: "1px solid var(--border-color)", color: "var(--text-main)", resize: "none", outline: "none", transition: "border 0.2s" }}
+                                    onFocus={(e) => e.target.style.borderColor = "var(--accent-cyan)"}
+                                    onBlur={(e) => e.target.style.borderColor = "var(--border-color)"}
+                                />
+                            </div>
+                        </div>
+
+                        {/* Logic Model Pipeline */}
+                        <div style={{ display: "flex", gap: "1rem", overflowX: "auto", paddingBottom: "1rem" }}>
+
+                            {/* Inputs */}
+                            <div style={{ flex: "1 0 200px", background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.05)", borderRadius: "12px", padding: "1.25rem", position: "relative" }}>
+                                <div style={{ borderBottom: "2px solid #64748b", paddingBottom: "0.5rem", marginBottom: "1rem" }}>
+                                    <div style={{ fontWeight: 700, color: "#94a3b8", fontSize: "0.85rem", textTransform: "uppercase", letterSpacing: "1px" }}>Inputs</div>
+                                    <div style={{ fontSize: "0.85rem", color: "var(--text-muted)", marginTop: "0.25rem" }}>Resources invested</div>
+                                </div>
+                                <textarea
+                                    value={tocData.inputs}
+                                    onChange={(e) => handleTocChange('inputs', e.target.value)}
+                                    placeholder="Funding, staff, volunteers, facilities, equipment, partnerships..."
+                                    style={{ width: "100%", height: "160px", padding: "0.75rem", borderRadius: "8px", background: "rgba(0,0,0,0.3)", border: "1px solid var(--border-color)", color: "var(--text-main)", resize: "none", fontSize: "0.9rem", outline: "none", transition: "border 0.2s" }}
+                                    onFocus={(e) => e.target.style.borderColor = "#64748b"}
+                                    onBlur={(e) => e.target.style.borderColor = "var(--border-color)"}
+                                />
+                            </div>
+
+                            {/* Activities */}
+                            <div style={{ flex: "1 0 200px", background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.05)", borderRadius: "12px", padding: "1.25rem", position: "relative" }}>
+                                <div style={{ borderBottom: "2px solid #3b82f6", paddingBottom: "0.5rem", marginBottom: "1rem" }}>
+                                    <div style={{ fontWeight: 700, color: "#60a5fa", fontSize: "0.85rem", textTransform: "uppercase", letterSpacing: "1px" }}>Activities</div>
+                                    <div style={{ fontSize: "0.85rem", color: "var(--text-muted)", marginTop: "0.25rem" }}>What we do</div>
+                                </div>
+                                <textarea
+                                    value={tocData.activities}
+                                    onChange={(e) => handleTocChange('activities', e.target.value)}
+                                    placeholder="Workshops, counseling sessions, events, training courses, outreach..."
+                                    style={{ width: "100%", height: "160px", padding: "0.75rem", borderRadius: "8px", background: "rgba(0,0,0,0.3)", border: "1px solid var(--border-color)", color: "var(--text-main)", resize: "none", fontSize: "0.9rem", outline: "none", transition: "border 0.2s" }}
+                                    onFocus={(e) => e.target.style.borderColor = "#3b82f6"}
+                                    onBlur={(e) => e.target.style.borderColor = "var(--border-color)"}
+                                />
+                            </div>
+
+                            {/* Outputs */}
+                            <div style={{ flex: "1 0 200px", background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.05)", borderRadius: "12px", padding: "1.25rem", position: "relative" }}>
+                                <div style={{ borderBottom: "2px solid var(--accent-emerald)", paddingBottom: "0.5rem", marginBottom: "1rem" }}>
+                                    <div style={{ fontWeight: 700, color: "var(--accent-emerald)", fontSize: "0.85rem", textTransform: "uppercase", letterSpacing: "1px" }}>Outputs</div>
+                                    <div style={{ fontSize: "0.85rem", color: "var(--text-muted)", marginTop: "0.25rem" }}>Direct products</div>
+                                </div>
+                                <textarea
+                                    value={tocData.outputs}
+                                    onChange={(e) => handleTocChange('outputs', e.target.value)}
+                                    placeholder="# of sessions conducted, # of attendees, materials distributed..."
+                                    style={{ width: "100%", height: "160px", padding: "0.75rem", borderRadius: "8px", background: "rgba(0,0,0,0.3)", border: "1px solid var(--border-color)", color: "var(--text-main)", resize: "none", fontSize: "0.9rem", outline: "none", transition: "border 0.2s" }}
+                                    onFocus={(e) => e.target.style.borderColor = "var(--accent-emerald)"}
+                                    onBlur={(e) => e.target.style.borderColor = "var(--border-color)"}
+                                />
+                            </div>
+
+                            {/* Outcomes */}
+                            <div style={{ flex: "1 0 200px", background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.05)", borderRadius: "12px", padding: "1.25rem", position: "relative" }}>
+                                <div style={{ borderBottom: "2px solid #f59e0b", paddingBottom: "0.5rem", marginBottom: "1rem" }}>
+                                    <div style={{ fontWeight: 700, color: "#fbbf24", fontSize: "0.85rem", textTransform: "uppercase", letterSpacing: "1px" }}>Outcomes</div>
+                                    <div style={{ fontSize: "0.85rem", color: "var(--text-muted)", marginTop: "0.25rem" }}>Changes achieved</div>
+                                </div>
+                                <textarea
+                                    value={tocData.outcomes}
+                                    onChange={(e) => handleTocChange('outcomes', e.target.value)}
+                                    placeholder="Short/medium term changes in knowledge, skills, behavior, or confidence..."
+                                    style={{ width: "100%", height: "160px", padding: "0.75rem", borderRadius: "8px", background: "rgba(0,0,0,0.3)", border: "1px solid var(--border-color)", color: "var(--text-main)", resize: "none", fontSize: "0.9rem", outline: "none", transition: "border 0.2s" }}
+                                    onFocus={(e) => e.target.style.borderColor = "#f59e0b"}
+                                    onBlur={(e) => e.target.style.borderColor = "var(--border-color)"}
+                                />
+                            </div>
+
+                            {/* Impact */}
+                            <div style={{ flex: "1 0 200px", background: "rgba(139, 92, 246, 0.05)", border: "1px solid rgba(139, 92, 246, 0.2)", borderRadius: "12px", padding: "1.25rem", position: "relative" }}>
+                                <div style={{ borderBottom: "2px solid var(--accent-purple)", paddingBottom: "0.5rem", marginBottom: "1rem" }}>
+                                    <div style={{ fontWeight: 700, color: "#a78bfa", fontSize: "0.85rem", textTransform: "uppercase", letterSpacing: "1px" }}>Impact</div>
+                                    <div style={{ fontSize: "0.85rem", color: "var(--text-muted)", marginTop: "0.25rem" }}>Long-term goal</div>
+                                </div>
+                                <textarea
+                                    value={tocData.impact}
+                                    onChange={(e) => handleTocChange('impact', e.target.value)}
+                                    placeholder="Systemic improvements, long-term sustained societal changes..."
+                                    style={{ width: "100%", height: "160px", padding: "0.75rem", borderRadius: "8px", background: "rgba(0,0,0,0.3)", border: "1px solid rgba(139, 92, 246, 0.3)", color: "var(--text-main)", resize: "none", fontSize: "0.9rem", outline: "none", transition: "border 0.2s" }}
+                                    onFocus={(e) => e.target.style.borderColor = "var(--accent-purple)"}
+                                    onBlur={(e) => e.target.style.borderColor = "rgba(139, 92, 246, 0.3)"}
+                                />
+                            </div>
+                        </div>
                     </div>
                 </div>
             );
