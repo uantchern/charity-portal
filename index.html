@@ -394,15 +394,39 @@
                         {questions.map((q, i) => (
                             <li key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "1rem" }}>
                                 <div style={{ display: "flex", gap: "0.5rem", width: "100%" }}>
-                                    <strong style={{ color: i < 3 ? "var(--accent-cyan)" : "var(--accent-emerald)" }}>
+                                    <strong style={{ color: i < 3 ? "var(--accent-cyan)" : "var(--accent-emerald)", whiteSpace: "nowrap", paddingTop: "0.4rem" }}>
                                         Q{i + 1}:
                                     </strong>
-                                    <span style={{ color: "var(--text-main)", flex: 1 }}>{q}</span>
+                                    <textarea
+                                        value={q}
+                                        onChange={(e) => {
+                                            const newQs = [...questions];
+                                            newQs[i] = e.target.value;
+                                            setQuestions(newQs);
+                                        }}
+                                        style={{
+                                            flex: 1,
+                                            background: "rgba(0,0,0,0.2)",
+                                            border: "1px solid rgba(255,255,255,0.05)",
+                                            borderRadius: "6px",
+                                            padding: "0.4rem 0.6rem",
+                                            color: "var(--text-main)",
+                                            outline: "none",
+                                            fontFamily: "inherit",
+                                            fontSize: "0.95rem",
+                                            resize: "vertical",
+                                            minHeight: "44px",
+                                            lineHeight: "1.4",
+                                            transition: "border-color 0.2s"
+                                        }}
+                                        onFocus={(e) => e.target.style.borderColor = "var(--accent-cyan)"}
+                                        onBlur={(e) => e.target.style.borderColor = "rgba(255,255,255,0.05)"}
+                                    />
                                 </div>
                                 {i >= 3 && (
                                     <button
                                         onClick={() => removeCustomQuestion(i)}
-                                        style={{ background: "rgba(244, 63, 94, 0.1)", border: "1px solid rgba(244, 63, 94, 0.3)", color: "#f43f5e", cursor: "pointer", padding: "4px", borderRadius: "4px" }}
+                                        style={{ background: "rgba(244, 63, 94, 0.1)", border: "1px solid rgba(244, 63, 94, 0.3)", color: "#f43f5e", cursor: "pointer", padding: "4px", borderRadius: "4px", marginTop: "0.4rem" }}
                                         title="Remove custom question"
                                     >
                                         <X size={14} />
