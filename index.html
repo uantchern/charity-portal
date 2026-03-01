@@ -964,43 +964,82 @@
 
             const [selectedTier, setSelectedTier] = useState(1);
 
-            // Store compliance stats as an object keyed by tier and then by principle id
-            const [complianceStats, setComplianceStats] = useState({
-                1: { p1: 0, p2: 0, p3: 0, p4: 0, p5: 0, p6: 0 },
-                2: { p1: 0, p2: 0, p3: 0, p4: 0, p5: 0, p6: 0 }
-            });
-
             const principles = [
-                { id: "p1", name: "Principle 1", desc: "The charity serves its mission and achieves its objectives.", tier1: 3, tier2: 4 },
-                { id: "p2", name: "Principle 2", desc: "The charity has an effective Board and Management.", tier1: 8, tier2: 10 },
-                { id: "p3", name: "Principle 3", desc: "The charity acts responsibly, fairly and with integrity.", tier1: 6, tier2: 6 },
-                { id: "p4", name: "Principle 4", desc: "The charity is well-managed and plans for the future.", tier1: 4, tier2: 7 },
-                { id: "p5", name: "Principle 5", desc: "The charity is accountable and transparent.", tier1: 7, tier2: 8 },
-                { id: "p6", name: "Principle 6", desc: "The charity communicates actively to instill public confidence.", tier1: 2, tier2: 3 }
+                { id: "p1", name: "Principle 1", desc: "The charity serves its mission and achieves its objectives." },
+                { id: "p2", name: "Principle 2", desc: "The charity has an effective Board and Management." },
+                { id: "p3", name: "Principle 3", desc: "The charity acts responsibly, fairly and with integrity." },
+                { id: "p4", name: "Principle 4", desc: "The charity is well-managed and plans for the future." },
+                { id: "p5", name: "Principle 5", desc: "The charity is accountable and transparent." },
+                { id: "p6", name: "Principle 6", desc: "The charity communicates actively to instill public confidence." }
             ];
 
-            const currentStats = complianceStats[selectedTier];
+            const gecGuidelines = [
+                // P1
+                { id: "1.1", p: "p1", t1: true, t2: true, text: "Clearly state the charitable purposes (for example, vision and mission, objectives, use of resources, activities, and so on) and include the objectives in the charity's governing instrument. Publish the stated charitable purposes on platforms (for example, Charity Portal, website, social media channels, and so on) that can be easily accessed by the public." },
+                { id: "1.2", p: "p1", t1: true, t2: true, text: "Develop and implement strategic plans to achieve the stated charitable purposes." },
+                { id: "1.3", p: "p1", t1: true, t2: true, text: "Have the Board review the charity's strategic plans regularly to ensure that the charity is achieving its charitable purposes, and monitor, evaluate and report the outcome and impact of its activities." },
+                { id: "1.4", p: "p1", t1: false, t2: true, text: "Ensure that the charity's activities are aligned with its charitable purposes on an ongoing basis." },
+                // P2
+                { id: "2.1", p: "p2", t1: true, t2: true, text: "The Board and Management are collectively responsible for achieving the charity's charitable purposes. The roles and responsibilities of the Board and Management should be clear and distinct." },
+                { id: "2.2", p: "p2", t1: true, t2: true, text: "Document the terms of reference for the Board and its committees." },
+                { id: "2.3", p: "p2", t1: true, t2: true, text: "Board members should serve a maximum of 10 consecutive years." },
+                { id: "2.4", p: "p2", t1: true, t2: true, text: "At least two-thirds of the Board comprises independent members." },
+                { id: "2.5", p: "p2", t1: true, t2: true, text: "Regular Board meetings are held, with a quorum of at least one-third." },
+                { id: "2.6", p: "p2", t1: true, t2: true, text: "Board members receive no remuneration for their Board services." },
+                { id: "2.7", p: "p2", t1: true, t2: true, text: "Conduct a regular self-evaluation to assess the Board's performance." },
+                { id: "2.8", p: "p2", t1: true, t2: true, text: "Nominating Committee oversees selection and appointment of new Board members." },
+                { id: "2.9", p: "p2", t1: false, t2: true, text: "Audit Committee oversees financial reporting and internal controls." },
+                { id: "2.10", p: "p2", t1: false, t2: true, text: "Risk Management Committee identifies and mitigates organizational risks." },
+                // P3
+                { id: "3.1", p: "p3", t1: true, t2: true, text: "Document procedures for Board members and staff to declare actual or potential conflicts of interest." },
+                { id: "3.2", p: "p3", t1: true, t2: true, text: "Conflicted parties abstain from decision-making and voting." },
+                { id: "3.3", p: "p3", t1: true, t2: true, text: "Maintain a Code of Conduct for Board members, staff, and volunteers." },
+                { id: "3.4", p: "p3", t1: true, t2: true, text: "Establish a whistle-blowing policy accessible to all stakeholders." },
+                { id: "3.5", p: "p3", t1: true, t2: true, text: "Comply with the Personal Data Protection Act (PDPA)." },
+                { id: "3.6", p: "p3", t1: true, t2: true, text: "Regularly review fundraising routines to maintain ethical standards." },
+                // P4
+                { id: "4.1", p: "p4", t1: true, t2: true, text: "Approve documented human resource policies for staff." },
+                { id: "4.2", p: "p4", t1: true, t2: true, text: "Implement a performance appraisal system for all paid staff." },
+                { id: "4.3", p: "p4", t1: true, t2: true, text: "Board approves annual budget and monitors expenditure." },
+                { id: "4.4", p: "p4", t1: true, t2: true, text: "Ensure adequate internal controls over financial and operational processes." },
+                { id: "4.5", p: "p4", t1: false, t2: true, text: "Documented investment policy if holding reserve funds." },
+                { id: "4.6", p: "p4", t1: false, t2: true, text: "Review IT security policies to safeguard data." },
+                { id: "4.7", p: "p4", t1: false, t2: true, text: "Business continuity plan (BCP) ensuring operational resilience." },
+                // P5
+                { id: "5.1", p: "p5", t1: true, t2: true, text: "Disclose top 3 highest-paid staff remuneration in bands of $100k." },
+                { id: "5.2", p: "p5", t1: true, t2: true, text: "Disclose if staff members are close family members of Board Members." },
+                { id: "5.3", p: "p5", t1: true, t2: true, text: "Donations in-kind are accurately recorded." },
+                { id: "5.4", p: "p5", t1: true, t2: true, text: "Maintain documented reserves policy and disclose reserves level." },
+                { id: "5.5", p: "p5", t1: true, t2: true, text: "Financial statements prepared according to Charities Accounting Standard." },
+                { id: "5.6", p: "p5", t1: true, t2: true, text: "Clean external audit report." },
+                { id: "5.7", p: "p5", t1: true, t2: true, text: "Submit Governance Evaluation Checklist (GEC) on time." },
+                { id: "5.8", p: "p5", t1: false, t2: true, text: "Engage internal auditor to review internal controls." },
+                // P6
+                { id: "6.1", p: "p6", t1: true, t2: true, text: "Regularly update stakeholders on progress." },
+                { id: "6.2", p: "p6", t1: true, t2: true, text: "Fundraising appeals clearly state purpose." },
+                { id: "6.3", p: "p6", t1: false, t2: true, text: "Publish corporate communications policy." }
+            ];
 
-            const handleUpdate = (id, delta) => {
-                const p = principles.find(x => x.id === id);
-                const max = selectedTier === 1 ? p.tier1 : p.tier2;
-                const current = currentStats[id];
-                let newVal = current + delta;
-                if (newVal < 0) newVal = 0;
-                if (newVal > max) newVal = max;
+            const [answers, setAnswers] = useState({});
+            const [explanations, setExplanations] = useState({});
 
-                setComplianceStats(prev => ({
-                    ...prev,
-                    [selectedTier]: {
-                        ...prev[selectedTier],
-                        [id]: newVal
-                    }
-                }));
+            const handleSetAnswer = (id, val) => {
+                setAnswers(prev => ({ ...prev, [id]: val }));
+                if (val === 'Yes') {
+                    // clear explanation if they change to yes
+                    setExplanations(prev => ({ ...prev, [id]: '' }));
+                }
             };
 
-            const totalMax = principles.reduce((sum, p) => sum + (selectedTier === 1 ? p.tier1 : p.tier2), 0);
-            const totalCompliant = principles.reduce((sum, p) => sum + currentStats[p.id], 0);
-            const percentage = Math.round((totalCompliant / totalMax) * 100) || 0;
+            const handleSetExplanation = (id, val) => {
+                setExplanations(prev => ({ ...prev, [id]: val }));
+            };
+
+            // Active items calculation
+            const activeItems = gecGuidelines.filter(item => selectedTier === 1 ? item.t1 : item.t2);
+            const totalItems = activeItems.length;
+            const completedItems = activeItems.filter(item => answers[item.id]).length;
+            const percentage = Math.round((completedItems / totalItems) * 100) || 0;
 
             return (
                 <div className="fade-in" style={{ paddingBottom: "2rem", height: "100%", overflowY: "auto", paddingRight: "10px" }}>
@@ -1010,7 +1049,7 @@
                             GOVERNANCE EVALUATION CHECKLIST (GEC)
                         </h1>
                         <p style={{ color: "var(--text-muted)", fontSize: "1.05rem", maxWidth: "800px", lineHeight: 1.6 }}>
-                            Select your charity's tier to determine the relevant GEC guidelines, and track your compliance progress across the 6 core principles.
+                            A mandatory organizational self-evaluation simulating the official MSF submission. Check off requirements progressively below.
                         </p>
                     </div>
 
@@ -1051,81 +1090,99 @@
                         </div>
                     </div>
 
-                    {/* Total Compliance Gauge */}
+                    {/* Progress Gauge */}
                     <div style={{ background: "rgba(0,0,0,0.2)", borderRadius: "12px", padding: "1.5rem", marginBottom: "2.5rem", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "1.5rem", border: "1px solid rgba(56, 189, 248, 0.3)" }}>
                         <div>
-                            <h2 style={{ color: "var(--accent-cyan)", margin: 0, fontSize: "1.4rem" }}>Compliance Progress for Tier {selectedTier}</h2>
-                            <p style={{ color: "var(--text-muted)", margin: "0.5rem 0 0 0", fontSize: "0.95rem" }}>Ensure all required guidelines are met for submission.</p>
+                            <h2 style={{ color: "var(--accent-cyan)", margin: 0, fontSize: "1.4rem" }}>Submission Readiness: Tier {selectedTier}</h2>
+                            <p style={{ color: "var(--text-muted)", margin: "0.5rem 0 0 0", fontSize: "0.95rem" }}>Complete all questions before submitting the final checklist.</p>
                         </div>
                         <div style={{ textAlign: "right" }}>
                             <div style={{ fontSize: "2.8rem", fontWeight: "800", color: percentage === 100 ? "var(--accent-emerald)" : "var(--accent-cyan)", fontFamily: "var(--font-mono)", lineHeight: 1 }}>
                                 {percentage}%
                             </div>
-                            <div style={{ color: "var(--text-muted)", fontSize: "0.95rem", marginTop: "0.25rem" }}>{totalCompliant} of {totalMax} Guidelines Met</div>
+                            <div style={{ color: "var(--text-muted)", fontSize: "0.95rem", marginTop: "0.25rem" }}>{completedItems} of {totalItems} Requirements Addressed</div>
                         </div>
                     </div>
 
-                    {/* Principles Interactive Section */}
-                    <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-                        <div style={{ display: "flex", background: "rgba(0,0,0,0.4)", padding: "1rem 1.5rem", borderRadius: "8px", borderBottom: "1px solid var(--border-color)", fontWeight: "bold", color: "var(--accent-purple)", fontSize: "0.95rem" }}>
-                            <div style={{ flex: 1 }}>PRINCIPLES</div>
-                            <div style={{ width: "220px", textAlign: "center", display: "none", '@media (min-width: 600px)': { display: "block" } }}>GEC GUIDELINE TRACKER</div>
-                        </div>
-
+                    {/* Full Checklist Base - Styled to mimic the PDF rendering closely */}
+                    <div style={{ display: "flex", flexDirection: "column", gap: "2.5rem", background: "white", padding: "2rem", borderRadius: "12px" }}>
                         {principles.map(p => {
-                            const max = selectedTier === 1 ? p.tier1 : p.tier2;
-                            const val = currentStats[p.id];
-                            const isFull = val === max;
+                            const items = gecGuidelines.filter(i => i.p === p.id && (selectedTier === 1 ? i.t1 : i.t2));
+                            if (items.length === 0) return null;
 
                             return (
-                                <div key={p.id} style={{
-                                    display: "flex",
-                                    alignItems: "center",
-                                    flexWrap: "wrap",
-                                    gap: "1.5rem",
-                                    background: isFull ? "rgba(16, 185, 129, 0.05)" : "rgba(255,255,255,0.03)",
-                                    border: isFull ? "1px solid rgba(16, 185, 129, 0.3)" : "1px solid var(--border-color)",
-                                    padding: "1.5rem",
-                                    borderRadius: "12px",
-                                    transition: "all 0.3s ease"
-                                }}>
-                                    <div style={{ flex: "1 1 min(100%, 400px)" }}>
-                                        <h3 style={{ color: "var(--text-main)", fontSize: "1.05rem", marginBottom: "0.4rem", lineHeight: 1.5 }}>
-                                            <strong style={{ color: isFull ? "var(--accent-emerald)" : "var(--text-main)", transition: "color 0.3s" }}>{p.name}:</strong> {p.desc}
-                                        </h3>
+                                <div key={p.id} style={{ borderRadius: "16px", overflow: "hidden", border: "4px solid #1c4b69", boxShadow: "0 8px 30px rgba(0,0,0,0.15)" }}>
+
+                                    {/* Principle Header (White Background, Document match) */}
+                                    <div style={{ background: "#ffffff", padding: "1.5rem", textAlign: "center", borderBottom: "4px solid #1c4b69" }}>
+                                        <h3 style={{ color: "#1c4b69", fontSize: "1.1rem", margin: "0 0 0.25rem 0", fontWeight: "bold" }}>{p.name}:</h3>
+                                        <p style={{ color: "#333", margin: 0, fontSize: "0.95rem" }}>{p.desc}</p>
                                     </div>
 
-                                    <div style={{ flex: "0 0 auto", width: "100%", maxWidth: "220px", margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "center", gap: "1rem" }}>
-                                        <button
-                                            onClick={() => handleUpdate(p.id, -1)}
-                                            disabled={val === 0}
-                                            style={{
-                                                background: "rgba(255,255,255,0.1)", border: "none", color: "white", width: "40px", height: "40px", borderRadius: "50%", cursor: val === 0 ? "not-allowed" : "pointer", opacity: val === 0 ? 0.3 : 1, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.5rem", transition: "all 0.2s"
-                                            }}
-                                        >−</button>
+                                    {/* Table Container */}
+                                    <div style={{ background: "#1c4b69", overflowX: "auto" }}>
+                                        <table style={{ width: "100%", borderCollapse: "collapse", color: "white", minWidth: "700px" }}>
+                                            <thead>
+                                                <tr style={{ borderBottom: "2px solid #0f2c40", fontSize: "0.85rem", textTransform: "uppercase" }}>
+                                                    <th style={{ padding: "1.2rem", textAlign: "center", width: "40%" }}>Call for Action</th>
+                                                    <th style={{ padding: "1.2rem", textAlign: "center", borderLeft: "2px solid #0f2c40", width: "10%" }}>Code ID</th>
+                                                    <th style={{ padding: "1.2rem", textAlign: "center", borderLeft: "2px solid #0f2c40", width: "25%" }}>Did the charity put this principle into action?</th>
+                                                    <th style={{ padding: "1.2rem", textAlign: "center", borderLeft: "2px solid #0f2c40", width: "25%" }}>If you have indicated "No" or "Partial Compliance", please explain.</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {items.map((item, idx) => (
+                                                    <tr key={item.id} style={{ borderBottom: idx < items.length - 1 ? "2px solid #1c4b69" : "none", background: "white", color: "#333" }}>
 
-                                        <div style={{
-                                            background: isFull ? "var(--accent-emerald)" : "#f59e0b", /* Orange circle from PDF */
-                                            color: isFull ? "#000" : "#fff",
-                                            width: "70px", height: "70px",
-                                            borderRadius: "50%",
-                                            display: "flex", flexDirection: "column",
-                                            alignItems: "center", justifyContent: "center",
-                                            fontWeight: "bold",
-                                            boxShadow: isFull ? "0 0 20px rgba(16, 185, 129, 0.3)" : "0 0 15px rgba(245, 158, 11, 0.3)",
-                                            transition: "all 0.3s"
-                                        }}>
-                                            <span style={{ fontSize: "1.6rem", lineHeight: 1 }}>{val}</span>
-                                            <span style={{ fontSize: "0.75rem", opacity: 0.8 }}>of {max}</span>
-                                        </div>
+                                                        {/* 1. Call for Action */}
+                                                        <td style={{ padding: "1.25rem 1.5rem", fontSize: "0.95rem", lineHeight: 1.6, verticalAlign: "top" }}>
+                                                            <div style={{ display: "flex", gap: "0.75rem" }}>
+                                                                <span style={{ fontWeight: "bold" }}>{idx + 1}.</span>
+                                                                <span>{item.text}</span>
+                                                            </div>
+                                                        </td>
 
-                                        <button
-                                            onClick={() => handleUpdate(p.id, 1)}
-                                            disabled={isFull}
-                                            style={{
-                                                background: "rgba(255,255,255,0.1)", border: "none", color: "white", width: "40px", height: "40px", borderRadius: "50%", cursor: isFull ? "not-allowed" : "pointer", opacity: isFull ? 0.3 : 1, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.5rem", transition: "all 0.2s"
-                                            }}
-                                        >+</button>
+                                                        {/* 2. Code ID */}
+                                                        <td style={{ padding: "1.25rem 1rem", textAlign: "center", borderLeft: "2px solid #1c4b69", verticalAlign: "top", fontWeight: "bold", fontSize: "1.1rem", color: "#1c4b69" }}>
+                                                            {item.id}
+                                                        </td>
+
+                                                        {/* 3. Radio Options */}
+                                                        <td style={{ padding: "1.25rem 1rem", borderLeft: "2px solid #1c4b69", verticalAlign: "top", fontSize: "0.9rem", color: "#333" }}>
+                                                            <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem", paddingLeft: "1rem" }}>
+                                                                <label style={{ display: "flex", alignItems: "center", gap: "0.5rem", cursor: "pointer", fontWeight: answers[item.id] === 'Yes' ? "bold" : "normal" }}>
+                                                                    <input type="radio" name={`q-${item.id}`} value="Yes" checked={answers[item.id] === 'Yes'} onChange={() => handleSetAnswer(item.id, 'Yes')} style={{ accentColor: "#1c4b69", width: "16px", height: "16px" }} /> Yes
+                                                                </label>
+                                                                <label style={{ display: "flex", alignItems: "center", gap: "0.5rem", cursor: "pointer", fontWeight: answers[item.id] === 'No' ? "bold" : "normal" }}>
+                                                                    <input type="radio" name={`q-${item.id}`} value="No" checked={answers[item.id] === 'No'} onChange={() => handleSetAnswer(item.id, 'No')} style={{ accentColor: "#1c4b69", width: "16px", height: "16px" }} /> No
+                                                                </label>
+                                                                <label style={{ display: "flex", alignItems: "center", gap: "0.5rem", cursor: "pointer", fontWeight: answers[item.id] === 'Partial Compliance' ? "bold" : "normal" }}>
+                                                                    <input type="radio" name={`q-${item.id}`} value="Partial Compliance" checked={answers[item.id] === 'Partial Compliance'} onChange={() => handleSetAnswer(item.id, 'Partial Compliance')} style={{ accentColor: "#1c4b69", width: "16px", height: "16px" }} /> Partial Compliance
+                                                                </label>
+                                                            </div>
+                                                        </td>
+
+                                                        {/* 4. Explanation */}
+                                                        <td style={{ padding: "1.25rem 1rem", borderLeft: "2px solid #1c4b69", verticalAlign: "top" }}>
+                                                            <textarea
+                                                                placeholder={answers[item.id] === 'No' || answers[item.id] === 'Partial Compliance' ? "Type your explanation here..." : "Explanation required if No or Partial."}
+                                                                value={explanations[item.id] || ''}
+                                                                onChange={(e) => handleSetExplanation(item.id, e.target.value)}
+                                                                disabled={answers[item.id] === 'Yes' || !answers[item.id]}
+                                                                style={{
+                                                                    width: "100%", height: "90px", padding: "0.75rem", borderRadius: "8px", border: "1px solid #cbd5e1", resize: "none",
+                                                                    fontFamily: "inherit", fontSize: "0.9rem", color: "#333",
+                                                                    background: (answers[item.id] === 'Yes' || !answers[item.id]) ? "#f1f5f9" : "#fff",
+                                                                    opacity: (answers[item.id] === 'Yes' || !answers[item.id]) ? 0.6 : 1,
+                                                                    cursor: (answers[item.id] === 'Yes' || !answers[item.id]) ? "not-allowed" : "text",
+                                                                    outlineColor: "#1c4b69"
+                                                                }}
+                                                            />
+                                                        </td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             );
