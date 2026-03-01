@@ -1158,22 +1158,22 @@
 
                                     {/* Table Container */}
                                     {expandedPanels[p.id] && (
-                                        <div style={{ background: "transparent", overflowX: "auto", padding: "0.5rem" }}>
-                                            <table style={{ width: "100%", borderCollapse: "separate", borderSpacing: "0 0.5rem", color: "var(--text-main)", minWidth: "700px" }}>
+                                        <div style={{ background: "rgba(0,0,0,0.15)", overflowX: "auto", borderTop: "1px solid var(--border-color)", padding: "1rem" }}>
+                                            <table style={{ width: "100%", borderCollapse: "collapse", color: "var(--text-main)", minWidth: "700px" }}>
                                                 <thead>
-                                                    <tr style={{ fontSize: "0.8rem", textTransform: "uppercase", color: "var(--text-muted)", letterSpacing: "1px" }}>
-                                                        <th style={{ padding: "0.75rem 1.5rem", textAlign: "left", width: "45%", fontWeight: 600 }}>Call for Action</th>
-                                                        <th style={{ padding: "0.75rem 1rem", textAlign: "center", width: "10%", fontWeight: 600 }}>Code ID</th>
-                                                        <th style={{ padding: "0.75rem 1rem", textAlign: "left", width: "20%", fontWeight: 600 }}>Evaluation</th>
-                                                        <th style={{ padding: "0.75rem 1rem", textAlign: "left", width: "25%", fontWeight: 600 }}>Explanation</th>
+                                                    <tr style={{ fontSize: "0.8rem", textTransform: "uppercase", color: "var(--accent-cyan)", letterSpacing: "1px", borderBottom: "2px solid rgba(255,255,255,0.1)" }}>
+                                                        <th style={{ padding: "1rem", textAlign: "left", width: "45%", fontWeight: 600 }}>Call for Action</th>
+                                                        <th style={{ padding: "1rem", textAlign: "center", width: "10%", fontWeight: 600 }}>Code ID</th>
+                                                        <th style={{ padding: "1rem", textAlign: "left", width: "20%", fontWeight: 600 }}>Evaluation</th>
+                                                        <th style={{ padding: "1rem", textAlign: "left", width: "25%", fontWeight: 600 }}>Explanation</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     {items.map((item, idx) => (
-                                                        <tr key={item.id} style={{ background: "rgba(255,255,255,0.02)", transition: "background 0.2s" }} onMouseEnter={(e) => e.currentTarget.style.background = "rgba(255,255,255,0.04)"} onMouseLeave={(e) => e.currentTarget.style.background = "rgba(255,255,255,0.02)"}>
+                                                        <tr key={item.id} style={{ borderBottom: idx < items.length - 1 ? "1px solid rgba(255,255,255,0.05)" : "none", transition: "background 0.2s" }} onMouseEnter={(e) => e.currentTarget.style.background = "rgba(255,255,255,0.03)"} onMouseLeave={(e) => e.currentTarget.style.background = "transparent"}>
 
                                                             {/* 1. Call for Action */}
-                                                            <td style={{ padding: "1.5rem", fontSize: "0.95rem", lineHeight: 1.6, verticalAlign: "top", borderTopLeftRadius: "8px", borderBottomLeftRadius: "8px" }}>
+                                                            <td style={{ padding: "1.5rem 1rem", fontSize: "0.95rem", lineHeight: 1.6, verticalAlign: "top" }}>
                                                                 <div style={{ display: "flex", gap: "0.75rem" }}>
                                                                     <span style={{ color: "var(--accent-cyan)", fontWeight: "bold" }}>{idx + 1}.</span>
                                                                     <span style={{ color: "var(--text-main)" }}>{item.text}</span>
@@ -1215,7 +1215,7 @@
                                                             </td>
 
                                                             {/* 4. Explanation */}
-                                                            <td style={{ padding: "1.25rem 1rem", verticalAlign: "top", borderTopRightRadius: "8px", borderBottomRightRadius: "8px" }}>
+                                                            <td style={{ padding: "1.5rem 1rem", verticalAlign: "top" }}>
                                                                 <textarea
                                                                     placeholder={answers[item.id] === 'No' || answers[item.id] === 'Partial Compliance' ? "Required: Please explain your status..." : "Explanation required if No or Partial."}
                                                                     value={explanations[item.id] || ''}
