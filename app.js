@@ -85,8 +85,8 @@ const NAVIGATION = {
             title: "Governance",
             icon: <Shield size={20} />,
             items: [
-                { id: "C1", path: "/c1", label: "Charity Governance Code" },
-                { id: "C2", path: "/c2", label: "Governance Evaluation Checklist" },
+                { id: "C1", path: "/c1", label: "Governance Evaluation Checklist (GEC)" },
+                { id: "C2", path: "/c2", label: "Risk Management" },
                 { id: "C3", path: "/c3", label: "Standard Operating Procedures" },
                 { id: "C4", path: "/c4", label: "Constitution" },
                 { id: "C5", path: "/c5", label: "Terms of Reference" },

@@ -140,8 +140,8 @@
                     title: "C Governance",
                     icon: <Shield size={20} />,
                     items: [
-                        { id: "C1", path: "/c1", label: "C1 Charity Governance Code", description: "Align with the Code of Governance for Charities and IPCs. Ensure board effectiveness, transparency, and accountability." },
-                        { id: "C2", path: "/c2", label: "C2 Governance Evaluation Checklist", description: "Prepare for and manage the mandatory annual GEC submission. Track compliance status across key governance principles." },
+                        { id: "C1", path: "/c1", label: "C1 Governance Evaluation Checklist (GEC)", description: "Prepare for and manage the mandatory annual GEC submission. Track compliance status across key governance principles." },
+                        { id: "C2", path: "/c2", label: "C2 Risk Management", description: "Identify, assess, and mitigate risks. Build resilience by tracking operational, financial, and reputational risks to protect the charity's mission." },
                         { id: "C3", path: "/c3", label: "C3 Standard Operating Procedures", description: "Standardise internal processes. Maintain a central repository of operational guidelines to ensure consistency and mitigate risks." },
                         { id: "C4", path: "/c4", label: "C4 Constitution", description: "Manage the foundation of your charity. Track updates to the governing instrument and ensure all activities align with the defined charitable objects." },
                         { id: "C5", path: "/c5", label: "C5 Terms of Reference", description: "Define committee scopes. Manage the roles, responsibilities, and authority limits of sub-committees supporting the Board." },
@@ -489,8 +489,8 @@
                 { code: "B3", label: "Volunteer Mgt" },
                 { code: "B4", label: "Marketing & Comms" },
                 { code: "B5", label: "HR" },
-                { code: "C1", label: "Gov. Code" },
-                { code: "C2", label: "Eval Checklist" },
+                { code: "C1", label: "GEC" },
+                { code: "C2", label: "Risk Management" },
                 { code: "C3", label: "SOPs" },
                 { code: "C4", label: "Constitution" },
                 { code: "C5", label: "Terms of Ref" },
@@ -956,10 +956,10 @@
             );
         };
 
-        const C2GEC = () => {
+        const C1GEC = () => {
             const { setActivePage } = useContext(AppContext);
             useEffect(() => {
-                setActivePage("C2 Governance Evaluation Checklist");
+                setActivePage("C1 Governance Evaluation Checklist (GEC)");
             }, [setActivePage]);
 
             const [complianceState, setComplianceState] = useState({});
@@ -1097,70 +1097,18 @@
             );
         };
 
-        const C1Code = () => {
+        const C2RiskManagement = () => {
             const { setActivePage } = useContext(AppContext);
-            useEffect(() => {
-                setActivePage("C1 Charity Governance Code");
-            }, [setActivePage]);
-
-            const [complianceState, setComplianceState] = useState({});
-
-            const toggleCompliance = (id) => {
-                setComplianceState(prev => ({ ...prev, [id]: !prev[id] }));
-            };
-
-            const principles = [
-                { id: "p1", title: "Principle 1: Board Governance", desc: "The Board provides strategic direction, exercises independent judgment, and oversees the charity." },
-                { id: "p2", title: "Principle 2: Conflict of Interest", desc: "The Charity has policies to handle conflicts of interest, ensuring decisions are made in the best interest of the charity." },
-                { id: "p3", title: "Principle 3: Strategic Planning", desc: "The Board periodically reviews and approves the charity's strategic plan and monitors its progress." },
-                { id: "p4", title: "Principle 4: Human Resources", desc: "The charity has documented HR policies and a Code of Conduct." },
-                { id: "p5", title: "Principle 5: Financial Management", desc: "The charity maintains sound financial management and internal controls." },
-                { id: "p6", title: "Principle 6: Public Image & Comm", desc: "The charity communicates effectively with its stakeholders to maintain public trust." },
-            ];
-
+            useEffect(() => setActivePage("C2 Risk Management"), []);
             return (
-                <div className="fade-in" style={{ paddingBottom: "2rem", height: "100%", overflowY: "auto", paddingRight: "10px" }}>
-                    <div style={{ marginBottom: "2.5rem" }}>
-                        <h1 style={{ fontSize: "2.2rem", fontWeight: 800, marginBottom: "0.75rem", color: "var(--text-main)", display: "flex", alignItems: "center", gap: "1rem" }}>
-                            <Shield size={32} color="var(--accent-purple)" />
-                            Charity Governance Code Principles
-                        </h1>
-                        <p style={{ color: "var(--text-muted)", fontSize: "1.05rem", maxWidth: "800px", lineHeight: 1.6 }}>
-                            A set of guidelines to ensure the charity serves its mission, maintains effective leadership, and operates transparently.
-                        </p>
-                    </div>
-
-                    <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
-                        {principles.map((p) => {
-                            const isCompliant = complianceState[p.id] || false;
-                            return (
-                                <div key={p.id} style={{
-                                    display: "flex",
-                                    flexWrap: "wrap",
-                                    justifyContent: "space-between",
-                                    alignItems: "center",
-                                    gap: "1rem",
-                                    padding: "1.5rem",
-                                    borderRadius: "12px",
-                                    border: "1px solid var(--border-color)",
-                                    background: isCompliant ? "rgba(16, 185, 129, 0.05)" : "rgba(255,255,255,0.03)",
-                                    transition: "all 0.3s ease"
-                                }}>
-                                    <div style={{ flex: "1 1 200px", minWidth: 0 }}>
-                                        <h3 style={{ color: "var(--text-main)", fontSize: "1.1rem", marginBottom: "0.5rem" }}>{p.title}</h3>
-                                        <p style={{ color: "var(--text-muted)", fontSize: "0.9rem" }}>{p.desc}</p>
-                                    </div>
-                                    <button
-                                        onClick={() => toggleCompliance(p.id)}
-                                        className={isCompliant ? "btn-comply" : "btn-not-comply"}
-                                    >
-                                        {isCompliant ? "COMPLY" : "NOT COMPLY"}
-                                    </button>
-                                </div>
-                            );
-                        })}
-                    </div>
-                </div>
+                <OutlineView
+                    title="C2 Risk Management"
+                    desc="Identify, assess, and mitigate risks. Build resilience by tracking operational, financial, and reputational risks to protect the charity's mission."
+                    sections={[
+                        { title: "Definitions of Key Terms", content: "Risk Register: A central dashboard tracking identified risks and their likelihood. Mitigation Strategies: Tactics designed to reduce the severity or probability of a risk. Critical Incidents: Unforeseen events requiring immediate crisis response." },
+                        { title: "Best Practices & Useful Resources", content: "Conduct routine risk assessments across all functional departments. Ensure whistle-blowing policies are accessible and transparent to all stakeholders. Link severe risks directly to board-level oversight." }
+                    ]}
+                />
             );
         };
 
@@ -1921,8 +1869,8 @@
                                                                             item.id === "B3" ? <B3Volunteer /> :
                                                                                 item.id === "B4" ? <B4Marketing /> :
                                                                                     item.id === "B5" ? <B5HR /> :
-                                                                                        item.id === "C1" ? <C1Code /> :
-                                                                                            item.id === "C2" ? <C2GEC /> :
+                                                                                        item.id === "C1" ? <C1GEC /> :
+                                                                                            item.id === "C2" ? <C2RiskManagement /> :
                                                                                                 item.id === "C3" ? <C3SOP /> :
                                                                                                     item.id === "C4" ? <C4Constitution /> :
                                                                                                         item.id === "C5" ? <C5TOR /> :
