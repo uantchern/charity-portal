@@ -1289,20 +1289,20 @@
             const [showOutDetails, setShowOutDetails] = useState(false);
 
             // Breakdown values
-            const [cashDetails, setCashDetails] = useState({ main: 450000, fixed: 48000, petty: 2000 });
-            const [inDetails, setInDetails] = useState({ ncss: 150000, donors: 50000, foundations: 50000 });
-            const [outDetails, setOutDetails] = useState({ salary: 120000, rent: 60000, utils: 20000 });
+            const [cashDetails, setCashDetails] = useState([{ id: 'main', label: 'Main Account', value: 450000 }, { id: 'fixed', label: 'Fixed Deposit', value: 48000 }, { id: 'petty', label: 'Petty Cash', value: 2000 }]);
+            const [inDetails, setInDetails] = useState([{ id: 'ncss', label: 'NCSS Grants', value: 150000 }, { id: 'donors', label: 'Individual Donors', value: 50000 }, { id: 'foundations', label: 'Foundations', value: 50000 }]);
+            const [outDetails, setOutDetails] = useState([{ id: 'salary', label: 'Staff Salaries', value: 120000 }, { id: 'rent', label: 'Rental', value: 60000 }, { id: 'utils', label: 'Utilities/Admin', value: 20000 }]);
 
             useEffect(() => {
-                if (showCashDetails) setCashOnHand(Object.values(cashDetails).reduce((a, b) => Number(a) + Number(b), 0));
+                if (showCashDetails) setCashOnHand(cashDetails.reduce((a, b) => a + Number(b.value), 0));
             }, [cashDetails, showCashDetails]);
 
             useEffect(() => {
-                if (showInDetails) setExpectedIn(Object.values(inDetails).reduce((a, b) => Number(a) + Number(b), 0));
+                if (showInDetails) setExpectedIn(inDetails.reduce((a, b) => a + Number(b.value), 0));
             }, [inDetails, showInDetails]);
 
             useEffect(() => {
-                if (showOutDetails) setExpectedOut(Object.values(outDetails).reduce((a, b) => Number(a) + Number(b), 0));
+                if (showOutDetails) setExpectedOut(outDetails.reduce((a, b) => a + Number(b.value), 0));
             }, [outDetails, showOutDetails]);
 
             const formatCurrency = (val) => new Intl.NumberFormat('en-SG', { style: 'currency', currency: 'SGD', maximumFractionDigits: 0 }).format(val);
@@ -1352,12 +1352,12 @@
                             </button>
                             {showCashDetails && (
                                 <div style={{ marginTop: "1rem", display: "grid", gap: "0.75rem", padding: "1rem", background: "rgba(0,0,0,0.2)", borderRadius: "8px" }}>
-                                    {Object.keys(cashDetails).map(k => (
-                                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "0.5rem" }} key={k}>
-                                            <label style={{ color: "var(--text-muted)", fontSize: "0.9rem" }}>{k === 'main' ? 'Main Account' : k === 'fixed' ? 'Fixed Deposit' : 'Petty Cash'}</label>
+                                    {cashDetails.map((item, idx) => (
+                                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "0.5rem" }} key={item.id}>
+                                            <input type="text" value={item.label} onChange={(e) => { const newArr = [...cashDetails]; newArr[idx].label = e.target.value; setCashDetails(newArr); }} style={{ color: "var(--text-muted)", fontSize: "0.9rem", background: "transparent", border: "1px dashed transparent", outline: "none", width: "160px", borderBottom: "1px dashed rgba(255,255,255,0.2)", transition: "border 0.2s" }} onFocus={(e) => e.target.style.borderBottom = "1px solid var(--accent-cyan)"} onBlur={(e) => e.target.style.borderBottom = "1px dashed rgba(255,255,255,0.2)"} />
                                             <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
                                                 <span style={{ color: "var(--text-muted)" }}>S$</span>
-                                                <input type="number" min="0" value={cashDetails[k] || ""} onChange={(e) => setCashDetails({ ...cashDetails, [k]: Number(e.target.value) })} style={{ background: "rgba(255,255,255,0.05)", border: "1px solid var(--border-color)", color: "white", padding: "6px 10px", borderRadius: "6px", width: "120px", outline: "none", fontFamily: "var(--font-mono)" }} />
+                                                <input type="number" min="0" value={item.value || ""} onChange={(e) => { const newArr = [...cashDetails]; newArr[idx].value = Number(e.target.value); setCashDetails(newArr); }} style={{ background: "rgba(255,255,255,0.05)", border: "1px solid var(--border-color)", color: "white", padding: "6px 10px", borderRadius: "6px", width: "120px", outline: "none", fontFamily: "var(--font-mono)" }} />
                                             </div>
                                         </div>
                                     ))}
@@ -1385,12 +1385,12 @@
                             </button>
                             {showInDetails && (
                                 <div style={{ marginTop: "1rem", display: "grid", gap: "0.75rem", padding: "1rem", background: "rgba(0,0,0,0.2)", borderRadius: "8px" }}>
-                                    {Object.keys(inDetails).map(k => (
-                                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "0.5rem" }} key={k}>
-                                            <label style={{ color: "var(--text-muted)", fontSize: "0.9rem" }}>{k === 'ncss' ? 'NCSS Grants' : k === 'donors' ? 'Individual Donors' : 'Foundations'}</label>
+                                    {inDetails.map((item, idx) => (
+                                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "0.5rem" }} key={item.id}>
+                                            <input type="text" value={item.label} onChange={(e) => { const newArr = [...inDetails]; newArr[idx].label = e.target.value; setInDetails(newArr); }} style={{ color: "var(--text-muted)", fontSize: "0.9rem", background: "transparent", border: "1px dashed transparent", outline: "none", width: "160px", borderBottom: "1px dashed rgba(255,255,255,0.2)", transition: "border 0.2s" }} onFocus={(e) => e.target.style.borderBottom = "1px solid var(--accent-cyan)"} onBlur={(e) => e.target.style.borderBottom = "1px dashed rgba(255,255,255,0.2)"} />
                                             <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
                                                 <span style={{ color: "var(--text-muted)" }}>S$</span>
-                                                <input type="number" min="0" value={inDetails[k] || ""} onChange={(e) => setInDetails({ ...inDetails, [k]: Number(e.target.value) })} style={{ background: "rgba(255,255,255,0.05)", border: "1px solid var(--border-color)", color: "white", padding: "6px 10px", borderRadius: "6px", width: "120px", outline: "none", fontFamily: "var(--font-mono)" }} />
+                                                <input type="number" min="0" value={item.value || ""} onChange={(e) => { const newArr = [...inDetails]; newArr[idx].value = Number(e.target.value); setInDetails(newArr); }} style={{ background: "rgba(255,255,255,0.05)", border: "1px solid var(--border-color)", color: "white", padding: "6px 10px", borderRadius: "6px", width: "120px", outline: "none", fontFamily: "var(--font-mono)" }} />
                                             </div>
                                         </div>
                                     ))}
@@ -1418,12 +1418,12 @@
                             </button>
                             {showOutDetails && (
                                 <div style={{ marginTop: "1rem", display: "grid", gap: "0.75rem", padding: "1rem", background: "rgba(0,0,0,0.2)", borderRadius: "8px" }}>
-                                    {Object.keys(outDetails).map(k => (
-                                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "0.5rem" }} key={k}>
-                                            <label style={{ color: "var(--text-muted)", fontSize: "0.9rem" }}>{k === 'salary' ? 'Staff Salaries' : k === 'rent' ? 'Rental' : 'Utilities/Admin'}</label>
+                                    {outDetails.map((item, idx) => (
+                                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "0.5rem" }} key={item.id}>
+                                            <input type="text" value={item.label} onChange={(e) => { const newArr = [...outDetails]; newArr[idx].label = e.target.value; setOutDetails(newArr); }} style={{ color: "var(--text-muted)", fontSize: "0.9rem", background: "transparent", border: "1px dashed transparent", outline: "none", width: "160px", borderBottom: "1px dashed rgba(255,255,255,0.2)", transition: "border 0.2s" }} onFocus={(e) => e.target.style.borderBottom = "1px solid var(--accent-cyan)"} onBlur={(e) => e.target.style.borderBottom = "1px dashed rgba(255,255,255,0.2)"} />
                                             <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
                                                 <span style={{ color: "var(--text-muted)" }}>S$</span>
-                                                <input type="number" min="0" value={outDetails[k] || ""} onChange={(e) => setOutDetails({ ...outDetails, [k]: Number(e.target.value) })} style={{ background: "rgba(255,255,255,0.05)", border: "1px solid var(--border-color)", color: "white", padding: "6px 10px", borderRadius: "6px", width: "120px", outline: "none", fontFamily: "var(--font-mono)" }} />
+                                                <input type="number" min="0" value={item.value || ""} onChange={(e) => { const newArr = [...outDetails]; newArr[idx].value = Number(e.target.value); setOutDetails(newArr); }} style={{ background: "rgba(255,255,255,0.05)", border: "1px solid var(--border-color)", color: "white", padding: "6px 10px", borderRadius: "6px", width: "120px", outline: "none", fontFamily: "var(--font-mono)" }} />
                                             </div>
                                         </div>
                                     ))}
