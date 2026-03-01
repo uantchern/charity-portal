@@ -1022,6 +1022,11 @@
 
             const [answers, setAnswers] = useState({});
             const [explanations, setExplanations] = useState({});
+            const [expandedPanels, setExpandedPanels] = useState({ p1: true });
+
+            const togglePanel = (pId) => {
+                setExpandedPanels(prev => ({ ...prev, [pId]: !prev[pId] }));
+            };
 
             const handleSetAnswer = (id, val) => {
                 setAnswers(prev => ({ ...prev, [id]: val }));
@@ -1114,76 +1119,87 @@
                                 <div key={p.id} style={{ borderRadius: "16px", overflow: "hidden", border: "4px solid #1c4b69", boxShadow: "0 8px 30px rgba(0,0,0,0.15)" }}>
 
                                     {/* Principle Header (White Background, Document match) */}
-                                    <div style={{ background: "#ffffff", padding: "1.5rem", textAlign: "center", borderBottom: "4px solid #1c4b69" }}>
-                                        <h3 style={{ color: "#1c4b69", fontSize: "1.1rem", margin: "0 0 0.25rem 0", fontWeight: "bold" }}>{p.name}:</h3>
-                                        <p style={{ color: "#333", margin: 0, fontSize: "0.95rem" }}>{p.desc}</p>
+                                    <div
+                                        onClick={() => togglePanel(p.id)}
+                                        style={{ background: "#ffffff", padding: "1.5rem", textAlign: "center", borderBottom: expandedPanels[p.id] ? "4px solid #1c4b69" : "none", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}
+                                    >
+                                        <div style={{ width: "24px" }}></div> {/* spacer */}
+                                        <div style={{ flex: 1 }}>
+                                            <h3 style={{ color: "#1c4b69", fontSize: "1.1rem", margin: "0 0 0.25rem 0", fontWeight: "bold" }}>{p.name}:</h3>
+                                            <p style={{ color: "#333", margin: 0, fontSize: "0.95rem" }}>{p.desc}</p>
+                                        </div>
+                                        <div style={{ width: "24px", color: "#1c4b69", fontWeight: "bold", fontSize: "1.5rem", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                                            {expandedPanels[p.id] ? "−" : "+"}
+                                        </div>
                                     </div>
 
                                     {/* Table Container */}
-                                    <div style={{ background: "#1c4b69", overflowX: "auto" }}>
-                                        <table style={{ width: "100%", borderCollapse: "collapse", color: "white", minWidth: "700px" }}>
-                                            <thead>
-                                                <tr style={{ borderBottom: "2px solid #0f2c40", fontSize: "0.85rem", textTransform: "uppercase" }}>
-                                                    <th style={{ padding: "1.2rem", textAlign: "center", width: "40%" }}>Call for Action</th>
-                                                    <th style={{ padding: "1.2rem", textAlign: "center", borderLeft: "2px solid #0f2c40", width: "10%" }}>Code ID</th>
-                                                    <th style={{ padding: "1.2rem", textAlign: "center", borderLeft: "2px solid #0f2c40", width: "25%" }}>Did the charity put this principle into action?</th>
-                                                    <th style={{ padding: "1.2rem", textAlign: "center", borderLeft: "2px solid #0f2c40", width: "25%" }}>If you have indicated "No" or "Partial Compliance", please explain.</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {items.map((item, idx) => (
-                                                    <tr key={item.id} style={{ borderBottom: idx < items.length - 1 ? "2px solid #1c4b69" : "none", background: "white", color: "#333" }}>
-
-                                                        {/* 1. Call for Action */}
-                                                        <td style={{ padding: "1.25rem 1.5rem", fontSize: "0.95rem", lineHeight: 1.6, verticalAlign: "top" }}>
-                                                            <div style={{ display: "flex", gap: "0.75rem" }}>
-                                                                <span style={{ fontWeight: "bold" }}>{idx + 1}.</span>
-                                                                <span>{item.text}</span>
-                                                            </div>
-                                                        </td>
-
-                                                        {/* 2. Code ID */}
-                                                        <td style={{ padding: "1.25rem 1rem", textAlign: "center", borderLeft: "2px solid #1c4b69", verticalAlign: "top", fontWeight: "bold", fontSize: "1.1rem", color: "#1c4b69" }}>
-                                                            {item.id}
-                                                        </td>
-
-                                                        {/* 3. Radio Options */}
-                                                        <td style={{ padding: "1.25rem 1rem", borderLeft: "2px solid #1c4b69", verticalAlign: "top", fontSize: "0.9rem", color: "#333" }}>
-                                                            <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem", paddingLeft: "1rem" }}>
-                                                                <label style={{ display: "flex", alignItems: "center", gap: "0.5rem", cursor: "pointer", fontWeight: answers[item.id] === 'Yes' ? "bold" : "normal" }}>
-                                                                    <input type="radio" name={`q-${item.id}`} value="Yes" checked={answers[item.id] === 'Yes'} onChange={() => handleSetAnswer(item.id, 'Yes')} style={{ accentColor: "#1c4b69", width: "16px", height: "16px" }} /> Yes
-                                                                </label>
-                                                                <label style={{ display: "flex", alignItems: "center", gap: "0.5rem", cursor: "pointer", fontWeight: answers[item.id] === 'No' ? "bold" : "normal" }}>
-                                                                    <input type="radio" name={`q-${item.id}`} value="No" checked={answers[item.id] === 'No'} onChange={() => handleSetAnswer(item.id, 'No')} style={{ accentColor: "#1c4b69", width: "16px", height: "16px" }} /> No
-                                                                </label>
-                                                                <label style={{ display: "flex", alignItems: "center", gap: "0.5rem", cursor: "pointer", fontWeight: answers[item.id] === 'Partial Compliance' ? "bold" : "normal" }}>
-                                                                    <input type="radio" name={`q-${item.id}`} value="Partial Compliance" checked={answers[item.id] === 'Partial Compliance'} onChange={() => handleSetAnswer(item.id, 'Partial Compliance')} style={{ accentColor: "#1c4b69", width: "16px", height: "16px" }} /> Partial Compliance
-                                                                </label>
-                                                            </div>
-                                                        </td>
-
-                                                        {/* 4. Explanation */}
-                                                        <td style={{ padding: "1.25rem 1rem", borderLeft: "2px solid #1c4b69", verticalAlign: "top" }}>
-                                                            <textarea
-                                                                placeholder={answers[item.id] === 'No' || answers[item.id] === 'Partial Compliance' ? "Type your explanation here..." : "Explanation required if No or Partial."}
-                                                                value={explanations[item.id] || ''}
-                                                                onChange={(e) => handleSetExplanation(item.id, e.target.value)}
-                                                                disabled={answers[item.id] === 'Yes' || !answers[item.id]}
-                                                                style={{
-                                                                    width: "100%", height: "90px", padding: "0.75rem", borderRadius: "8px", border: "1px solid #cbd5e1", resize: "none",
-                                                                    fontFamily: "inherit", fontSize: "0.9rem", color: "#333",
-                                                                    background: (answers[item.id] === 'Yes' || !answers[item.id]) ? "#f1f5f9" : "#fff",
-                                                                    opacity: (answers[item.id] === 'Yes' || !answers[item.id]) ? 0.6 : 1,
-                                                                    cursor: (answers[item.id] === 'Yes' || !answers[item.id]) ? "not-allowed" : "text",
-                                                                    outlineColor: "#1c4b69"
-                                                                }}
-                                                            />
-                                                        </td>
+                                    {expandedPanels[p.id] && (
+                                        <div style={{ background: "#1c4b69", overflowX: "auto" }}>
+                                            <table style={{ width: "100%", borderCollapse: "collapse", color: "white", minWidth: "700px" }}>
+                                                <thead>
+                                                    <tr style={{ borderBottom: "2px solid #0f2c40", fontSize: "0.85rem", textTransform: "uppercase" }}>
+                                                        <th style={{ padding: "1.2rem", textAlign: "center", width: "40%" }}>Call for Action</th>
+                                                        <th style={{ padding: "1.2rem", textAlign: "center", borderLeft: "2px solid #0f2c40", width: "10%" }}>Code ID</th>
+                                                        <th style={{ padding: "1.2rem", textAlign: "center", borderLeft: "2px solid #0f2c40", width: "25%" }}>Did the charity put this principle into action?</th>
+                                                        <th style={{ padding: "1.2rem", textAlign: "center", borderLeft: "2px solid #0f2c40", width: "25%" }}>If you have indicated "No" or "Partial Compliance", please explain.</th>
                                                     </tr>
-                                                ))}
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                                </thead>
+                                                <tbody>
+                                                    {items.map((item, idx) => (
+                                                        <tr key={item.id} style={{ borderBottom: idx < items.length - 1 ? "2px solid #1c4b69" : "none", background: "white", color: "#333" }}>
+
+                                                            {/* 1. Call for Action */}
+                                                            <td style={{ padding: "1.25rem 1.5rem", fontSize: "0.95rem", lineHeight: 1.6, verticalAlign: "top" }}>
+                                                                <div style={{ display: "flex", gap: "0.75rem" }}>
+                                                                    <span style={{ fontWeight: "bold" }}>{idx + 1}.</span>
+                                                                    <span>{item.text}</span>
+                                                                </div>
+                                                            </td>
+
+                                                            {/* 2. Code ID */}
+                                                            <td style={{ padding: "1.25rem 1rem", textAlign: "center", borderLeft: "2px solid #1c4b69", verticalAlign: "top", fontWeight: "bold", fontSize: "1.1rem", color: "#1c4b69" }}>
+                                                                {item.id}
+                                                            </td>
+
+                                                            {/* 3. Radio Options */}
+                                                            <td style={{ padding: "1.25rem 1rem", borderLeft: "2px solid #1c4b69", verticalAlign: "top", fontSize: "0.9rem", color: "#333" }}>
+                                                                <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem", paddingLeft: "1rem" }}>
+                                                                    <label style={{ display: "flex", alignItems: "center", gap: "0.5rem", cursor: "pointer", fontWeight: answers[item.id] === 'Yes' ? "bold" : "normal" }}>
+                                                                        <input type="radio" name={`q-${item.id}`} value="Yes" checked={answers[item.id] === 'Yes'} onChange={() => handleSetAnswer(item.id, 'Yes')} style={{ accentColor: "#1c4b69", width: "16px", height: "16px" }} /> Yes
+                                                                    </label>
+                                                                    <label style={{ display: "flex", alignItems: "center", gap: "0.5rem", cursor: "pointer", fontWeight: answers[item.id] === 'No' ? "bold" : "normal" }}>
+                                                                        <input type="radio" name={`q-${item.id}`} value="No" checked={answers[item.id] === 'No'} onChange={() => handleSetAnswer(item.id, 'No')} style={{ accentColor: "#1c4b69", width: "16px", height: "16px" }} /> No
+                                                                    </label>
+                                                                    <label style={{ display: "flex", alignItems: "center", gap: "0.5rem", cursor: "pointer", fontWeight: answers[item.id] === 'Partial Compliance' ? "bold" : "normal" }}>
+                                                                        <input type="radio" name={`q-${item.id}`} value="Partial Compliance" checked={answers[item.id] === 'Partial Compliance'} onChange={() => handleSetAnswer(item.id, 'Partial Compliance')} style={{ accentColor: "#1c4b69", width: "16px", height: "16px" }} /> Partial Compliance
+                                                                    </label>
+                                                                </div>
+                                                            </td>
+
+                                                            {/* 4. Explanation */}
+                                                            <td style={{ padding: "1.25rem 1rem", borderLeft: "2px solid #1c4b69", verticalAlign: "top" }}>
+                                                                <textarea
+                                                                    placeholder={answers[item.id] === 'No' || answers[item.id] === 'Partial Compliance' ? "Type your explanation here..." : "Explanation required if No or Partial."}
+                                                                    value={explanations[item.id] || ''}
+                                                                    onChange={(e) => handleSetExplanation(item.id, e.target.value)}
+                                                                    disabled={answers[item.id] === 'Yes' || !answers[item.id]}
+                                                                    style={{
+                                                                        width: "100%", height: "90px", padding: "0.75rem", borderRadius: "8px", border: "1px solid #cbd5e1", resize: "none",
+                                                                        fontFamily: "inherit", fontSize: "0.9rem", color: "#333",
+                                                                        background: (answers[item.id] === 'Yes' || !answers[item.id]) ? "#f1f5f9" : "#fff",
+                                                                        opacity: (answers[item.id] === 'Yes' || !answers[item.id]) ? 0.6 : 1,
+                                                                        cursor: (answers[item.id] === 'Yes' || !answers[item.id]) ? "not-allowed" : "text",
+                                                                        outlineColor: "#1c4b69"
+                                                                    }}
+                                                                />
+                                                            </td>
+                                                        </tr>
+                                                    ))}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    )}
                                 </div>
                             );
                         })}
