@@ -1211,15 +1211,104 @@
         const C2RiskManagement = () => {
             const { setActivePage } = useContext(AppContext);
             useEffect(() => setActivePage("C2 Risk Management"), []);
+
+            const topRisks = [
+                { id: "r1", title: "Financial Sustainability & Cash Flow", desc: "Risk of exhausting reserves or failing to secure adequate funding." },
+                { id: "r2", title: "Cybersecurity & Data Privacy", desc: "Risk of data breaches, hacking, or failure to comply with PDPA." },
+                { id: "r3", title: "Loss of Key Personnel", desc: "Risk of losing critical leadership, board members, or specialized staff." },
+                { id: "r4", title: "Regulatory & Compliance Failure", desc: "Risk of non-compliance with the Charities Act, IPC regulations, or other laws." },
+                { id: "r5", title: "Reputational Damage", desc: "Risk of negative public perception due to scandals, controversies, or poor communication." },
+                { id: "r6", title: "Volunteer Management & Attrition", desc: "Risk of failing to recruit, train, retain, and safely manage volunteers." },
+                { id: "r7", title: "Fraud & Financial Misappropriation", desc: "Risk of internal or external fraud, theft, or misuse of charitable funds." },
+                { id: "r8", title: "Program Efficacy & Delivery", desc: "Risk of programs failing to achieve their stated objectives or impact." },
+                { id: "r9", title: "Safeguarding & Beneficiary Protection", desc: "Risk of abuse, harm, or neglect occurring to beneficiaries under the charity's care." },
+                { id: "r10", title: "Macroeconomic & Environmental Shocks", desc: "Risk of external events (e.g., pandemics, economic downturns) disrupting operations." }
+            ];
+
+            const [riskLevels, setRiskLevels] = useState({
+                r1: 30, r2: 50, r3: 40, r4: 20, r5: 10, r6: 60, r7: 15, r8: 30, r9: 10, r10: 70
+            });
+
+            const handleSliderChange = (id, val) => {
+                setRiskLevels(prev => ({ ...prev, [id]: parseInt(val, 10) }));
+            };
+
+            const getRiskColor = (val) => {
+                if (val < 33) return "var(--accent-emerald)";
+                if (val < 66) return "#f59e0b"; // orange
+                return "#ef4444"; // red
+            };
+
+            const getRiskText = (val) => {
+                if (val < 33) return "Low Risk";
+                if (val < 66) return "Moderate Risk";
+                return "Severe Risk";
+            };
+
             return (
-                <OutlineView
-                    title="C2 Risk Management"
-                    desc="Identify, assess, and mitigate risks. Build resilience by tracking operational, financial, and reputational risks to protect the charity's mission."
-                    sections={[
-                        { title: "Definitions of Key Terms", content: "Risk Register: A central dashboard tracking identified risks and their likelihood. Mitigation Strategies: Tactics designed to reduce the severity or probability of a risk. Critical Incidents: Unforeseen events requiring immediate crisis response." },
-                        { title: "Best Practices & Useful Resources", content: "Conduct routine risk assessments across all functional departments. Ensure whistle-blowing policies are accessible and transparent to all stakeholders. Link severe risks directly to board-level oversight." }
-                    ]}
-                />
+                <div className="fade-in" style={{ paddingBottom: "2rem", height: "100%", overflowY: "auto", paddingRight: "10px" }}>
+                    <div style={{ marginBottom: "2.5rem" }}>
+                        <h1 style={{ fontSize: "2.2rem", fontWeight: 800, marginBottom: "0.75rem", color: "var(--text-main)", display: "flex", alignItems: "center", gap: "1rem" }}>
+                            <Shield size={32} color="var(--accent-purple)" />
+                            C2 Risk Management: Top 10 Exposures
+                        </h1>
+                        <p style={{ color: "var(--text-muted)", fontSize: "1.05rem", maxWidth: "800px", lineHeight: 1.6 }}>
+                            Actively identify, assess, and manage the most critical operational risks facing your charity. Adjust the sliders below to continuously evaluate your organization's current risk exposure and proactively prioritize resource allocation for mitigation strategies.
+                        </p>
+                    </div>
+
+                    <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: "1.5rem" }}>
+                        {topRisks.map((risk, index) => {
+                            const val = riskLevels[risk.id];
+                            const color = getRiskColor(val);
+                            return (
+                                <div key={risk.id} style={{
+                                    background: "rgba(255,255,255,0.03)",
+                                    border: `1px solid var(--border-color)`,
+                                    borderRadius: "12px",
+                                    padding: "1.5rem",
+                                    transition: "all 0.3s ease",
+                                    position: "relative",
+                                    overflow: "hidden"
+                                }}>
+                                    <div style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: "6px", background: color, transition: "background 0.3s" }}></div>
+                                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "1rem", flexWrap: "wrap", gap: "1rem" }}>
+                                        <div style={{ flex: "1 1 min(100%, 400px)" }}>
+                                            <h3 style={{ color: "var(--text-main)", fontSize: "1.15rem", marginBottom: "0.4rem", display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                                                <span style={{ color: "var(--text-muted)", fontSize: "0.9rem", fontFamily: "var(--font-mono)", background: "rgba(255,255,255,0.1)", padding: "0.2rem 0.5rem", borderRadius: "4px" }}>
+                                                    #{index + 1}
+                                                </span>
+                                                {risk.title}
+                                            </h3>
+                                            <p style={{ color: "var(--text-muted)", fontSize: "0.95rem", margin: 0, lineHeight: 1.5 }}>{risk.desc}</p>
+                                        </div>
+                                        <div style={{ background: "rgba(0,0,0,0.3)", padding: "0.5rem 1rem", borderRadius: "8px", border: `1px solid ${color}40`, textAlign: "center", minWidth: "120px", transition: "all 0.3s" }}>
+                                            <div style={{ fontSize: "1.4rem", fontWeight: "bold", color: color, transition: "color 0.3s" }}>{val}%</div>
+                                            <div style={{ fontSize: "0.75rem", color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "1px", marginTop: "2px" }}>{getRiskText(val)}</div>
+                                        </div>
+                                    </div>
+
+                                    <div style={{ display: "flex", alignItems: "center", gap: "1rem", padding: "0.5rem 0" }}>
+                                        <span style={{ fontSize: "0.85rem", color: "var(--text-muted)", width: "40px", textAlign: "right", fontWeight: val < 33 ? "bold" : "normal" }}>Low</span>
+                                        <input
+                                            type="range"
+                                            min="0" max="100"
+                                            value={val}
+                                            onChange={(e) => handleSliderChange(risk.id, e.target.value)}
+                                            style={{
+                                                flex: 1,
+                                                accentColor: color,
+                                                cursor: "pointer",
+                                                height: "6px"
+                                            }}
+                                        />
+                                        <span style={{ fontSize: "0.85rem", color: "var(--text-muted)", width: "40px", fontWeight: val >= 66 ? "bold" : "normal" }}>High</span>
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
+                </div>
             );
         };
 
