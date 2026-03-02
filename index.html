@@ -309,12 +309,16 @@
 
         const D3Survey = () => {
             const { activePage } = useContext(AppContext);
+            const location = useLocation();
 
             // Extract areas from NAVIGATION
             const allAreas = NAVIGATION.Pillars.flatMap(p => p.items);
 
-            // Try to match activePage to an area
-            const initialMatch = allAreas.find(a => a.label === activePage);
+            // Try to match activePage to an area first via route, then via activePage ID prefix
+            const initialMatch = allAreas.find(a =>
+                (location.pathname === a.path) ||
+                (activePage && activePage.startsWith(a.id))
+            );
 
             const [selectedArea, setSelectedArea] = useState(initialMatch ? initialMatch.id : "A1");
             const [questions, setQuestions] = useState([]);
