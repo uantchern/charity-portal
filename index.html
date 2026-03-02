@@ -2276,8 +2276,16 @@
 
         // Main Layout
         const Layout = () => {
-            const { mobileMenuOpen, setMobileMenuOpen } = useContext(AppContext);
+            const { mobileMenuOpen, setMobileMenuOpen, openApp } = useContext(AppContext);
             const location = useLocation();
+
+            useEffect(() => {
+                const searchParams = new URLSearchParams(location.search);
+                const openParam = searchParams.get('open');
+                if (openParam) {
+                    openApp(openParam.toUpperCase());
+                }
+            }, [location.search, openApp]);
 
             return (
                 <div className="app-container">
