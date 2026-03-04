@@ -1,0 +1,1438 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GovernUp Dashboard - Phase 1</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- React & ReactDOM -->
+    <!-- React & ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@18.2.0/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
+
+    <!-- React Router DOM (includes Remix Router) -->
+    <script crossorigin src="https://unpkg.com/@remix-run/router@1.0.3/dist/router.umd.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-router@6.4.3/dist/umd/react-router.production.min.js"></script>
+    <script crossorigin
+        src="https://unpkg.com/react-router-dom@6.4.3/dist/umd/react-router-dom.production.min.js"></script>
+
+    <!-- Babel -->
+    <script src="https://unpkg.com/@babel/standalone@7.23.3/babel.min.js"></script>
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <link rel="stylesheet" href="styles.css?v=639079047528290049">
+</head>
+
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        const { useState, useEffect, useContext, createContext, useMemo } = React;
+        const { HashRouter, Routes, Route, Link, useLocation, useNavigate } = window.ReactRouterDOM;
+        // --- SVGs ---
+        const IconSvg = ({ children, size = 20 }) => (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                {children}
+            </svg>
+        );
+        const Target = ({ size }) => <IconSvg size={size}><circle cx="12" cy="12" r="10" /><circle cx="12" cy="12" r="6" /><circle cx="12" cy="12" r="2" /></IconSvg>;
+        const Settings = ({ size }) => <IconSvg size={size}><circle cx="12" cy="12" r="3" /><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" /></IconSvg>;
+        const Shield = ({ size }) => <IconSvg size={size}><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></IconSvg>;
+        const CloudLightning = ({ size }) => <IconSvg size={size}><path d="M19 16.9A5 5 0 0 0 18 7h-1.26a8 8 0 1 0-11.62 9" /><polyline points="13 11 9 17 15 17 11 23" /></IconSvg>;
+        const MapIcon = ({ size }) => <IconSvg size={size}><polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21" /><line x1="9" y1="3" x2="9" y2="18" /><line x1="15" y1="6" x2="15" y2="21" /></IconSvg>;
+        const ClipboardList = ({ size }) => <IconSvg size={size}><rect x="8" y="2" width="8" height="4" rx="1" ry="1" /><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" /><path d="M12 11h4" /><path d="M12 16h4" /><path d="M8 11h.01" /><path d="M8 16h.01" /></IconSvg>;
+        const BarChart2 = ({ size }) => <IconSvg size={size}><line x1="18" y1="20" x2="18" y2="10" /><line x1="12" y1="20" x2="12" y2="4" /><line x1="6" y1="20" x2="6" y2="14" /></IconSvg>;
+        const Layers = ({ size }) => <IconSvg size={size}><polygon points="12 2 2 7 12 12 22 7 12 2" /><polyline points="2 12 12 17 22 12" /><polyline points="2 17 12 22 22 17" /></IconSvg>;
+        const ChevronDown = ({ size }) => <IconSvg size={size}><polyline points="6 9 12 15 18 9" /></IconSvg>;
+        const ChevronRight = ({ size }) => <IconSvg size={size}><polyline points="9 18 15 12 9 6" /></IconSvg>;
+        const X = ({ size }) => <IconSvg size={size}><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></IconSvg>;
+        const LayoutDashboard = ({ size }) => <IconSvg size={size}><rect x="3" y="3" width="7" height="9" /><rect x="14" y="3" width="7" height="5" /><rect x="14" y="12" width="7" height="9" /><rect x="3" y="16" width="7" height="5" /></IconSvg>;
+        const Activity = ({ size }) => <IconSvg size={size}><polyline points="22 12 18 12 15 21 9 3 6 12 2 12" /></IconSvg>;
+        const Users = ({ size }) => <IconSvg size={size}><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></IconSvg>;
+        const MenuIcon = ({ size }) => <IconSvg size={size}><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="18" x2="21" y2="18" /></IconSvg>;
+
+        // -----------------------------------------------------------------------------
+        // Global Context / State Management
+        // -----------------------------------------------------------------------------
+        const AppContext = createContext();
+
+        const AppProvider = ({ children }) => {
+            const [activePage, setActivePage] = useState("Dashboard Home");
+            const [activePillar, setActivePillar] = useState(null);
+            const [drawerOpen, setDrawerOpen] = useState(false);
+            const [activeGlobalApp, setActiveGlobalApp] = useState(null);
+            const [globalAppContext, setGlobalAppContext] = useState({});
+            const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+            const openApp = (appId, context = {}) => {
+                setActiveGlobalApp(appId);
+                setGlobalAppContext(context);
+                setDrawerOpen(true);
+            };
+
+            useEffect(() => {
+                const handleMessage = (event) => {
+                    if (event.data && event.data.type === 'OPEN_APP') {
+                        openApp(event.data.appId, event.data.context);
+                    }
+                };
+                window.addEventListener('message', handleMessage);
+                return () => window.removeEventListener('message', handleMessage);
+            }, []);
+
+            const closeDrawer = () => {
+                setDrawerOpen(false);
+                setTimeout(() => {
+                    setActiveGlobalApp(null);
+                    setGlobalAppContext({});
+                }, 400); // Wait for transition
+            };
+
+            const value = {
+                activePage, setActivePage,
+                activePillar, setActivePillar,
+                drawerOpen, openApp, closeDrawer, activeGlobalApp, globalAppContext,
+                mobileMenuOpen, setMobileMenuOpen
+            };
+
+            return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
+        };
+
+        // -----------------------------------------------------------------------------
+        // Data Structure
+        // -----------------------------------------------------------------------------
+        const NAVIGATION = {
+            Pillars: [
+                {
+                    id: "A",
+                    title: "A Purpose & Mission",
+                    icon: <Target size={20} />,
+                    items: [
+                        { id: "A1", path: "/a1", label: "A1 Service Delivery" },
+                        { id: "A2", path: "/a2", label: "A2 Inputs" },
+                        { id: "A3", path: "/a3", label: "A3 Outputs" },
+                        { id: "A4", path: "/a4", label: "A4 Outcomes" },
+                        { id: "A5", path: "/a5", label: "A5 Impact" }
+                    ]
+                },
+                {
+                    id: "B",
+                    title: "B Operations",
+                    icon: <Settings size={20} />,
+                    items: [
+                        { id: "B1", path: "/b1", label: "B1 Finance & Grants", description: "Manage financial sustainability. Track core funding, project grants, budgets, and financial reporting compliance to ensure long-term viability." },
+                        { id: "B2", path: "/b2", label: "B2 Fund Raising", description: "Cultivate donor relationships and manage fundraising campaigns. Track donor retention, campaign ROI, and adherence to fundraising regulations." },
+                        { id: "B3", path: "/b3", label: "B3 Volunteer Management", description: "Attract, retain, and develop volunteers. Manage recruitment, training, scheduling, and volunteer impact measurement." },
+                        { id: "B4", path: "/b4", label: "B4 Marketing & Communications", description: "Amplify your charity's voice. Manage public relations, social media, campaign reach, and brand reputation to drive awareness and engagement." },
+                        { id: "B5", path: "/b5", label: "B5 Human Resource", description: "Build a strong team. Manage staff recruitment, retention, professional development, well-being, and compliance with employment laws." }
+                    ]
+                },
+                {
+                    id: "C",
+                    title: "C Governance",
+                    icon: <Shield size={20} />,
+                    items: [
+                        { id: "C1", path: "/c1", label: "C1 Charity Governance Code", description: "Align with the Code of Governance for Charities and IPCs. Ensure board effectiveness, transparency, and accountability." },
+                        { id: "C2", path: "/c2", label: "C2 Governance Evaluation Checklist", description: "Prepare for and manage the mandatory annual GEC submission. Track compliance status across key governance principles." },
+                        { id: "C3", path: "/c3", label: "C3 Standard Operating Procedures", description: "Standardise internal processes. Maintain a central repository of operational guidelines to ensure consistency and mitigate risks." },
+                        { id: "C4", path: "/c4", label: "C4 Constitution", description: "Manage the foundation of your charity. Track updates to the governing instrument and ensure all activities align with the defined charitable objects." },
+                        { id: "C5", path: "/c5", label: "C5 Terms of Reference", description: "Define committee scopes. Manage the roles, responsibilities, and authority limits of sub-committees supporting the Board." },
+                        { id: "C6", path: "/c6", label: "C6 Strategic Plans", description: "Chart the long-term course. Document multi-year strategic goals, align resources, and track progress against strategic milestones." }
+                    ]
+                }
+            ],
+            GlobalApps: [
+                { id: "D1", label: "D1 QUESTION STORMER" },
+                { id: "D2", label: "D2 WAYFINDER" },
+                { id: "D3", label: "D3 SURVEY" },
+                { id: "D4", label: "D4 ANALYZER" }
+            ]
+        };
+
+        // Helper Icon Mapper
+        const getIconForPath = (path) => {
+            if (path.startsWith('/a')) return <Activity size={32} />;
+            if (path.startsWith('/b')) return <Users size={32} />;
+            if (path.startsWith('/c')) return <Shield size={32} />;
+            return <LayoutDashboard size={32} />;
+        };
+
+        // -----------------------------------------------------------------------------
+        // Components
+        // -----------------------------------------------------------------------------
+
+        const Sidebar = () => {
+            const { activePillar, setActivePillar, setMobileMenuOpen } = useContext(AppContext);
+            const location = useLocation();
+
+            const toggleAccordion = (id) => {
+                setActivePillar(activePillar === id ? null : id);
+            };
+
+            const handleNavigate = () => {
+                if (window.innerWidth <= 768) {
+                    setMobileMenuOpen(false);
+                }
+            };
+
+            // Auto-expand pillar based on current route
+            useEffect(() => {
+                NAVIGATION.Pillars.forEach(pillar => {
+                    const match = pillar.items.find(item => item.path === location.pathname);
+                    if (match) {
+                        setActivePillar(pillar.id);
+                    }
+                });
+            }, [location.pathname]);
+
+            return (
+                <aside className="sidebar">
+                    <Link to="/" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }} onClick={handleNavigate}>
+                        <div className="brand">
+                            <div className="brand-icon"><Layers size={24} /></div>
+                            GovernUp
+                        </div>
+                    </Link>
+
+                    <div className="nav-scroll">
+                        {NAVIGATION.Pillars.map((pillar) => {
+                            const isOpen = activePillar === pillar.id;
+                            return (
+                                <div key={pillar.id} className="nav-pillar">
+                                    <div
+                                        className={`pillar-header ${isOpen ? 'active' : ''}`}
+                                        onClick={() => toggleAccordion(pillar.id)}
+                                    >
+                                        <div className="pillar-title">
+                                            <i>{pillar.icon}</i>
+                                            {pillar.title}
+                                        </div>
+                                        {isOpen ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
+                                    </div>
+
+                                    <div className={`nav-items ${isOpen ? 'open' : ''}`}>
+                                        {pillar.items.map(item => {
+                                            const isActive = location.pathname === item.path;
+                                            return (
+                                                <Link
+                                                    key={item.id}
+                                                    to={item.path}
+                                                    className={`nav-item ${isActive ? 'active' : ''}`}
+                                                    onClick={handleNavigate}
+                                                >
+                                                    {item.label}
+                                                </Link>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
+                </aside>
+            );
+        };
+
+        const TopBar = () => {
+            const { activePage, openApp, setMobileMenuOpen } = useContext(AppContext);
+            const location = useLocation();
+
+            // Find current pillar based on route
+            let currentPillarTitle = "";
+            NAVIGATION.Pillars.forEach(pillar => {
+                const match = pillar.items.find(item => item.path === location.pathname);
+                if (match) currentPillarTitle = pillar.title;
+            });
+
+            return (
+                <header className="top-bar">
+                    <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+                        <button className="mobile-menu-btn" onClick={() => setMobileMenuOpen(prev => !prev)}>
+                            <MenuIcon size={24} />
+                        </button>
+
+                        <div className="breadcrumbs" style={{
+                            display: "flex", flexWrap: "wrap", alignItems: "center", gap: "0.5rem",
+                            fontSize: "0.80rem", color: "var(--text-muted)", fontFamily: "var(--font-mono)",
+                            textTransform: "uppercase", letterSpacing: "0.05em"
+                        }}>
+                            <Link to="/" style={{ color: "var(--text-muted)", textDecoration: "none", display: "flex", alignItems: "center", gap: "0.25rem", transition: "color 0.2s" }} onMouseOver={(e) => e.currentTarget.style.color = "var(--text-main)"} onMouseOut={(e) => e.currentTarget.style.color = "var(--text-muted)"}>
+                                <Layers size={14} /> PORTAL
+                            </Link>
+
+                            {currentPillarTitle && (
+                                <>
+                                    <ChevronRight size={14} style={{ color: "rgba(255,255,255,0.2)" }} />
+                                    <span style={{ color: "var(--text-main)" }}>{currentPillarTitle}</span>
+                                </>
+                            )}
+
+                            {activePage && activePage !== "Global Overview" && (
+                                <>
+                                    <ChevronRight size={14} style={{ color: "rgba(255,255,255,0.2)" }} />
+                                    <span style={{ color: "var(--accent-cyan)", fontWeight: 600 }}>{activePage}</span>
+                                </>
+                            )}
+
+                            {activePage === "Global Overview" && (
+                                <>
+                                    <ChevronRight size={14} style={{ color: "rgba(255,255,255,0.2)" }} />
+                                    <span style={{ color: "var(--text-main)", fontWeight: 600 }}>OVERVIEW</span>
+                                </>
+                            )}
+                        </div>
+                    </div>
+
+                    <div className="global-dock">
+                        {NAVIGATION.GlobalApps.map(app => (
+                            <button
+                                key={app.id}
+                                className="dock-btn text-dock-btn"
+                                onClick={() => openApp(app.id)}
+                            >
+                                {app.label}
+                            </button>
+                        ))}
+                    </div>
+                </header>
+            );
+        };
+
+        const D3Survey = () => {
+            const { activePage } = useContext(AppContext);
+            // Replace local survey builder with our external survey app
+            return (
+                <div className="analyzer-container fade-in" style={{ padding: 0, height: 'calc(100dvh - 120px)', border: 'none', borderRadius: '12px', overflow: 'hidden' }}>
+                    <iframe
+                        src="./survey.html"
+                        style={{ width: '100%', height: '100%', border: 'none', background: 'transparent' }}
+                        title="D3 Survey Manager"
+                    />
+                </div>
+            );
+        };
+
+        // Context-Aware Sliding Drawer Output
+        const D4Analyzer = () => {
+            const { openApp } = useContext(AppContext);
+            const [selectedNodes, setSelectedNodes] = useState([]);
+
+            const allNodes = [
+                { code: "A1", label: "Service Delivery" },
+                { code: "A2", label: "Inputs" },
+                { code: "A3", label: "Outputs" },
+                { code: "A4", label: "Outcomes" },
+                { code: "A5", label: "Impact" },
+                { code: "B1", label: "Finance & Grants" },
+                { code: "B2", label: "Fund Raising" },
+                { code: "B3", label: "Volunteer Mgt" },
+                { code: "B4", label: "Marketing & Comms" },
+                { code: "B5", label: "HR" },
+                { code: "C1", label: "Gov. Code" },
+                { code: "C2", label: "Eval Checklist" },
+                { code: "C3", label: "SOPs" },
+                { code: "C4", label: "Constitution" },
+                { code: "C5", label: "Terms of Ref" },
+                { code: "C6", label: "Strategic Plans" }
+            ];
+
+            const toggleNode = (code) => {
+                setSelectedNodes(prev =>
+                    prev.includes(code) ? prev.filter(p => p !== code) : [...prev, code]
+                );
+            };
+
+            // Evaluate Insight
+            let insight = "";
+            let questions = [];
+
+            const hasA2 = selectedNodes.includes("A2");
+            const hasA5 = selectedNodes.includes("A5");
+            const hasB1 = selectedNodes.includes("B1");
+
+            if (hasA2 && hasA5 && hasB1) {
+                insight = "It appears that you are interested in whether the TOC (Theory of Change) is aligned with the impact and whether money was well spent.";
+                questions = [
+                    "How do our current inputs directly translate into our measured outcomes?",
+                    "Are there gaps between our financial spending and our perceived impact?",
+                    "What metrics should we establish to bridge the connection between cost and mission effectiveness?"
+                ];
+            } else if (selectedNodes.length > 0) {
+                const names = selectedNodes.map(code => {
+                    const node = allNodes.find(n => n.code === code);
+                    return node ? node.label : code;
+                });
+
+                let namesStr = "";
+                if (names.length === 1) namesStr = names[0];
+                else if (names.length === 2) namesStr = `${names[0]} and ${names[1]}`;
+                else namesStr = names.slice(0, -1).join(', ') + ', and ' + names[names.length - 1];
+
+                insight = `It appears you are exploring the intersection of ${namesStr}. Consider how these specific components interact and influence each other.`;
+                questions = [
+                    `How does our approach to ${names[0]} directly impact our goals in the other selected areas?`,
+                    `Are there systemic bottlenecks or misalignments between these specific pillars?`,
+                    `If we significantly improved ${names[0]}, what secondary effects would we see across the related modules?`
+                ];
+            }
+
+            return (
+                <div className="analyzer-container fade-in">
+                    <p style={{ color: "var(--text-muted)", marginBottom: "1.5rem", lineHeight: 1.6 }}>
+                        Select a combination of nodes below. The portal will respond with prompts for you to consider, letting the paths reveal the destination.
+                    </p>
+                    <div className="nodes-grid">
+                        {allNodes.map(node => (
+                            <button
+                                key={node.code}
+                                className={`node-pill ${selectedNodes.includes(node.code) ? 'active' : ''}`}
+                                onClick={() => toggleNode(node.code)}
+                            >
+                                <span className="node-code">{node.code}</span>
+                                {node.label}
+                            </button>
+                        ))}
+                    </div>
+
+                    {selectedNodes.length > 0 && (
+                        <div className="analyzer-result fade-in" style={{ marginTop: "3rem" }}>
+                            <h4 style={{ color: "var(--accent-purple)", marginBottom: "0.75rem", fontFamily: "var(--font-mono)", textTransform: "uppercase", fontSize: "0.85rem", letterSpacing: "0.05em" }}>Analysis Synthesis</h4>
+                            <div className="insight-box">
+                                {insight}
+                            </div>
+
+                            <h4 style={{ color: "var(--text-main)", marginBottom: "1rem", marginTop: "2.5rem", fontWeight: 600, fontSize: "1.05rem" }}>
+                                Would you like to question storm any of the following suggested questions?
+                            </h4>
+                            <ul className="suggested-questions">
+                                {questions.map((q, idx) => (
+                                    <li key={idx}>
+                                        <div style={{ color: "var(--text-main)", fontWeight: 500 }}>"{q}"</div>
+                                        <button className="storm-btn" onClick={() => openApp('D1', { question: q })}>
+                                            <CloudLightning size={16} /> Storm This
+                                        </button>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
+                </div>
+            );
+        };
+
+        const D1QuestionStormer = () => {
+            const { activePage, globalAppContext } = useContext(AppContext);
+            const [inputValue, setInputValue] = useState("");
+            const [storms, setStorms] = useState([]);
+
+            // Generate initial prompt based on usage context or passthrough
+            const defaultPrompt = (globalAppContext && globalAppContext.question)
+                ? globalAppContext.question
+                : `How does our ${activePage} framework align with our core impact goals?`;
+
+            useEffect(() => {
+                setInputValue(defaultPrompt);
+            }, [defaultPrompt]);
+
+            const handleStorm = (qToStorm) => {
+                const query = typeof qToStorm === 'string' ? qToStorm : inputValue;
+                if (!query.trim()) return;
+
+                const followUpPrompts = [
+                    "What metrics would immediately prove our current hypothesis wrong?",
+                    "How might a newly founded organization solve this entirely differently?",
+                    "Which stakeholder group is completely missing from this equation?",
+                    "If we had only 10% of our budget, how would we maintain this impact?",
+                    "What is the most risky assumption embedded in our approach here?"
+                ];
+                const randomPrompt = followUpPrompts[Math.floor(Math.random() * followUpPrompts.length)];
+
+                let matchedNode = "c1";
+                const qMatch = query.match(/\b([a-c][1-6])\b/i);
+                const pageMatch = activePage.match(/^([a-c][1-6])/i);
+
+                if (qMatch) {
+                    matchedNode = qMatch[1].toLowerCase();
+                } else if (pageMatch) {
+                    matchedNode = pageMatch[1].toLowerCase();
+                } else {
+                    const codes = ["a1", "a2", "a3", "a4", "a5", "b1", "b2", "b3", "b4", "b5", "c1", "c2", "c3", "c4", "c5", "c6"];
+                    matchedNode = codes[Math.floor(Math.random() * codes.length)];
+                }
+
+                const newStorm = {
+                    question: query,
+                    answer: `Insight: Addressing "${query}" often reveals new strategic pathways. Try exploring the ${matchedNode.toUpperCase()} module for structural answers.`,
+                    link: `#/${matchedNode}`, // Dynamic link
+                    timestamp: new Date().toLocaleTimeString(),
+                    suggestedQuestion: randomPrompt
+                };
+
+                setStorms([newStorm, ...storms]);
+                if (typeof qToStorm !== 'string') setInputValue("");
+            };
+
+            return (
+                <div className="analyzer-container fade-in">
+                    <p style={{ color: "var(--text-muted)", marginBottom: "1.5rem", lineHeight: 1.6 }}>
+                        Question Storming generates answers by challenging existing constraints.
+                        Start with the contextual prompt or enter your own.
+                    </p>
+
+                    <div className="storm-input-group">
+                        <textarea
+                            className="storm-textarea textarea"
+                            rows="3"
+                            value={inputValue}
+                            onChange={(e) => setInputValue(e.target.value)}
+                            placeholder="Type a strategic question to storm..."
+                            style={{ width: "100%", padding: "1rem", borderRadius: "8px", background: "rgba(0,0,0,0.2)", border: "1px solid var(--border-color)", color: "var(--text-main)", fontFamily: "var(--font-mono)", fontSize: "0.9rem", resize: "none" }}
+                        />
+                        <div style={{ display: "flex", justifyContent: "flex-end", marginTop: "1rem" }}>
+                            <button className="storm-btn" onClick={handleStorm}>
+                                <CloudLightning size={16} /> Storm Now
+                            </button>
+                        </div>
+                    </div>
+
+                    {storms.length > 0 && (
+                        <div className="analyzer-result fade-in" style={{ marginTop: "3rem" }}>
+                            <h4 style={{ color: "var(--accent-cyan)", marginBottom: "1.25rem", fontFamily: "var(--font-mono)", textTransform: "uppercase", fontSize: "0.85rem", letterSpacing: "0.05em" }}>Session History</h4>
+                            <ul className="suggested-questions">
+                                {storms.map((storm, idx) => (
+                                    <li key={idx} style={{ borderLeft: "3px solid var(--accent-emerald)" }}>
+                                        <div style={{ fontSize: "0.8rem", color: "var(--text-muted)", marginBottom: "0.5rem" }}>{storm.timestamp}</div>
+                                        <div style={{ color: "var(--text-main)", fontWeight: 600, marginBottom: "0.5rem", fontSize: "1.05rem" }}>Q: {storm.question}</div>
+                                        <div style={{ color: "var(--accent-emerald-glow)", lineHeight: 1.5 }}>A: {storm.answer}</div>
+                                        <a href={storm.link} target="_blank" style={{ color: "var(--accent-cyan)", textDecoration: "none", fontSize: "0.85rem", marginTop: "0.5rem", marginBottom: "1rem", display: "inline-block", fontWeight: 600 }}>Explore Resource &rarr;</a>
+
+                                        {storm.suggestedQuestion && (
+                                            <div style={{ marginTop: "1rem", paddingTop: "1.25rem", borderTop: "1px dashed rgba(255,255,255,0.1)", width: "100%" }}>
+                                                <div style={{ color: "var(--text-muted)", fontSize: "0.85rem", marginBottom: "0.5rem", textTransform: "uppercase", letterSpacing: "0.05em", fontFamily: "var(--font-mono)" }}>Suggested Next Storm</div>
+                                                <div style={{ color: "var(--text-main)", fontWeight: 500, fontStyle: "italic", marginBottom: "1rem" }}>"{storm.suggestedQuestion}"</div>
+                                                <button className="storm-btn" onClick={() => handleStorm(storm.suggestedQuestion)}>
+                                                    <CloudLightning size={16} /> Storm This
+                                                </button>
+                                            </div>
+                                        )}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
+                </div>
+            );
+        };
+
+        const D2Wayfinder = () => {
+            return (
+                <div className="analyzer-container fade-in" style={{ padding: 0, height: 'calc(100dvh - 120px)', border: '1px solid var(--border-color)', borderRadius: '12px', overflow: 'hidden' }}>
+                    <iframe
+                        src="./wayfinder.html?v=3"
+                        style={{ width: '100%', height: '100%', border: 'none' }}
+                        title="D2 Wayfinder Ecosystem Mapping"
+                    />
+                </div>
+            );
+        };
+
+        const AppDrawer = () => {
+            const { drawerOpen, closeDrawer, activeGlobalApp, activePage } = useContext(AppContext);
+            const appData = NAVIGATION.GlobalApps.find(app => app.id === activeGlobalApp);
+
+            return (
+                <>
+                    <div className={`drawer-overlay ${drawerOpen ? 'open' : ''}`} onClick={closeDrawer}></div>
+                    <div className={`drawer ${drawerOpen ? 'open' : ''} ${activeGlobalApp === 'D2' ? 'maximized' : ''}`}>
+
+                        {appData && (
+                            <div className="drawer-header">
+                                <div className="drawer-title-group">
+                                    <h3 style={{ color: "var(--accent-cyan)" }}>
+                                        {appData.label}
+                                    </h3>
+                                    {appData.id === 'D2' && (
+                                        <div className="drawer-subtitle">
+                                            "You don’t pick the path because of the destination; you discover the destination because of the path."
+                                        </div>
+                                    )}
+                                </div>
+                                <button className="close-btn" onClick={closeDrawer}>
+                                    <X size={20} />
+                                </button>
+                            </div>
+                        )}
+
+                        <div className="drawer-content">
+                            {activeGlobalApp === "D4" ? (
+                                <D4Analyzer />
+                            ) : activeGlobalApp === "D3" ? (
+                                <D3Survey />
+                            ) : activeGlobalApp === "D1" ? (
+                                <D1QuestionStormer />
+                            ) : activeGlobalApp === "D2" ? (
+                                <D2Wayfinder />
+                            ) : appData ? (
+                                <div className="system-card">
+                                    <div className="system-card-header">
+                                        <span>System Analytics</span>
+                                        <span>Context Ready</span>
+                                    </div>
+                                    <p style={{ color: "var(--text-muted)", marginBottom: "1.5rem", fontSize: "0.95rem", lineHeight: 1.6 }}>
+                                        This is a structural placeholder for the <b>{appData.label}</b> application shell.
+                                        In Phase 2, this will load the functional app capable of deeply analyzing context.
+                                    </p>
+
+                                    <div className="code-block">
+                                        {`{
+  "request": "${appData.label.toUpperCase()}_INIT",
+  "status": "AWAITING_PHASE_2",
+  "injected_context": {
+    "current_module": "${activePage}",
+    "timestamp": "${new Date().toISOString()}"
+  },
+  "action": "RENDER_PLACEHOLDER"
+}`}
+                                    </div>
+
+                                    <div className="status-badge" style={{ marginTop: "2rem", width: "100%", justifyContent: "center" }}>
+                                        <span>Cross-Pollination Engine Standing By</span>
+                                    </div>
+                                </div>
+                            ) : (
+                                <div>Loading Context...</div>
+                            )}
+                        </div>
+                    </div>
+                </>
+            );
+        };
+
+        // Represents pages A1-C6
+        const PlaceholderView = ({ title, pillarName, description }) => {
+            const { setActivePage } = useContext(AppContext);
+            const location = useLocation();
+
+            useEffect(() => {
+                setActivePage(title);
+            }, [title, setActivePage]);
+
+            return (
+                <div className="placeholder-card" key={location.pathname}>
+                    <div className="glow-circle"></div>
+                    <div className="placeholder-icon">
+                        {getIconForPath(location.pathname)}
+                    </div>
+                    <h2 className="placeholder-title" style={{ marginBottom: "1rem" }}>{title}</h2>
+                    {description && (
+                        <p style={{ color: "var(--text-main)", fontSize: "1.05rem", lineHeight: 1.6, marginBottom: "1.5rem", maxWidth: "600px", marginInline: "auto" }}>
+                            {description}
+                        </p>
+                    )}
+                    <p className="placeholder-subtitle">
+                        Architectural shell verified. This interface route is stabilized and reserved for Phase 2 functional development of the {pillarName} module.
+                    </p>
+
+                    <div className="context-badge" style={{ marginTop: "3rem", background: "transparent", border: "1px solid var(--border-active)" }}>
+                        <span className="pulse-dot"></span>
+                        Route Node Established
+                    </div>
+                </div>
+            );
+        };
+
+        const A1ServiceDelivery = () => {
+            const { setActivePage } = useContext(AppContext);
+
+            useEffect(() => {
+                setActivePage("A1 Service Delivery");
+            }, [setActivePage]);
+
+            const frameworks = [
+                {
+                    id: "purpose",
+                    title: "Purpose & Mission",
+                    icon: <Target size={24} />,
+                    color: "var(--accent-emerald)",
+                    description: "The fundamental 'Why'. This defines your organisation's core existence beyond just delivering services, providing a guiding north star.",
+                    sectorContext: "A well-defined purpose aligns stakeholders, inspires volunteers, and sets crucial boundaries for what the charity will and will not do in a crowded ecosystem."
+                },
+                {
+                    id: "toc",
+                    title: "Theory of Change (TOC)",
+                    icon: <Layers size={24} />,
+                    color: "var(--accent-cyan)",
+                    description: "The 'How'. A logical roadmap that illustrates how and why a desired change is expected to happen in a particular context.",
+                    sectorContext: "TOC maps the causal links between Inputs, Activities, Outputs, Outcomes, and Impacts. It is essential for strategic planning and demonstrating social value to funders."
+                },
+                {
+                    id: "sef",
+                    title: "Sector Evaluation Framework (SEF)",
+                    icon: <BarChart2 size={24} />,
+                    color: "#f59e0b",
+                    description: "The 'Measurement'. Developed by NCSS, SEF establishes a common language for measuring outcomes and impact across the social service sector.",
+                    sectorContext: "It recommends standardised, validated outcome metrics for common programmes. It monitors Quality of Life (QOL) for service users, ensuring high-quality interventions and aiding landscape planning."
+                },
+                {
+                    id: "impact",
+                    title: "Social Impact",
+                    icon: <Users size={24} />,
+                    color: "var(--accent-purple)",
+                    description: "The 'Result'. The ultimate, long-term, or systemic change brought about by the charity's interventions.",
+                    sectorContext: "Impact involves moving beyond simply measuring 'activities done' (outputs) to understanding the sustained change in beneficiaries' lives or societal structures, driven by the TOC and measured via SEF."
+                }
+            ];
+
+            return (
+                <div className="fade-in" style={{ paddingBottom: "2rem", height: "100%", overflowY: "auto", paddingRight: "10px" }}>
+                    <div style={{ marginBottom: "2.5rem" }}>
+                        <h1 style={{ fontSize: "2.2rem", fontWeight: 800, marginBottom: "0.75rem", color: "var(--text-main)" }}>A1 Service Delivery</h1>
+                        <p style={{ color: "var(--text-muted)", fontSize: "1.05rem", maxWidth: "800px", lineHeight: 1.6 }}>
+                            Service Delivery is the heartbeat of a charity. To be effective, it must be anchored in four interrelated strategic foundations. Review the industry standard frameworks below to align your delivery model.
+                        </p>
+                    </div>
+
+                    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 280px), 1fr))", gap: "1.5rem" }}>
+                        {frameworks.map((fw) => (
+                            <div key={fw.id} style={{
+                                background: "rgba(255,255,255,0.03)",
+                                borderRadius: "16px",
+                                border: "1px solid var(--border-color)",
+                                borderTop: `4px solid ${fw.color}`,
+                                padding: "1.5rem",
+                                display: "flex",
+                                flexDirection: "column",
+                                gap: "1rem",
+                                transition: "var(--transition-smooth)"
+                            }} className="system-card">
+                                <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+                                    <div style={{ color: fw.color, background: "rgba(0,0,0,0.3)", padding: "0.75rem", borderRadius: "12px", border: "1px solid rgba(255,255,255,0.05)" }}>
+                                        {fw.icon}
+                                    </div>
+                                    <h3 style={{ color: "var(--text-main)", fontSize: "1.2rem", fontWeight: 700 }}>
+                                        {fw.title}
+                                    </h3>
+                                </div>
+                                <p style={{ color: "var(--text-main)", fontSize: "0.95rem", lineHeight: 1.6, fontWeight: 500, minHeight: "80px" }}>
+                                    {fw.description}
+                                </p>
+                                <div style={{
+                                    background: "rgba(0,0,0,0.2)",
+                                    padding: "1rem",
+                                    borderRadius: "8px",
+                                    borderLeft: `2px solid ${fw.color}`,
+                                    marginTop: "auto"
+                                }}>
+                                    <h4 style={{ color: "var(--text-muted)", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: "0.5rem" }}>Sector Context</h4>
+                                    <p style={{ color: "var(--text-muted)", fontSize: "0.85rem", lineHeight: 1.5 }}>
+                                        {fw.sectorContext}
+                                    </p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            );
+        };
+
+        const A2Inputs = () => {
+            const { setActivePage } = useContext(AppContext);
+            useEffect(() => setActivePage("A2 Inputs"), []);
+            return (
+                <OutlineView
+                    title="A2 Inputs"
+                    desc="Inputs are the resources committed to your programme. Understand the capital required to run your operations effectively."
+                    sections={[
+                        { title: "Definitions of Key Terms", content: "Financial Capital: Cash, grants, and funding. Human Capital: Staff time, volunteer hours, and expertise. Physical Capital: Facilities, equipment, and infrastructure. Intellectual Capital: Proprietary programs, methodologies, and data." },
+                        { title: "Best Practices & Useful Resources", content: "Meticulously track both direct and indirect costs. Quantify in-kind donations and volunteer time to represent the true cost of program delivery. Regularly audit resource utilization against strategic goals." }
+                    ]}
+                />
+            );
+        };
+
+        const A3Outputs = () => {
+            const { setActivePage } = useContext(AppContext);
+            useEffect(() => setActivePage("A3 Outputs"), []);
+            return (
+                <OutlineView
+                    title="A3 Outputs"
+                    desc="Outputs are the direct, quantifiable products of your activities. Track the volume of work delivered."
+                    sections={[
+                        { title: "Definitions of Key Terms", content: "Outputs: Direct, quantifiable products or services delivered (e.g., number of beneficiaries served, training hours). Activities: The actions taken to deliver the outputs. Targets: Expected volume or frequency of service delivery." },
+                        { title: "Best Practices & Useful Resources", content: "Keep output metrics distinct from outcomes; outputs measure volume, not change. Establish robust CRM and data collection mechanisms for real-time tracking. Ensure outputs directly map to intended activities in the Theory of Change." }
+                    ]}
+                />
+            );
+        };
+
+        const A4Outcomes = () => {
+            const { setActivePage } = useContext(AppContext);
+            useEffect(() => setActivePage("A4 Outcomes"), []);
+            return (
+                <OutlineView
+                    title="A4 Outcomes"
+                    desc="Outcomes reflect the actual changes in your beneficiaries. Measure shifts in knowledge, behaviour, and condition."
+                    sections={[
+                        { title: "Definitions of Key Terms", content: "Outcomes: Changes in knowledge, behavior, condition, or status resulting from your activities. Baselines: The starting point before intervention. Indicators: Specific, measurable markers of change." },
+                        { title: "Best Practices & Useful Resources", content: "Use standardized/validated measurement tools (like NCSS SEF, WHO-5, GAD-7) where possible. Focus on outcomes plausibly attributable to your intervention. Regularly assess baseline data before service delivery begins." }
+                    ]}
+                />
+            );
+        };
+
+        const A5Impact = () => {
+            const { setActivePage } = useContext(AppContext);
+            useEffect(() => setActivePage("A5 Impact"), []);
+            return (
+                <OutlineView
+                    title="A5 Impact"
+                    desc="Impact is the ultimate, long-term, or systemic change brought about by your charity's interventions."
+                    sections={[
+                        { title: "Definitions of Key Terms", content: "Impact: Broad, long-term systemic or societal change. WELLBY: Wellbeing Adjusted Life Year, a measure of life satisfaction change. Attribution: The portion of the impact directly caused by your organization versus external elements." },
+                        { title: "Best Practices & Useful Resources", content: "Conduct longitudinal studies to truly understand sustained impact. Avoid overclaiming attribution; acknowledge external environmental factors. Openly incorporate beneficiary voices and lived experiences into your reporting." }
+                    ]}
+                />
+            );
+        };
+
+        const C2GEC = () => {
+            const { setActivePage } = useContext(AppContext);
+            useEffect(() => {
+                setActivePage("C2 Governance Evaluation Checklist");
+            }, [setActivePage]);
+
+            const [complianceState, setComplianceState] = useState({});
+
+            const toggleCompliance = (id) => {
+                setComplianceState(prev => ({
+                    ...prev,
+                    [id]: !prev[id]
+                }));
+            };
+
+            const checklistCategories = [
+                {
+                    title: "Board Governance",
+                    items: [
+                        { id: "bg1", text: "Are there documented terms of reference for the Board and each of its committees?" },
+                        { id: "bg2", text: "Are governing board members submitting themselves for re-nomination and re-appointment at least once every 3 years?" },
+                        { id: "bg3", text: "Does the Board conduct a self-evaluation to assess its performance and effectiveness?" }
+                    ]
+                },
+                {
+                    title: "Conflict of Interest",
+                    items: [
+                        { id: "coi1", text: "Are there documented procedures for board members and staff to declare actual or potential conflicts of interest?" },
+                        { id: "coi2", text: "Do board members abstain from voting or participating in decision-making on matters where they have a conflict of interest?" }
+                    ]
+                },
+                {
+                    title: "Human Resources",
+                    items: [
+                        { id: "hr1", text: "Has the Board approved documented human resource policies for staff?" },
+                        { id: "hr2", text: "Is there a documented Code of Conduct for governing board members, staff, and volunteers?" }
+                    ]
+                },
+                {
+                    title: "Financial Management and Controls",
+                    items: [
+                        { id: "fin1", text: "Does the Board approve an annual budget and regularly monitor the charity's expenditure?" },
+                        { id: "fin2", text: "Does the Board review the charity's internal controls, processes, key programs, and events regularly?" }
+                    ]
+                },
+                {
+                    title: "Transparency and Disclosure",
+                    items: [
+                        { id: "td1", text: "Is the exact remuneration and benefits received by each governing board member disclosed?" },
+                        { id: "td2", text: "Are all donations in kind properly recorded and accounted for?" }
+                    ]
+                }
+            ];
+
+            return (
+                <div className="fade-in" style={{ paddingBottom: "2rem", height: "100%", overflowY: "auto", paddingRight: "10px" }}>
+                    <style>
+                        {`
+                        @keyframes blinkRed {
+                            0% { background-color: rgba(220, 38, 38, 0.2); border-color: rgba(220, 38, 38, 0.4); color: #f87171; box-shadow: 0 0 0px rgba(220, 38, 38, 0); }
+                            50% { background-color: rgba(220, 38, 38, 0.4); border-color: rgba(220, 38, 38, 0.8); color: #fca5a5; box-shadow: 0 0 10px rgba(220, 38, 38, 0.6); }
+                            100% { background-color: rgba(220, 38, 38, 0.2); border-color: rgba(220, 38, 38, 0.4); color: #f87171; box-shadow: 0 0 0px rgba(220, 38, 38, 0); }
+                        }
+                        .btn-not-comply {
+                            animation: blinkRed 1.5s infinite;
+                            padding: 0.5rem 1rem;
+                            border-radius: 6px;
+                            font-size: 0.85rem;
+                            font-weight: 700;
+                            border: 1px solid transparent;
+                            cursor: pointer;
+                            transition: all 0.2s ease;
+                            width: 130px;
+                            text-align: center;
+                        }
+                        .btn-comply {
+                            background-color: rgba(16, 185, 129, 0.2);
+                            border: 1px solid rgba(16, 185, 129, 0.6);
+                            color: var(--accent-emerald);
+                            padding: 0.5rem 1rem;
+                            border-radius: 6px;
+                            font-size: 0.85rem;
+                            font-weight: 700;
+                            cursor: pointer;
+                            transition: all 0.2s ease;
+                            width: 130px;
+                            text-align: center;
+                        }
+                        .btn-comply:hover {
+                            background-color: rgba(16, 185, 129, 0.3);
+                        }
+                        `}
+                    </style>
+
+                    <div style={{ marginBottom: "2.5rem" }}>
+                        <h1 style={{ fontSize: "2.2rem", fontWeight: 800, marginBottom: "0.75rem", color: "var(--text-main)", display: "flex", alignItems: "center", gap: "1rem" }}>
+                            <Shield size={32} color="var(--accent-purple)" />
+                            Governance Evaluation Checklist (GEC)
+                        </h1>
+                        <p style={{ color: "var(--text-muted)", fontSize: "1.05rem", maxWidth: "800px", lineHeight: 1.6 }}>
+                            A mandatory annual review evaluating adherence to the Code of Governance for Charities. Review your compliance status below across all key operational pillars.
+                        </p>
+                    </div>
+
+                    <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
+                        {checklistCategories.map((cat, idx) => (
+                            <div key={idx} style={{ background: "rgba(255,255,255,0.03)", borderRadius: "12px", border: "1px solid var(--border-color)", overflow: "hidden" }}>
+                                <div style={{ background: "rgba(0,0,0,0.3)", padding: "1rem 1.5rem", borderBottom: "1px solid var(--border-color)" }}>
+                                    <h3 style={{ color: "var(--accent-purple)", fontSize: "1.1rem", fontWeight: 600 }}>{cat.title}</h3>
+                                </div>
+                                <div style={{ display: "flex", flexDirection: "column" }}>
+                                    {cat.items.map((item, itemIdx) => {
+                                        const isCompliant = complianceState[item.id] || false;
+                                        return (
+                                            <div key={item.id} style={{
+                                                display: "flex",
+                                                justifyContent: "space-between",
+                                                alignItems: "center",
+                                                gap: "2rem",
+                                                padding: "1.25rem 1.5rem",
+                                                borderBottom: itemIdx < cat.items.length - 1 ? "1px solid rgba(255,255,255,0.05)" : "none",
+                                                background: isCompliant ? "rgba(16, 185, 129, 0.02)" : "transparent"
+                                            }}>
+                                                <p style={{ color: "var(--text-main)", fontSize: "0.95rem", lineHeight: 1.5, flex: 1 }}>{item.text}</p>
+                                                <button
+                                                    onClick={() => toggleCompliance(item.id)}
+                                                    className={isCompliant ? "btn-comply" : "btn-not-comply"}
+                                                >
+                                                    {isCompliant ? "COMPLY" : "NOT COMPLY"}
+                                                </button>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            );
+        };
+
+        const C1Code = () => {
+            const { setActivePage } = useContext(AppContext);
+            useEffect(() => {
+                setActivePage("C1 Charity Governance Code");
+            }, [setActivePage]);
+
+            const [complianceState, setComplianceState] = useState({});
+
+            const toggleCompliance = (id) => {
+                setComplianceState(prev => ({ ...prev, [id]: !prev[id] }));
+            };
+
+            const principles = [
+                { id: "p1", title: "Principle 1: Board Governance", desc: "The Board provides strategic direction, exercises independent judgment, and oversees the charity." },
+                { id: "p2", title: "Principle 2: Conflict of Interest", desc: "The Charity has policies to handle conflicts of interest, ensuring decisions are made in the best interest of the charity." },
+                { id: "p3", title: "Principle 3: Strategic Planning", desc: "The Board periodically reviews and approves the charity's strategic plan and monitors its progress." },
+                { id: "p4", title: "Principle 4: Human Resources", desc: "The charity has documented HR policies and a Code of Conduct." },
+                { id: "p5", title: "Principle 5: Financial Management", desc: "The charity maintains sound financial management and internal controls." },
+                { id: "p6", title: "Principle 6: Public Image & Comm", desc: "The charity communicates effectively with its stakeholders to maintain public trust." },
+            ];
+
+            return (
+                <div className="fade-in" style={{ paddingBottom: "2rem", height: "100%", overflowY: "auto", paddingRight: "10px" }}>
+                    <div style={{ marginBottom: "2.5rem" }}>
+                        <h1 style={{ fontSize: "2.2rem", fontWeight: 800, marginBottom: "0.75rem", color: "var(--text-main)", display: "flex", alignItems: "center", gap: "1rem" }}>
+                            <Shield size={32} color="var(--accent-purple)" />
+                            Charity Governance Code Principles
+                        </h1>
+                        <p style={{ color: "var(--text-muted)", fontSize: "1.05rem", maxWidth: "800px", lineHeight: 1.6 }}>
+                            A set of guidelines to ensure the charity serves its mission, maintains effective leadership, and operates transparently.
+                        </p>
+                    </div>
+
+                    <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+                        {principles.map((p) => {
+                            const isCompliant = complianceState[p.id] || false;
+                            return (
+                                <div key={p.id} style={{
+                                    display: "flex",
+                                    flexWrap: "wrap",
+                                    justifyContent: "space-between",
+                                    alignItems: "center",
+                                    gap: "1rem",
+                                    padding: "1.5rem",
+                                    borderRadius: "12px",
+                                    border: "1px solid var(--border-color)",
+                                    background: isCompliant ? "rgba(16, 185, 129, 0.05)" : "rgba(255,255,255,0.03)",
+                                    transition: "all 0.3s ease"
+                                }}>
+                                    <div style={{ flex: "1 1 200px", minWidth: 0 }}>
+                                        <h3 style={{ color: "var(--text-main)", fontSize: "1.1rem", marginBottom: "0.5rem" }}>{p.title}</h3>
+                                        <p style={{ color: "var(--text-muted)", fontSize: "0.9rem" }}>{p.desc}</p>
+                                    </div>
+                                    <button
+                                        onClick={() => toggleCompliance(p.id)}
+                                        className={isCompliant ? "btn-comply" : "btn-not-comply"}
+                                    >
+                                        {isCompliant ? "COMPLY" : "NOT COMPLY"}
+                                    </button>
+                                </div>
+                            );
+                        })}
+                    </div>
+                </div>
+            );
+        };
+
+        const OutlineView = ({ title, desc, sections }) => (
+            <div className="fade-in" style={{ paddingBottom: "2rem", height: "100%", overflowY: "auto", paddingRight: "10px" }}>
+                <div style={{ marginBottom: "2.5rem" }}>
+                    <h1 style={{ fontSize: "2.2rem", fontWeight: 800, marginBottom: "0.75rem", color: "var(--text-main)", display: "flex", alignItems: "center", gap: "1rem" }}>
+                        <ClipboardList size={32} color="var(--accent-cyan)" />
+                        {title}
+                    </h1>
+                    <p style={{ color: "var(--text-muted)", fontSize: "1.05rem", maxWidth: "800px", lineHeight: 1.6 }}>
+                        {desc}
+                    </p>
+                </div>
+
+                <div style={{ background: "rgba(255,255,255,0.03)", borderRadius: "12px", border: "1px solid var(--border-color)", overflow: "hidden" }}>
+                    <div style={{ background: "rgba(0,0,0,0.3)", padding: "1rem 1.5rem", borderBottom: "1px solid var(--border-color)" }}>
+                        <h3 style={{ color: "var(--accent-cyan)", fontSize: "1.1rem", fontWeight: 600 }}>Key Concepts & Resources</h3>
+                    </div>
+                    <div style={{ padding: "1.5rem", display: "flex", flexDirection: "column", gap: "1rem" }}>
+                        {sections.map((section, idx) => (
+                            <div key={idx} style={{
+                                display: "flex",
+                                gap: "1rem",
+                                alignItems: "flex-start",
+                                paddingBottom: "1rem",
+                                borderBottom: idx < sections.length - 1 ? "1px dashed rgba(255,255,255,0.1)" : "none"
+                            }}>
+                                <div style={{
+                                    minWidth: "30px",
+                                    height: "30px",
+                                    background: "rgba(6, 182, 212, 0.1)",
+                                    color: "var(--accent-cyan)",
+                                    borderRadius: "50%",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    fontSize: "0.9rem",
+                                    fontWeight: "bold"
+                                }}>
+                                    {idx + 1}
+                                </div>
+                                <div style={{ flex: 1 }}>
+                                    <h4 style={{ color: "var(--text-main)", fontSize: "1.05rem", marginBottom: "0.25rem" }}>{section.title}</h4>
+                                    <p style={{ color: "var(--text-muted)", fontSize: "0.9rem", lineHeight: 1.5 }}>{section.content}</p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+        );
+
+        const C3SOP = () => {
+            const { setActivePage } = useContext(AppContext);
+            useEffect(() => setActivePage("C3 SOP"), []);
+            return (
+                <OutlineView
+                    title="C3 Standard Operating Procedures"
+                    desc="Standardize internal processes. A central repository of operational guidelines to ensure consistency and mitigate risks."
+                    sections={[
+                        { title: "Definitions of Key Terms", content: "SOP (Standard Operating Procedure): Documented step-by-step instructions. Procurement Workflows: Rules governing purchasing. Internal Controls: Mechanisms to prevent fraud and errors." },
+                        { title: "Best Practices & Useful Resources", content: "Keep SOPs consistently updated to reflect actual operational realities. Distinguish clearly between guidelines (flexible) and procedures (mandatory). Train all staff on critical compliance workflows." }
+                    ]}
+                />
+            );
+        };
+
+        const C4Constitution = () => {
+            const { setActivePage } = useContext(AppContext);
+            useEffect(() => setActivePage("C4 Constitution"), []);
+            return (
+                <OutlineView
+                    title="C4 Constitution"
+                    desc="Manage the foundation of your charity. Track updates to the governing instrument."
+                    sections={[
+                        { title: "Definitions of Key Terms", content: "Objects: The primary purpose and specific charitable activities authorized. Quorum: Minimum number of members required to conduct business. General Meetings: AGM or EGM instances." },
+                        { title: "Best Practices & Useful Resources", content: "Regularly review the constitution to ensure alignment with current societal needs. Ensure absolute compliance with term limits and board composition rules set by the Charity Council." }
+                    ]}
+                />
+            );
+        };
+
+        const C5TOR = () => {
+            const { setActivePage } = useContext(AppContext);
+            useEffect(() => setActivePage("C5 Terms of Reference"), []);
+            return (
+                <OutlineView
+                    title="C5 Terms of Reference (TOR)"
+                    desc="Define committee scopes. Manage the roles, responsibilities, and authority limits of sub-committees."
+                    sections={[
+                        { title: "Definitions of Key Terms", content: "Mandate: The committee's core purpose. Scope of Authority: Distinction between advisory capacity and decision-making power. Composition: Required skill sets and member numbers." },
+                        { title: "Best Practices & Useful Resources", content: "Explicitly distinguish between an advisory capacity and decision-making power. Review TORs annually to prevent scope creep. Ensure committee members have the requisite skill sets." }
+                    ]}
+                />
+            );
+        };
+
+        const C6StrategicPlan = () => {
+            const { setActivePage } = useContext(AppContext);
+            useEffect(() => setActivePage("C6 Strategic Plans"), []);
+            return (
+                <OutlineView
+                    title="C6 Strategic Plans"
+                    desc="Chart the long-term course. Document multi-year strategic goals, align resources, and track progress."
+                    sections={[
+                        { title: "Definitions of Key Terms", content: "Environmental Scan (SWOT): Analysis of Strengths, Weaknesses, Opportunities, Threats. Roadmap: Phased timeline detailing initiatives. KPIs: Key Performance Indicators tracking success." },
+                        { title: "Best Practices & Useful Resources", content: "Anchor strategic goals squarely in the Theory of Change. Conduct inclusive planning sessions with staff, board, and beneficiaries. Link strategic objectives directly to budget allocations." }
+                    ]}
+                />
+            );
+        };
+
+        const B1Finance = () => {
+            const { setActivePage } = useContext(AppContext);
+            useEffect(() => setActivePage("B1 Finance & Grants"), []);
+            return (
+                <OutlineView
+                    title="B1 Finance & Grants"
+                    desc="Manage financial sustainability. Track core funding, project grants, budgets, and financial reporting compliance."
+                    sections={[
+                        { title: "Definitions of Key Terms", content: "Restricted vs. Unrestricted Funds: Capital tied to specific projects versus general operational use. Reserves: Accumulated surpluses held to ensure financial stability against unforeseen events." },
+                        { title: "Best Practices & Useful Resources", content: "Maintain strict financial controls such as dual signatories. Conduct regular audits independently. Establish a clear reserves policy targeting at least 6-12 months of operating expenses." }
+                    ]}
+                />
+            );
+        };
+
+        const B2FundRaising = () => {
+            const { setActivePage } = useContext(AppContext);
+            useEffect(() => setActivePage("B2 Fund Raising"), []);
+            return (
+                <OutlineView
+                    title="B2 Fund Raising"
+                    desc="Cultivate donor relationships and manage fundraising campaigns. Track donor retention and campaign ROI."
+                    sections={[
+                        { title: "Definitions of Key Terms", content: "Donor Retention: Percentage of donors who give repeatedly. Campaign ROI: Return on investment for fundraising efforts. IPC Status: Institution of a Public Character allowing tax-deductible donations." },
+                        { title: "Best Practices & Useful Resources", content: "Tailor campaigns to specific donor personas using CRM tools. Comply meticulously with the House to House and Street Collections Act. Cultivate long-term stewardship over one-off transactions." }
+                    ]}
+                />
+            );
+        };
+
+        const B3Volunteer = () => {
+            const { setActivePage } = useContext(AppContext);
+            useEffect(() => setActivePage("B3 Volunteer Management"), []);
+            return (
+                <OutlineView
+                    title="B3 Volunteer Management"
+                    desc="Attract, retain, and develop volunteers. Manage recruitment, training, scheduling, and impact."
+                    sections={[
+                        { title: "Definitions of Key Terms", content: "Screening: Background and reference checks to ensure beneficiary safety. Onboarding: Structural orientation to the charity's mission. Retention: Strategies to keep volunteers engaged over time." },
+                        { title: "Best Practices & Useful Resources", content: "Implement rigorous safeguarding and screening protocols. Treat volunteers as unpaid staff with structured performance feedback and appreciation. Provide clear, documented role descriptions." }
+                    ]}
+                />
+            );
+        };
+
+        const B4Marketing = () => {
+            const { setActivePage } = useContext(AppContext);
+            useEffect(() => setActivePage("B4 Marketing & Communications"), []);
+            return (
+                <OutlineView
+                    title="B4 Marketing & Communications"
+                    desc="Amplify your charity's voice. Manage public relations, social media, campaign reach, and brand reputation."
+                    sections={[
+                        { title: "Definitions of Key Terms", content: "Brand Identity: Visual assets and official tone of voice. Crisis Communication: Rapid-response planning for reputational threats. Impact Reporting: Articulating program success to the public." },
+                        { title: "Best Practices & Useful Resources", content: "Maintain a unified brand voice across digital and print channels. Pre-plan crisis communication protocols. Highlight beneficiary stories ethically and with explicit consent." }
+                    ]}
+                />
+            );
+        };
+
+        const B5HR = () => {
+            const { setActivePage } = useContext(AppContext);
+            useEffect(() => setActivePage("B5 Human Resource"), []);
+            return (
+                <OutlineView
+                    title="B5 Human Resource"
+                    desc="Build a strong team. Manage staff recruitment, retention, professional development, well-being, and compliance."
+                    sections={[
+                        { title: "Definitions of Key Terms", content: "Compensation Banding: Structured salary ranges for organization parity. KPIs: Key Performance Indicators for staff goals. Wellbeing: Proactive physical and mental health support mechanisms." },
+                        { title: "Best Practices & Useful Resources", content: "Implement standardized, unbiased hiring practices to promote equity. Drive appraisal cycles using measurable data. Invest deliberately in staff training pathways to reduce turnover." }
+                    ]}
+                />
+            );
+        };
+
+        const NewsFeed = () => {
+            const newsItems = [
+                {
+                    source: "Straits Times",
+                    time: "3 hours ago",
+                    title: "Charities to get more help with leadership renewal",
+                    category: "Governance",
+                    url: "https://www.straitstimes.com/singapore/charities-to-get-more-help-with-leadership-renewal"
+                },
+                {
+                    source: "MCCY Press Room",
+                    time: "5 hours ago",
+                    title: "New Governance Framework for 2026",
+                    category: "Compliance",
+                    url: "https://www.mccy.gov.sg/about-us/news-and-resources/press-room"
+                },
+                {
+                    source: "NCSS Tech-and-GO",
+                    time: "1 day ago",
+                    title: "Tech-and-GO Funding Extended",
+                    category: "Digitalization",
+                    url: "https://www.ncss.gov.sg/our-initiatives/tech-and-go"
+                },
+                {
+                    source: "Straits Times",
+                    time: "2 days ago",
+                    title: "More than $65m raised for President's Challenge",
+                    category: "Funding",
+                    url: "https://www.straitstimes.com/singapore/more-than-65-million-raised-for-president-s-challenge-as-it-changes-focus"
+                }
+
+            ];
+
+            return (
+                <div style={{
+                    background: "rgba(255,255,255,0.03)",
+                    border: "1px solid var(--border-color)",
+                    borderRadius: "12px",
+                    padding: "1.5rem",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "1rem",
+                    height: "100%",
+                }}>
+                    <style>
+                        {`
+                        .news-card {
+                            display: block;
+                            padding: 1.2rem;
+                            background: rgba(255,255,255,0.02);
+                            border-radius: 8px;
+                            border-left: 3px solid var(--accent-cyan);
+                            transition: all 0.2s ease-in-out;
+                            text-decoration: none;
+                            cursor: pointer;
+                        }
+                        .news-card:hover {
+                            background: rgba(255,255,255,0.06) !important;
+                            transform: translateX(4px);
+                            border-left: 3px solid var(--accent-emerald);
+                        }
+                        `}
+                    </style>
+                    <h3 style={{ color: "var(--text-main)", display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "1.1rem", marginBottom: "0.5rem" }}>
+                        <Activity size={18} color="var(--accent-purple)" />
+                        Sector News Feed
+                    </h3>
+                    <div style={{ display: "flex", flexDirection: "column", gap: "1rem", overflowY: "auto", flexGrow: 1 }} className="scrollbar-hide">
+                        {newsItems.map((item, idx) => (
+                            <a
+                                key={idx}
+                                href={item.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="news-card"
+                            >
+                                <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.75rem", color: "var(--text-muted)", marginBottom: "0.5rem" }}>
+                                    <span>{item.source}</span>
+                                    <span>{item.time}</span>
+                                </div>
+                                <h4 style={{ fontSize: "0.95rem", color: "var(--text-main)", marginBottom: "0.5rem", lineHeight: 1.4, fontWeight: "500" }}>{item.title}</h4>
+                                <span style={{
+                                    display: "inline-block",
+                                    padding: "0.2rem 0.5rem",
+                                    borderRadius: "4px",
+                                    background: "rgba(255,255,255,0.05)",
+                                    fontSize: "0.7rem",
+                                    color: "var(--text-muted)",
+                                    textTransform: "uppercase",
+                                    letterSpacing: "0.05em"
+                                }}>
+                                    {item.category}
+                                </span>
+                            </a>
+                        ))}
+                    </div>
+                </div>
+            );
+        };
+
+        const DashboardHome = () => {
+            const { setActivePage, openApp } = useContext(AppContext);
+
+            useEffect(() => {
+                setActivePage("Global Overview");
+            }, [setActivePage]);
+
+            const cardStyle = {
+                background: "rgba(255,255,255,0.03)",
+                padding: "1.5rem",
+                borderRadius: "12px",
+                border: "1px solid var(--border-color)",
+                cursor: "pointer",
+                transition: "var(--transition-smooth)",
+                height: "100%"
+            };
+
+            return (
+                <div className="hero-welcome">
+                    <style>
+                        {`
+                        .hover-card:hover {
+                            background: rgba(255,255,255,0.06) !important;
+                            transform: translateY(-3px);
+                            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+                        }
+                        `}
+                    </style>
+                    <div className="context-badge" style={{ marginBottom: "2rem" }}>
+                        System Online
+                    </div>
+                    <h1>
+                        Welcome to <br />
+                        <span>GovernUp 2026</span>
+                    </h1>
+
+                    <div style={{ display: "flex", gap: "2rem", flexWrap: "wrap", alignItems: "stretch", width: "100%", maxWidth: "1400px" }}>
+                        <div style={{ flex: "1 1 min(100%, 700px)", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 280px), 1fr))", gap: "1.5rem" }}>
+                            <div className="hover-card" style={{ ...cardStyle, borderTop: "3px solid var(--accent-emerald)" }} onClick={() => openApp('D1')}>
+                                <h3 style={{ color: "var(--text-main)", marginBottom: "0.5rem", display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "1.1rem" }}>
+                                    <span style={{ color: "var(--accent-emerald)", fontFamily: "var(--font-mono)" }}>D1</span> Question Stormer
+                                </h3>
+                                <p style={{ fontSize: "0.9rem", color: "var(--text-muted)", lineHeight: 1.6 }}>Challenge your assumptions. Start with context-aware prompts in any domain and let the engine fire back counter-intuitive follow-ups to break mental blocks before you lock in a strategy.</p>
+                            </div>
+
+                            <div className="hover-card" style={{ ...cardStyle, borderTop: "3px solid var(--accent-cyan)" }} onClick={() => openApp('D2')}>
+                                <h3 style={{ color: "var(--text-main)", marginBottom: "0.5rem", display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "1.1rem" }}>
+                                    <span style={{ color: "var(--accent-cyan)", fontFamily: "var(--font-mono)" }}>D2</span> Wayfinder
+                                </h3>
+                                <p style={{ fontSize: "0.9rem", color: "var(--text-muted)", lineHeight: 1.6 }}>Visualize the broader ecosystem. This interactive force-directed map connects you to governing bodies, cross-sector stakeholders, and critical regulations to safely navigate the charity sector.</p>
+                            </div>
+
+                            <div className="hover-card" style={{ ...cardStyle, borderTop: "3px solid #f59e0b" }} onClick={() => openApp('D3')}>
+                                <h3 style={{ color: "var(--text-main)", marginBottom: "0.5rem", display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "1.1rem" }}>
+                                    <span style={{ color: "#f59e0b", fontFamily: "var(--font-mono)" }}>D3</span> Survey
+                                </h3>
+                                <p style={{ fontSize: "0.9rem", color: "var(--text-muted)", lineHeight: 1.6 }}>Take the pulse of your stakeholders. Automatically generate 6-question targeted surveys for any specific pillar and instantly dispatch them via WhatsApp for highly-responsive feedback.</p>
+                            </div>
+
+                            <div className="hover-card" style={{ ...cardStyle, borderTop: "3px solid var(--accent-purple)" }} onClick={() => openApp('D4')}>
+                                <h3 style={{ color: "var(--text-main)", marginBottom: "0.5rem", display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "1.1rem" }}>
+                                    <span style={{ color: "var(--accent-purple)", fontFamily: "var(--font-mono)" }}>D4</span> Analyzer
+                                </h3>
+                                <p style={{ fontSize: "0.9rem", color: "var(--text-muted)", lineHeight: 1.6 }}>Synthesize the noise. Cross-pollinate inputs from multiple silos (e.g., HR + Finance + Strategy) to auto-generate unique prompts that uncover hidden thematic vulnerabilities and opportunities.</p>
+                            </div>
+                        </div>
+
+                        <div style={{ flex: "1 1 300px", minWidth: "300px", maxWidth: "450px" }}>
+                            <NewsFeed />
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        // Main Layout
+        const Layout = () => {
+            const { mobileMenuOpen, setMobileMenuOpen } = useContext(AppContext);
+
+            return (
+                <div className="app-container">
+                    <div className={`mobile-overlay ${mobileMenuOpen ? 'open' : ''}`} onClick={() => setMobileMenuOpen(false)}></div>
+                    <div className={`sidebar-container ${mobileMenuOpen ? 'open' : ''}`}>
+                        <Sidebar />
+                    </div>
+                    <main className="main-wrapper">
+                        <TopBar />
+                        <div className="content-area">
+                            <Routes>
+                                <Route path="/" element={<DashboardHome />} />
+                                {NAVIGATION.Pillars.flatMap(pillar =>
+                                    pillar.items.map(item => (
+                                        <Route
+                                            key={item.id}
+                                            path={item.path}
+                                            element={
+                                                item.id === "A1" ? <A1ServiceDelivery /> :
+                                                    item.id === "A2" ? <A2Inputs /> :
+                                                        item.id === "A3" ? <A3Outputs /> :
+                                                            item.id === "A4" ? <A4Outcomes /> :
+                                                                item.id === "A5" ? <A5Impact /> :
+                                                                    item.id === "B1" ? <B1Finance /> :
+                                                                        item.id === "B2" ? <B2FundRaising /> :
+                                                                            item.id === "B3" ? <B3Volunteer /> :
+                                                                                item.id === "B4" ? <B4Marketing /> :
+                                                                                    item.id === "B5" ? <B5HR /> :
+                                                                                        item.id === "C1" ? <C1Code /> :
+                                                                                            item.id === "C2" ? <C2GEC /> :
+                                                                                                item.id === "C3" ? <C3SOP /> :
+                                                                                                    item.id === "C4" ? <C4Constitution /> :
+                                                                                                        item.id === "C5" ? <C5TOR /> :
+                                                                                                            item.id === "C6" ? <C6StrategicPlan /> :
+                                                                                                                <PlaceholderView title={item.label} pillarName={pillar.title} description={item.description} />
+                                            }
+                                        />
+                                    ))
+                                )}
+                            </Routes>
+                        </div>
+                        <AppDrawer />
+                    </main>
+                </div>
+            );
+        };
+
+        const App = () => (
+            <AppProvider>
+                <HashRouter>
+                    <Layout />
+                </HashRouter>
+            </AppProvider>
+        );
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+
+    </script>
+</body>
+
+</html>
