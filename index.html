@@ -1152,7 +1152,7 @@
 
             const [answers, setAnswers] = useState({});
             const [explanations, setExplanations] = useState({});
-            const [expandedPanels, setExpandedPanels] = useState({ p1: true });
+            const [expandedPanels, setExpandedPanels] = useState({ p1: true, p2: true, p3: true, p4: true, p5: true, p6: true });
 
             const togglePanel = (pId) => {
                 setExpandedPanels(prev => ({ ...prev, [pId]: !prev[pId] }));
