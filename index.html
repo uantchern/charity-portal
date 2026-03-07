@@ -148,7 +148,7 @@
                         { id: "C4", path: "/c4", label: "C4 Constitution", description: "Manage the foundation of your charity. Track updates to the governing instrument and ensure all activities align with the defined charitable objects." },
                         { id: "C5", path: "/c5", label: "C5 Terms of Reference", description: "Define committee scopes. Manage the roles, responsibilities, and authority limits of sub-committees supporting the Board." },
                         { id: "C6", path: "/c6", label: "C6 Strategic Plans", description: "Chart the long-term course. Document multi-year strategic goals, align resources, and track progress against strategic milestones." },
-                        { id: "C7", path: "/c7", label: "C7 PURPOSELY", description: "Conduct board self-assessments anonymously using the rigorous 66-step inquiry loop connected directly to NotebookLM." }
+                        { id: "C7", path: "/c7", label: "C7 Board Self-Assessment", description: "Conduct board self-assessments anonymously using the rigorous 66-step inquiry loop connected directly to NotebookLM." }
                     ]
                 }
             ],
@@ -224,6 +224,17 @@
                                     <div className={`nav-items ${isOpen ? 'open' : ''}`}>
                                         {pillar.items.map(item => {
                                             const isActive = location.pathname === item.path;
+                                            if (item.id === "C7") {
+                                                return (
+                                                    <a
+                                                        key={item.id}
+                                                        href="https://uantchern.github.io/wayfinding-for-good/purposely-simulator.html?update=notcache"
+                                                        className={`nav-item ${isActive ? 'active' : ''}`}
+                                                    >
+                                                        {item.label}
+                                                    </a>
+                                                );
+                                            }
                                             return (
                                                 <Link
                                                     key={item.id}
@@ -2228,41 +2239,6 @@
             );
         };
 
-        const C7Purposely = () => {
-            const { setActivePage } = useContext(AppContext);
-            useEffect(() => { setActivePage("C7 PURPOSELY") }, [setActivePage]);
-
-            return (
-                <div className="fade-in" style={{ padding: "2rem", maxWidth: "900px" }}>
-                    <div style={{ display: "flex", gap: "1rem", alignItems: "center", marginBottom: "2rem" }}>
-                        <Shield size={32} color="var(--accent-purple)" />
-                        <h2 style={{ fontSize: "1.75rem", fontWeight: "700", color: "white", margin: 0, fontFamily: "var(--font-mono)" }}>
-                            C7 PURPOSELY Framework
-                        </h2>
-                    </div>
-
-                    <div style={{ background: "rgba(30, 41, 59, 0.7)", borderRadius: "16px", padding: "2.5rem", border: "1px solid rgba(168, 85, 247, 0.3)", boxShadow: "0 10px 30px rgba(0,0,0,0.2)" }}>
-                        <h3 style={{ fontSize: "1.25rem", color: "white", marginBottom: "1rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
-                            <CloudLightning size={24} color="var(--accent-purple)" />
-                            Board Self-Assessment Module
-                        </h3>
-
-                        <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem", borderTop: "1px solid rgba(255,255,255,0.05)", paddingTop: "2rem" }}>
-                            <a href="https://uantchern.github.io/wayfinding-for-good/purposely-simulator.html?update=notcache" target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none", display: "flex", alignItems: "center", gap: "0.75rem", background: "var(--accent-purple)", color: "white", padding: "0.875rem 2rem", borderRadius: "12px", fontWeight: "600", letterSpacing: "0.5px", cursor: "pointer", transition: "all 0.2s", boxShadow: "0 4px 15px rgba(168, 85, 247, 0.4)" }} onMouseOver={(e) => { e.currentTarget.style.transform = 'translateY(-2px)' }} onMouseOut={(e) => { e.currentTarget.style.transform = 'translateY(0)' }}>
-                                Launch PURPOSELY
-                            </a>
-                            <a href="https://uantchern.github.io/wayfinding-for-good/purposely_report_card.html" target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none", display: "flex", alignItems: "center", gap: "0.75rem", background: "rgba(168, 85, 247, 0.1)", border: "1px solid var(--accent-purple)", color: "var(--accent-purple)", padding: "0.875rem 2rem", borderRadius: "12px", fontWeight: "600", letterSpacing: "0.5px", cursor: "pointer", transition: "all 0.2s" }} onMouseOver={(e) => { e.currentTarget.style.background = 'rgba(168, 85, 247, 0.2)' }} onMouseOut={(e) => { e.currentTarget.style.background = 'rgba(168, 85, 247, 0.1)' }}>
-                                <FileText size={18} /> Review Board Assessment Report
-                            </a>
-                            <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", padding: "0.875rem 1.5rem", borderRadius: "12px", background: "rgba(0,0,0,0.2)", border: "1px solid rgba(255,255,255,0.1)", color: "var(--text-muted)", fontSize: "0.9rem", marginLeft: "auto" }}>
-                                <Shield size={16} /> Data is secured locally in NotebookLM
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            );
-        };
-
         const IntegratedSmartTools = () => {
             const { activePage, openApp } = useContext(AppContext);
 
@@ -2361,8 +2337,7 @@
                                                                                                     item.id === "C4" ? <C4Constitution /> :
                                                                                                         item.id === "C5" ? <C5TOR /> :
                                                                                                             item.id === "C6" ? <C6StrategicPlan /> :
-                                                                                                                item.id === "C7" ? <C7Purposely /> :
-                                                                                                                    <PlaceholderView title={item.label} pillarName={pillar.title} description={item.description} />
+                                                                                                                <PlaceholderView title={item.label} pillarName={pillar.title} description={item.description} />
                                             }
                                         />
                                     ))
