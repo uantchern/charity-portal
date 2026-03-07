@@ -785,6 +785,19 @@
         );
 
         // --- Components ---
+        const PRESET_CHALLENGES = [
+            "How can we reach out to more donors?",
+            "How can we attract more volunteers?",
+            "What is the biggest inefficiency in our operations?",
+            "How do we diversify our funding sources?",
+            "How can we improve board engagement?",
+            "How do we effectively measure and report our impact?",
+            "How can we retain our staff and prevent burnout?",
+            "How do we increase our digital presence and awareness?",
+            "How can we build strategic partnerships with corporates?",
+            "How do we ensure long-term financial sustainability?"
+        ];
+
         function SessionSetup({ onStart, initialScenario }) {
             const [scenario, setScenario] = useState(initialScenario || '');
             const [isParadox, setIsParadox] = useState(false);
@@ -844,6 +857,46 @@
                                         {error}
                                     </div>
                                 )}
+                            </div>
+                        </div>
+
+                        <div className="input-group" style={{ marginTop: '1rem' }}>
+                            <label style={{ marginBottom: '1rem', display: 'block' }}>
+                                Or select from top 10 common challenges:
+                            </label>
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '0.75rem' }}>
+                                {PRESET_CHALLENGES.map((challenge, idx) => (
+                                    <div
+                                        key={idx}
+                                        onClick={() => {
+                                            setScenario(challenge);
+                                            setError('');
+                                        }}
+                                        style={{
+                                            background: scenario === challenge ? 'rgba(210, 180, 140, 0.2)' : 'var(--surface-color)',
+                                            border: `1px solid ${scenario === challenge ? '#D2B48C' : 'var(--border-color)'}`,
+                                            padding: '0.75rem 1rem',
+                                            borderRadius: '8px',
+                                            cursor: 'pointer',
+                                            fontSize: '0.9rem',
+                                            color: scenario === challenge ? '#D2B48C' : '#a0aec0',
+                                            transition: 'all 0.2s ease',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            gap: '0.5rem'
+                                        }}
+                                    >
+                                        <div style={{
+                                            width: '16px',
+                                            height: '16px',
+                                            borderRadius: '50%',
+                                            border: `2px solid ${scenario === challenge ? '#D2B48C' : '#a0aec0'}`,
+                                            background: scenario === challenge ? '#D2B48C' : 'transparent',
+                                            flexShrink: 0
+                                        }} />
+                                        {challenge}
+                                    </div>
+                                ))}
                             </div>
                         </div>
 
@@ -971,9 +1024,6 @@
                             <div className="scenario-label">Challenge</div>
                             <div className="scenario-text">{scenario}</div>
                         </div>
-                        <div className="timer-display">
-                            {initialQuestions.length} Questions
-                        </div>
                     </div>
 
                     {!isFinished ? (
@@ -998,7 +1048,7 @@
                     )}
 
                     <div className="questions-list">
-                        {initialQuestions.map((q, i) => (
+                        {initialQuestions.slice(-3).map((q, i) => (
                             <div
                                 key={q.id}
                                 className={`question-card ${selectedId === q.id ? 'selected' : ''}`}
