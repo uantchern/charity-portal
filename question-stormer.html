@@ -787,13 +787,13 @@
         // --- Components ---
         function SessionSetup({ onStart, initialScenario }) {
             const [scenario, setScenario] = useState(initialScenario || '');
-            const [duration, setDuration] = useState(730);
+            const [targetCount, setTargetCount] = useState(10);
             const [isParadox, setIsParadox] = useState(false);
 
             const handleSubmit = (e) => {
                 e.preventDefault();
                 if (scenario.trim()) {
-                    onStart(scenario.trim(), duration, isParadox);
+                    onStart(scenario.trim(), targetCount, isParadox);
                 }
             };
 
@@ -819,14 +819,14 @@
                                 />
                             </div>
                             <div className="input-group">
-                                <label htmlFor="duration">Timer (s)</label>
+                                <label htmlFor="targetCount">Target Questions</label>
                                 <input
-                                    id="duration"
+                                    id="targetCount"
                                     type="number"
-                                    value={duration}
-                                    onChange={(e) => setDuration(parseInt(e.target.value) || 0)}
-                                    min="10"
-                                    max="3600"
+                                    value={targetCount}
+                                    onChange={(e) => setTargetCount(parseInt(e.target.value) || 1)}
+                                    min="1"
+                                    max="100"
                                     className="duration-input"
                                 />
                             </div>
@@ -867,21 +867,19 @@
             "Sisyphus Oasis: Deliver water to a thirst that is exactly P=0. The cup is a lens, the map is a trap."
         ];
 
-        function StormingInterface({ scenario, duration, isParadoxMode, onTimeUp, initialQuestions, onUpdateQuestions }) {
-            const [timeLeft, setTimeLeft] = useState(duration || 730);
+        function StormingInterface({ scenario, targetCount, isParadoxMode, onTimeUp, initialQuestions, onUpdateQuestions }) {
             const [input, setInput] = useState('');
             const [error, setError] = useState('');
             const [constraintIndex, setConstraintIndex] = useState(0);
             const endOfListRef = useRef(null);
 
             useEffect(() => {
-                if (timeLeft <= 0) {
+                if (initialQuestions.length >= targetCount) {
                     onTimeUp(initialQuestions);
-                    return;
                 }
+            }, [initialQuestions.length, targetCount, onTimeUp, initialQuestions]);
 
-                const timerId = setInterval(() => setTimeLeft(prev => prev - 1), 1000);
-
+            useEffect(() => {
                 let constraintId;
                 if (isParadoxMode) {
                     constraintId = setInterval(() => {
@@ -890,20 +888,13 @@
                 }
 
                 return () => {
-                    clearInterval(timerId);
                     if (constraintId) clearInterval(constraintId);
                 };
-            }, [timeLeft, onTimeUp, initialQuestions, isParadoxMode]);
+            }, [isParadoxMode]);
 
             useEffect(() => {
                 endOfListRef.current?.scrollIntoView({ behavior: 'smooth' });
             }, [initialQuestions.length]);
-
-            const formatTime = (seconds) => {
-                const m = Math.floor(seconds / 60);
-                const s = seconds % 60;
-                return `${m}:${s.toString().padStart(2, '0')}`;
-            };
 
             const validateQuestion = (text) => {
                 const trimmed = text.trim();
@@ -955,9 +946,8 @@
                             <div className="scenario-label">Challenge</div>
                             <div className="scenario-text">{scenario}</div>
                         </div>
-                        <div className={`timer-display ${timeLeft < 30 ? 'low-time' : ''}`}>
-                            <ClockIcon size={24} />
-                            {formatTime(timeLeft)}
+                        <div className="timer-display">
+                            {initialQuestions.length} / {targetCount}
                         </div>
                     </div>
 
@@ -1142,10 +1132,8 @@
         }
 
         function SessionAnalysis({ session, onBack }) {
-            const { scenario, questions, duration, isParadoxMode } = session;
             const starredQuestions = questions.filter(q => q.starred);
             const totalQuestions = questions.length;
-            const qpm = (totalQuestions / (duration / 60 || 1)).toFixed(1);
 
             const handleEmailReport = () => {
                 let subject = `Question Storming Audit: ${scenario}`;
@@ -1159,7 +1147,7 @@
             };
 
             const handleDownloadReport = () => {
-                let report = `QUESTION STORMING AUDIT REPORT\n==========================\nChallenge: ${scenario}\nMode: ${isParadoxMode ? 'PARADOX' : 'Standard'}\nTotal Questions: ${totalQuestions}\nStorm Density: ${qpm} q/min\n\nTOP OUTCOMES:\n`;
+                let report = `QUESTION STORMING AUDIT REPORT\n==========================\nChallenge: ${scenario}\nMode: ${isParadoxMode ? 'PARADOX' : 'Standard'}\nTotal Questions: ${totalQuestions}\n\nTOP OUTCOMES:\n`;
                 starredQuestions.forEach((q, i) => report += `${i + 1}. ${q.text}\n`);
                 report += `\nFULL AUDIT TRAIL:\n`;
                 questions.forEach((q, i) => report += `[${i + 1}] ${q.text}${q.paradoxConstraint ? ` (Interference: ${q.paradoxConstraint})` : ''}${q.starred ? ' (STARRED)' : ''}\n`);
@@ -1186,7 +1174,6 @@
                         <h2 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>{scenario}</h2>
                         <div className="metrics-grid">
                             <div className="metric-box"><span className="metric-value">{totalQuestions}</span><span className="metric-label">Questions</span></div>
-                            <div className="metric-box"><span className="metric-value">{qpm}</span><span className="metric-label">Q / Min</span></div>
                             <div className="metric-box"><span className="metric-value">{starredQuestions.length}</span><span className="metric-label">Starred</span></div>
                         </div>
 
@@ -1243,7 +1230,7 @@
                     phase: 'SETUP',
                     scenario: urlPrompt || '',
                     questions: [],
-                    duration: 730,
+                    targetCount: 10,
                     isParadoxMode: false
                 };
             });
@@ -1251,11 +1238,11 @@
                 localStorage.setItem(APP_STATE_KEY, JSON.stringify(session));
             }, [session]);
 
-            const handleStartStorm = (scenario, duration, isParadoxMode) => setSession({ phase: 'STORMING', scenario, questions: [], duration, isParadoxMode });
+            const handleStartStorm = (scenario, targetCount, isParadoxMode) => setSession({ phase: 'STORMING', scenario, questions: [], targetCount, isParadoxMode });
             const handleTimerEnd = (questions) => setSession((prev) => ({ ...prev, phase: 'REVIEW', questions }));
             const handleReset = () => {
                 if (confirm("Are you sure you want to reset the session? All your questions will be lost.")) {
-                    setSession({ phase: 'SETUP', scenario: '', questions: [], duration: 730, isParadoxMode: false });
+                    setSession({ phase: 'SETUP', scenario: '', questions: [], targetCount: 10, isParadoxMode: false });
                 }
             };
             const handleGoToAnalysis = (questions) => setSession((prev) => ({ ...prev, phase: 'ANALYSIS', questions }));
@@ -1279,7 +1266,7 @@
                         {session.phase === 'STORMING' && (
                             <StormingInterface
                                 scenario={session.scenario}
-                                duration={session.duration}
+                                targetCount={session.targetCount}
                                 isParadoxMode={session.isParadoxMode}
                                 initialQuestions={session.questions}
                                 onTimeUp={handleTimerEnd}
