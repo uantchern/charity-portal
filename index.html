@@ -118,7 +118,7 @@
                     title: "A Purpose & Mission",
                     icon: <Target size={20} />,
                     items: [
-                        { id: "A1", path: "/a1", label: "A1 Service Delivery" },
+                        { id: "A1", path: "/a1", label: "A1 Impact Reporting" },
                         { id: "A2", path: "/a2", label: "A2 Inputs" },
                         { id: "A3", path: "/a3", label: "A3 Outputs" },
                         { id: "A4", path: "/a4", label: "A4 Outcomes" },
@@ -838,7 +838,7 @@
             const { setActivePage } = useContext(AppContext);
 
             useEffect(() => {
-                setActivePage("A1 Service Delivery");
+                setActivePage("A1 Impact Reporting");
             }, [setActivePage]);
 
             const [tocData, setTocData] = useState({
@@ -855,68 +855,13 @@
                 setTocData(prev => ({ ...prev, [field]: value }));
             };
 
-            const frameworks = [
-                {
-                    id: "purpose",
-                    title: "Purpose & Mission",
-                    icon: <Target size={24} />,
-                    color: "var(--accent-emerald)",
-                    description: "The fundamental 'Why'. This defines your organisation's core existence beyond just delivering services."
-                },
-                {
-                    id: "toc",
-                    title: "Theory of Change",
-                    icon: <Layers size={24} />,
-                    color: "var(--accent-cyan)",
-                    description: "The 'How'. A logical roadmap illustrating how desired change is expected to happen in a context."
-                },
-                {
-                    id: "sef",
-                    title: "Sector Evaluation Framework",
-                    icon: <BarChart2 size={24} />,
-                    color: "#f59e0b",
-                    description: "Developed by NCSS, standardising outcome metrics for common programmes across the sector."
-                },
-                {
-                    id: "impact",
-                    title: "Social Impact",
-                    icon: <Users size={24} />,
-                    color: "var(--accent-purple)",
-                    description: "The ultimate, long-term, or systemic change brought about by the charity's interventions."
-                }
-            ];
-
             return (
                 <div className="fade-in" style={{ paddingBottom: "2rem", height: "100%", overflowY: "auto", paddingRight: "10px" }}>
                     <div style={{ marginBottom: "2.5rem" }}>
-                        <h1 style={{ fontSize: "2.2rem", fontWeight: 800, marginBottom: "0.75rem", color: "var(--text-main)" }}>A1 Service Delivery</h1>
+                        <h1 style={{ fontSize: "2.2rem", fontWeight: 800, marginBottom: "0.75rem", color: "var(--text-main)" }}>A1 Impact Reporting</h1>
                         <p style={{ color: "var(--text-muted)", fontSize: "1.05rem", maxWidth: "800px", lineHeight: 1.6 }}>
                             Service Delivery is the heartbeat of a charity. To be effective, it must be anchored in strategic foundations, measured correctly, and aligned with NCSS guidelines.
                         </p>
-                    </div>
-
-                    <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "1rem", marginBottom: "3rem", overflowX: "auto", minWidth: "100%" }}>
-                        {frameworks.map((fw) => (
-                            <div key={fw.id} style={{
-                                background: "rgba(255,255,255,0.02)",
-                                borderRadius: "12px",
-                                border: "1px solid var(--border-color)",
-                                borderTop: `3px solid ${fw.color}`,
-                                padding: "1.25rem",
-                                minWidth: "220px",
-                                display: "flex",
-                                flexDirection: "column",
-                                gap: "0.75rem"
-                            }}>
-                                <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", color: fw.color }}>
-                                    {fw.icon}
-                                    <h3 style={{ color: "var(--text-main)", fontSize: "1.05rem", fontWeight: 700, margin: 0 }}>{fw.title}</h3>
-                                </div>
-                                <p style={{ color: "var(--text-muted)", fontSize: "0.85rem", lineHeight: 1.5, margin: 0 }}>
-                                    {fw.description}
-                                </p>
-                            </div>
-                        ))}
                     </div>
 
                     <div style={{ background: "var(--bg-panel)", borderRadius: "12px", border: "1px solid var(--border-color)", padding: "2rem", boxShadow: "0 4px 20px rgba(0,0,0,0.1)" }}>
@@ -930,13 +875,18 @@
                                     Draft your logic model in compliance with National Council of Social Service (NCSS) guidance.
                                 </p>
                             </div>
-                            <button style={{ background: "var(--accent-cyan)", color: "#fff", border: "none", padding: "0.6rem 1.25rem", borderRadius: "8px", fontWeight: "bold", cursor: "pointer", transition: "all 0.2s" }} onMouseEnter={(e) => e.target.style.opacity = 0.9} onMouseLeave={(e) => e.target.style.opacity = 1}>
-                                Export to PDF
+                            <button
+                                onClick={() => {
+                                    const report = `====== IMPACT REPORT ======\n\n1. Needs & Problem Statement:\n${tocData.problem || 'N/A'}\n\n2. Target Audience:\n${tocData.audience || 'N/A'}\n\n3. Inputs:\n${tocData.inputs || 'N/A'}\n\n4. Activities:\n${tocData.activities || 'N/A'}\n\n5. Outputs:\n${tocData.outputs || 'N/A'}\n\n6. Outcomes:\n${tocData.outcomes || 'N/A'}\n\n7. Impact:\n${tocData.impact || 'N/A'}`;
+                                    alert(report);
+                                }}
+                                style={{ background: "var(--accent-cyan)", color: "#fff", border: "none", padding: "0.6rem 1.25rem", borderRadius: "8px", fontWeight: "bold", cursor: "pointer", transition: "all 0.2s" }} onMouseEnter={(e) => e.target.style.opacity = 0.9} onMouseLeave={(e) => e.target.style.opacity = 1}>
+                                Generate Impact Report
                             </button>
                         </div>
 
                         {/* Foundation Row */}
-                        <div style={{ display: "grid", gridTemplateColumns: "minmax(300px, 1fr) minmax(300px, 1fr)", gap: "1.5rem", marginBottom: "2rem" }}>
+                        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "1.5rem", marginBottom: "2rem" }}>
                             <div style={{ background: "rgba(255,255,255,0.02)", padding: "1.25rem", borderRadius: "12px", border: "1px solid rgba(255,255,255,0.05)" }}>
                                 <label style={{ display: "block", color: "var(--text-main)", marginBottom: "0.75rem", fontWeight: 600, fontSize: "1rem" }}>
                                     1. Needs & Problem Statement
@@ -966,7 +916,7 @@
                         </div>
 
                         {/* Logic Model Pipeline */}
-                        <div style={{ display: "flex", gap: "1rem", overflowX: "auto", paddingBottom: "1rem" }}>
+                        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "1rem", paddingBottom: "1rem" }}>
 
                             {/* Inputs */}
                             <div style={{ flex: "1 0 200px", background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.05)", borderRadius: "12px", padding: "1.25rem", position: "relative" }}>
