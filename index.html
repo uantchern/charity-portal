@@ -820,6 +820,20 @@
             );
         };
 
+        const C7Redirect = () => {
+            useEffect(() => {
+                window.location.replace("https://uantchern.github.io/wayfinding-for-good/purposely-simulator.html?update=notcache");
+            }, []);
+            return (
+                <div style={{ padding: "4rem", textAlign: "center", color: "var(--text-muted)" }}>
+                    <div className="glow-circle"></div>
+                    <Activity size={48} color="var(--accent-purple)" style={{ marginBottom: "1rem", animation: "pulse 2s infinite" }} />
+                    <h2 style={{ color: "white" }}>Initializing PURPOSELY Engine...</h2>
+                    <p>Redirecting to local NotebookLM bridge.</p>
+                </div>
+            );
+        };
+
         const A1ServiceDelivery = () => {
             const { setActivePage } = useContext(AppContext);
 
@@ -2337,7 +2351,8 @@
                                                                                                     item.id === "C4" ? <C4Constitution /> :
                                                                                                         item.id === "C5" ? <C5TOR /> :
                                                                                                             item.id === "C6" ? <C6StrategicPlan /> :
-                                                                                                                <PlaceholderView title={item.label} pillarName={pillar.title} description={item.description} />
+                                                                                                                item.id === "C7" ? <C7Redirect /> :
+                                                                                                                    <PlaceholderView title={item.label} pillarName={pillar.title} description={item.description} />
                                             }
                                         />
                                     ))
