@@ -846,10 +846,18 @@
                 audience: [],
                 inputs: [],
                 activities: [],
-                outputs: { sessions: '', meals: '', trained: '', families: '' },
+                outputs: { sessions: '', meals: '', trained: '', families: '', custom_val: '', custom_label: '' },
                 outcomes: [],
-                impact: []
+                impact: [],
+                others: { problem: '', audience: '', inputs: '', activities: '', outcomes: '', impact: '' }
             });
+
+            const handleOtherChange = (field, value) => {
+                setTocData(prev => ({
+                    ...prev,
+                    others: { ...prev.others, [field]: value }
+                }));
+            };
 
             const handleCheck = (field, option, isChecked) => {
                 setTocData(prev => {
@@ -880,6 +888,10 @@
                                 {opt}
                             </label>
                         ))}
+                        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginTop: "0.25rem" }}>
+                            <span style={{ color: "var(--text-muted)", fontSize: "0.9rem", whiteSpace: "nowrap" }}>Others:</span>
+                            <input type="text" value={tocData.others[field]} onChange={(e) => handleOtherChange(field, e.target.value)} placeholder="Please specify..." style={{ flex: 1, background: "rgba(0,0,0,0.3)", border: "1px solid var(--border-color)", padding: "0.25rem 0.5rem", borderRadius: "4px", color: "white", outline: "none", fontSize: "0.85rem" }} />
+                        </div>
                     </div>
                 </div>
             );
@@ -906,21 +918,29 @@
                             </div>
                             <button
                                 onClick={() => {
-                                    const { problem, audience, inputs, activities, outputs, outcomes, impact } = tocData;
-                                    const pStr = problem.length > 0 ? problem.join(', ') : '...';
-                                    const aStr = audience.length > 0 ? audience.join(', ') : '...';
-                                    const iStr = inputs.length > 0 ? inputs.join(', ') : '...';
-                                    const actStr = activities.length > 0 ? activities.join(', ') : '...';
+                                    const { problem, audience, inputs, activities, outputs, outcomes, impact, others } = tocData;
+
+                                    const getArr = (arr, otherVal) => {
+                                        const res = [...arr];
+                                        if (otherVal) res.push(otherVal);
+                                        return res.length > 0 ? res.join(', ') : '...';
+                                    };
+
+                                    const pStr = getArr(problem, others.problem);
+                                    const aStr = getArr(audience, others.audience);
+                                    const iStr = getArr(inputs, others.inputs);
+                                    const actStr = getArr(activities, others.activities);
 
                                     const outArr = [];
                                     if (outputs.sessions) outArr.push(`${outputs.sessions} sessions conducted`);
                                     if (outputs.meals) outArr.push(`${outputs.meals} meals distributed`);
                                     if (outputs.trained) outArr.push(`${outputs.trained} participants trained`);
                                     if (outputs.families) outArr.push(`${outputs.families} families assisted`);
+                                    if (outputs.custom_val && outputs.custom_label) outArr.push(`${outputs.custom_val} ${outputs.custom_label}`);
                                     const outStr = outArr.length > 0 ? outArr.join(', ') : '...';
 
-                                    const ocStr = outcomes.length > 0 ? outcomes.join(', ') : '...';
-                                    const impStr = impact.length > 0 ? impact.join(', ') : '...';
+                                    const ocStr = getArr(outcomes, others.outcomes);
+                                    const impStr = getArr(impact, others.impact);
 
                                     const report = `We are proud to share our latest impact report.\n\nTo address the pressing challenge of [${pStr}] within the [${aStr}] community, we dedicated essential resources including [${iStr}]. This enabled us to conduct targeted [${actStr}], successfully generating [${outStr}].\n\nAs a direct result of these efforts, we have witnessed strong [${ocStr}], bringing us one step closer to our ultimate vision of [${impStr}].\n\nThank you to our partners and donors for making this possible.`;
                                     alert(report);
@@ -960,6 +980,12 @@
                                             {out.label}
                                         </div>
                                     ))}
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginTop: "0.25rem" }}>
+                                        <input type="number" placeholder="0" style={{ width: "60px", background: "rgba(0,0,0,0.3)", border: "1px solid var(--border-color)", padding: "0.25rem 0.5rem", borderRadius: "4px", color: "white", outline: "none" }}
+                                            value={tocData.outputs.custom_val} onChange={(e) => handleOutputChange('custom_val', e.target.value)} />
+                                        <input type="text" placeholder="Other outputs (e.g. books given)..." style={{ flex: 1, background: "rgba(0,0,0,0.3)", border: "1px solid var(--border-color)", padding: "0.25rem 0.5rem", borderRadius: "4px", color: "white", outline: "none", fontSize: "0.85rem" }}
+                                            value={tocData.outputs.custom_label} onChange={(e) => handleOutputChange('custom_label', e.target.value)} />
+                                    </div>
                                 </div>
                             </div>
 
