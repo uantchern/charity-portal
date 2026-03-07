@@ -877,7 +877,8 @@
                             </div>
                             <button
                                 onClick={() => {
-                                    const report = `====== IMPACT REPORT ======\n\n1. Needs & Problem Statement:\n${tocData.problem || 'N/A'}\n\n2. Target Audience:\n${tocData.audience || 'N/A'}\n\n3. Inputs:\n${tocData.inputs || 'N/A'}\n\n4. Activities:\n${tocData.activities || 'N/A'}\n\n5. Outputs:\n${tocData.outputs || 'N/A'}\n\n6. Outcomes:\n${tocData.outcomes || 'N/A'}\n\n7. Impact:\n${tocData.impact || 'N/A'}`;
+                                    const { problem, audience, inputs, activities, outputs, outcomes, impact } = tocData;
+                                    const report = `We are proud to share our latest impact report.\n\nTo address the pressing challenge of [${problem || '...'}] within the [${audience || '..'}] community, we dedicated essential resources including [${inputs || '...'}]. This enabled us to conduct targeted [${activities || '...'}], successfully generating [${outputs || '...'}].\n\nAs a direct result of these efforts, we have witnessed strong [${outcomes || '...'}], bringing us one step closer to our ultimate vision of [${impact || '...'}].\n\nThank you to our partners and donors for making this possible.`;
                                     alert(report);
                                 }}
                                 style={{ background: "var(--accent-cyan)", color: "#fff", border: "none", padding: "0.6rem 1.25rem", borderRadius: "8px", fontWeight: "bold", cursor: "pointer", transition: "all 0.2s" }} onMouseEnter={(e) => e.target.style.opacity = 0.9} onMouseLeave={(e) => e.target.style.opacity = 1}>
@@ -891,11 +892,11 @@
                                 <label style={{ display: "block", color: "var(--text-main)", marginBottom: "0.75rem", fontWeight: 600, fontSize: "1rem" }}>
                                     1. Needs & Problem Statement
                                 </label>
-                                <textarea
+                                <input type="text"
                                     value={tocData.problem}
                                     onChange={(e) => handleTocChange('problem', e.target.value)}
-                                    placeholder="Describe the specific social issue, gap, or need your charity is addressing..."
-                                    style={{ width: "100%", height: "100px", padding: "0.75rem", borderRadius: "8px", background: "rgba(0,0,0,0.2)", border: "1px solid var(--border-color)", color: "var(--text-main)", resize: "none", outline: "none", transition: "border 0.2s" }}
+                                    placeholder="e.g. Elderly Isolation"
+                                    style={{ width: "100%", padding: "0.75rem", borderRadius: "8px", background: "rgba(0,0,0,0.2)", border: "1px solid var(--border-color)", color: "var(--text-main)", outline: "none", transition: "border 0.2s" }}
                                     onFocus={(e) => e.target.style.borderColor = "var(--accent-cyan)"}
                                     onBlur={(e) => e.target.style.borderColor = "var(--border-color)"}
                                 />
@@ -904,11 +905,11 @@
                                 <label style={{ display: "block", color: "var(--text-main)", marginBottom: "0.75rem", fontWeight: 600, fontSize: "1rem" }}>
                                     2. Target Audience
                                 </label>
-                                <textarea
+                                <input type="text"
                                     value={tocData.audience}
                                     onChange={(e) => handleTocChange('audience', e.target.value)}
-                                    placeholder="Who are the specific beneficiaries? Define their demographics, psychographics, or criteria..."
-                                    style={{ width: "100%", height: "100px", padding: "0.75rem", borderRadius: "8px", background: "rgba(0,0,0,0.2)", border: "1px solid var(--border-color)", color: "var(--text-main)", resize: "none", outline: "none", transition: "border 0.2s" }}
+                                    placeholder="e.g. Seniors above 65"
+                                    style={{ width: "100%", padding: "0.75rem", borderRadius: "8px", background: "rgba(0,0,0,0.2)", border: "1px solid var(--border-color)", color: "var(--text-main)", outline: "none", transition: "border 0.2s" }}
                                     onFocus={(e) => e.target.style.borderColor = "var(--accent-cyan)"}
                                     onBlur={(e) => e.target.style.borderColor = "var(--border-color)"}
                                 />
@@ -924,11 +925,11 @@
                                     <div style={{ fontWeight: 700, color: "#94a3b8", fontSize: "0.85rem", textTransform: "uppercase", letterSpacing: "1px" }}>Inputs</div>
                                     <div style={{ fontSize: "0.85rem", color: "var(--text-muted)", marginTop: "0.25rem" }}>Resources invested</div>
                                 </div>
-                                <textarea
+                                <input type="text"
                                     value={tocData.inputs}
                                     onChange={(e) => handleTocChange('inputs', e.target.value)}
-                                    placeholder="Funding, staff, volunteers, facilities, equipment, partnerships..."
-                                    style={{ width: "100%", height: "160px", padding: "0.75rem", borderRadius: "8px", background: "rgba(0,0,0,0.3)", border: "1px solid var(--border-color)", color: "var(--text-main)", resize: "none", fontSize: "0.9rem", outline: "none", transition: "border 0.2s" }}
+                                    placeholder="e.g. Funding and Staff"
+                                    style={{ width: "100%", padding: "0.75rem", borderRadius: "8px", background: "rgba(0,0,0,0.3)", border: "1px solid var(--border-color)", color: "var(--text-main)", fontSize: "0.9rem", outline: "none", transition: "border 0.2s" }}
                                     onFocus={(e) => e.target.style.borderColor = "#64748b"}
                                     onBlur={(e) => e.target.style.borderColor = "var(--border-color)"}
                                 />
@@ -940,11 +941,11 @@
                                     <div style={{ fontWeight: 700, color: "#60a5fa", fontSize: "0.85rem", textTransform: "uppercase", letterSpacing: "1px" }}>Activities</div>
                                     <div style={{ fontSize: "0.85rem", color: "var(--text-muted)", marginTop: "0.25rem" }}>What we do</div>
                                 </div>
-                                <textarea
+                                <input type="text"
                                     value={tocData.activities}
                                     onChange={(e) => handleTocChange('activities', e.target.value)}
-                                    placeholder="Workshops, counseling sessions, events, training courses, outreach..."
-                                    style={{ width: "100%", height: "160px", padding: "0.75rem", borderRadius: "8px", background: "rgba(0,0,0,0.3)", border: "1px solid var(--border-color)", color: "var(--text-main)", resize: "none", fontSize: "0.9rem", outline: "none", transition: "border 0.2s" }}
+                                    placeholder="e.g. Weekly Care Workshops"
+                                    style={{ width: "100%", padding: "0.75rem", borderRadius: "8px", background: "rgba(0,0,0,0.3)", border: "1px solid var(--border-color)", color: "var(--text-main)", fontSize: "0.9rem", outline: "none", transition: "border 0.2s" }}
                                     onFocus={(e) => e.target.style.borderColor = "#3b82f6"}
                                     onBlur={(e) => e.target.style.borderColor = "var(--border-color)"}
                                 />
@@ -956,11 +957,11 @@
                                     <div style={{ fontWeight: 700, color: "var(--accent-emerald)", fontSize: "0.85rem", textTransform: "uppercase", letterSpacing: "1px" }}>Outputs</div>
                                     <div style={{ fontSize: "0.85rem", color: "var(--text-muted)", marginTop: "0.25rem" }}>Direct products</div>
                                 </div>
-                                <textarea
+                                <input type="text"
                                     value={tocData.outputs}
                                     onChange={(e) => handleTocChange('outputs', e.target.value)}
-                                    placeholder="# of sessions conducted, # of attendees, materials distributed..."
-                                    style={{ width: "100%", height: "160px", padding: "0.75rem", borderRadius: "8px", background: "rgba(0,0,0,0.3)", border: "1px solid var(--border-color)", color: "var(--text-main)", resize: "none", fontSize: "0.9rem", outline: "none", transition: "border 0.2s" }}
+                                    placeholder="e.g. 50 sessions conducted"
+                                    style={{ width: "100%", padding: "0.75rem", borderRadius: "8px", background: "rgba(0,0,0,0.3)", border: "1px solid var(--border-color)", color: "var(--text-main)", fontSize: "0.9rem", outline: "none", transition: "border 0.2s" }}
                                     onFocus={(e) => e.target.style.borderColor = "var(--accent-emerald)"}
                                     onBlur={(e) => e.target.style.borderColor = "var(--border-color)"}
                                 />
@@ -972,11 +973,11 @@
                                     <div style={{ fontWeight: 700, color: "#fbbf24", fontSize: "0.85rem", textTransform: "uppercase", letterSpacing: "1px" }}>Outcomes</div>
                                     <div style={{ fontSize: "0.85rem", color: "var(--text-muted)", marginTop: "0.25rem" }}>Changes achieved</div>
                                 </div>
-                                <textarea
+                                <input type="text"
                                     value={tocData.outcomes}
                                     onChange={(e) => handleTocChange('outcomes', e.target.value)}
-                                    placeholder="Short/medium term changes in knowledge, skills, behavior, or confidence..."
-                                    style={{ width: "100%", height: "160px", padding: "0.75rem", borderRadius: "8px", background: "rgba(0,0,0,0.3)", border: "1px solid var(--border-color)", color: "var(--text-main)", resize: "none", fontSize: "0.9rem", outline: "none", transition: "border 0.2s" }}
+                                    placeholder="e.g. Increased Social Connections"
+                                    style={{ width: "100%", padding: "0.75rem", borderRadius: "8px", background: "rgba(0,0,0,0.3)", border: "1px solid var(--border-color)", color: "var(--text-main)", fontSize: "0.9rem", outline: "none", transition: "border 0.2s" }}
                                     onFocus={(e) => e.target.style.borderColor = "#f59e0b"}
                                     onBlur={(e) => e.target.style.borderColor = "var(--border-color)"}
                                 />
@@ -988,11 +989,11 @@
                                     <div style={{ fontWeight: 700, color: "#a78bfa", fontSize: "0.85rem", textTransform: "uppercase", letterSpacing: "1px" }}>Impact</div>
                                     <div style={{ fontSize: "0.85rem", color: "var(--text-muted)", marginTop: "0.25rem" }}>Long-term goal</div>
                                 </div>
-                                <textarea
+                                <input type="text"
                                     value={tocData.impact}
                                     onChange={(e) => handleTocChange('impact', e.target.value)}
-                                    placeholder="Systemic improvements, long-term sustained societal changes..."
-                                    style={{ width: "100%", height: "160px", padding: "0.75rem", borderRadius: "8px", background: "rgba(0,0,0,0.3)", border: "1px solid rgba(139, 92, 246, 0.3)", color: "var(--text-main)", resize: "none", fontSize: "0.9rem", outline: "none", transition: "border 0.2s" }}
+                                    placeholder="e.g. Systemic Resilience Building"
+                                    style={{ width: "100%", padding: "0.75rem", borderRadius: "8px", background: "rgba(0,0,0,0.3)", border: "1px solid rgba(139, 92, 246, 0.3)", color: "var(--text-main)", fontSize: "0.9rem", outline: "none", transition: "border 0.2s" }}
                                     onFocus={(e) => e.target.style.borderColor = "var(--accent-purple)"}
                                     onBlur={(e) => e.target.style.borderColor = "rgba(139, 92, 246, 0.3)"}
                                 />
