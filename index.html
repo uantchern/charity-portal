@@ -842,18 +842,47 @@
             }, [setActivePage]);
 
             const [tocData, setTocData] = useState({
-                problem: '',
-                audience: '',
-                inputs: '',
-                activities: '',
-                outputs: '',
-                outcomes: '',
-                impact: ''
+                problem: [],
+                audience: [],
+                inputs: [],
+                activities: [],
+                outputs: { sessions: '', meals: '', trained: '', families: '' },
+                outcomes: [],
+                impact: []
             });
 
-            const handleTocChange = (field, value) => {
-                setTocData(prev => ({ ...prev, [field]: value }));
+            const handleCheck = (field, option, isChecked) => {
+                setTocData(prev => {
+                    const arr = prev[field];
+                    return {
+                        ...prev,
+                        [field]: isChecked ? [...arr, option] : arr.filter(o => o !== option)
+                    };
+                });
             };
+
+            const handleOutputChange = (key, value) => {
+                setTocData(prev => ({
+                    ...prev,
+                    outputs: { ...prev.outputs, [key]: value }
+                }));
+            };
+
+            const CheckGroup = ({ title, field, options, bg = "rgba(255,255,255,0.02)", border = "rgba(255,255,255,0.05)", titleColor = "var(--text-main)" }) => (
+                <div style={{ background: bg, padding: "1.25rem", borderRadius: "12px", border: `1px solid ${border}`, position: "relative" }}>
+                    <label style={{ display: "block", color: titleColor, marginBottom: "0.75rem", fontWeight: 600, fontSize: "1rem" }}>
+                        {title}
+                    </label>
+                    <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+                        {options.map(opt => (
+                            <label key={opt} style={{ display: "flex", alignItems: "center", gap: "0.5rem", color: "var(--text-muted)", fontSize: "0.9rem", cursor: "pointer" }}>
+                                <input type="checkbox" checked={tocData[field]?.includes(opt)} onChange={(e) => handleCheck(field, opt, e.target.checked)} style={{ accentColor: "var(--accent-cyan)", width: "16px", height: "16px", cursor: "pointer" }} />
+                                {opt}
+                            </label>
+                        ))}
+                    </div>
+                </div>
+            );
 
             return (
                 <div className="fade-in" style={{ paddingBottom: "2rem", height: "100%", overflowY: "auto", paddingRight: "10px" }}>
@@ -878,7 +907,22 @@
                             <button
                                 onClick={() => {
                                     const { problem, audience, inputs, activities, outputs, outcomes, impact } = tocData;
-                                    const report = `We are proud to share our latest impact report.\n\nTo address the pressing challenge of [${problem || '...'}] within the [${audience || '..'}] community, we dedicated essential resources including [${inputs || '...'}]. This enabled us to conduct targeted [${activities || '...'}], successfully generating [${outputs || '...'}].\n\nAs a direct result of these efforts, we have witnessed strong [${outcomes || '...'}], bringing us one step closer to our ultimate vision of [${impact || '...'}].\n\nThank you to our partners and donors for making this possible.`;
+                                    const pStr = problem.length > 0 ? problem.join(', ') : '...';
+                                    const aStr = audience.length > 0 ? audience.join(', ') : '...';
+                                    const iStr = inputs.length > 0 ? inputs.join(', ') : '...';
+                                    const actStr = activities.length > 0 ? activities.join(', ') : '...';
+
+                                    const outArr = [];
+                                    if (outputs.sessions) outArr.push(`${outputs.sessions} sessions conducted`);
+                                    if (outputs.meals) outArr.push(`${outputs.meals} meals distributed`);
+                                    if (outputs.trained) outArr.push(`${outputs.trained} participants trained`);
+                                    if (outputs.families) outArr.push(`${outputs.families} families assisted`);
+                                    const outStr = outArr.length > 0 ? outArr.join(', ') : '...';
+
+                                    const ocStr = outcomes.length > 0 ? outcomes.join(', ') : '...';
+                                    const impStr = impact.length > 0 ? impact.join(', ') : '...';
+
+                                    const report = `We are proud to share our latest impact report.\n\nTo address the pressing challenge of [${pStr}] within the [${aStr}] community, we dedicated essential resources including [${iStr}]. This enabled us to conduct targeted [${actStr}], successfully generating [${outStr}].\n\nAs a direct result of these efforts, we have witnessed strong [${ocStr}], bringing us one step closer to our ultimate vision of [${impStr}].\n\nThank you to our partners and donors for making this possible.`;
                                     alert(report);
                                 }}
                                 style={{ background: "var(--accent-cyan)", color: "#fff", border: "none", padding: "0.6rem 1.25rem", borderRadius: "8px", fontWeight: "bold", cursor: "pointer", transition: "all 0.2s" }} onMouseEnter={(e) => e.target.style.opacity = 0.9} onMouseLeave={(e) => e.target.style.opacity = 1}>
@@ -888,116 +932,40 @@
 
                         {/* Foundation Row */}
                         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "1.5rem", marginBottom: "2rem" }}>
-                            <div style={{ background: "rgba(255,255,255,0.02)", padding: "1.25rem", borderRadius: "12px", border: "1px solid rgba(255,255,255,0.05)" }}>
-                                <label style={{ display: "block", color: "var(--text-main)", marginBottom: "0.75rem", fontWeight: 600, fontSize: "1rem" }}>
-                                    1. Needs & Problem Statement
-                                </label>
-                                <input type="text"
-                                    value={tocData.problem}
-                                    onChange={(e) => handleTocChange('problem', e.target.value)}
-                                    placeholder="e.g. Elderly Isolation"
-                                    style={{ width: "100%", padding: "0.75rem", borderRadius: "8px", background: "rgba(0,0,0,0.2)", border: "1px solid var(--border-color)", color: "var(--text-main)", outline: "none", transition: "border 0.2s" }}
-                                    onFocus={(e) => e.target.style.borderColor = "var(--accent-cyan)"}
-                                    onBlur={(e) => e.target.style.borderColor = "var(--border-color)"}
-                                />
-                            </div>
-                            <div style={{ background: "rgba(255,255,255,0.02)", padding: "1.25rem", borderRadius: "12px", border: "1px solid rgba(255,255,255,0.05)" }}>
-                                <label style={{ display: "block", color: "var(--text-main)", marginBottom: "0.75rem", fontWeight: 600, fontSize: "1rem" }}>
-                                    2. Target Audience
-                                </label>
-                                <input type="text"
-                                    value={tocData.audience}
-                                    onChange={(e) => handleTocChange('audience', e.target.value)}
-                                    placeholder="e.g. Seniors above 65"
-                                    style={{ width: "100%", padding: "0.75rem", borderRadius: "8px", background: "rgba(0,0,0,0.2)", border: "1px solid var(--border-color)", color: "var(--text-main)", outline: "none", transition: "border 0.2s" }}
-                                    onFocus={(e) => e.target.style.borderColor = "var(--accent-cyan)"}
-                                    onBlur={(e) => e.target.style.borderColor = "var(--border-color)"}
-                                />
-                            </div>
+                            <CheckGroup title="1. Needs & Problem Statement" field="problem" options={["Elderly Isolation", "Youth At-Risk", "Food Insecurity", "Mental Health Crisis"]} />
+                            <CheckGroup title="2. Target Audience" field="audience" options={["Seniors over 65", "Vulnerable Youths", "Low-income Households", "Persons with Disabilities"]} />
                         </div>
 
                         {/* Logic Model Pipeline */}
                         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "1rem", paddingBottom: "1rem" }}>
 
-                            {/* Inputs */}
-                            <div style={{ flex: "1 0 200px", background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.05)", borderRadius: "12px", padding: "1.25rem", position: "relative" }}>
-                                <div style={{ borderBottom: "2px solid #64748b", paddingBottom: "0.5rem", marginBottom: "1rem" }}>
-                                    <div style={{ fontWeight: 700, color: "#94a3b8", fontSize: "0.85rem", textTransform: "uppercase", letterSpacing: "1px" }}>Inputs</div>
-                                    <div style={{ fontSize: "0.85rem", color: "var(--text-muted)", marginTop: "0.25rem" }}>Resources invested</div>
+                            <CheckGroup title="3. Inputs" field="inputs" options={["Government Grants", "Corporate Sponsorship", "Volunteer Hours", "Skilled Staff"]} titleColor="#94a3b8" />
+
+                            <CheckGroup title="4. Activities" field="activities" options={["Care Workshops", "Mentorship Sessions", "Food Distribution", "Counseling Services"]} titleColor="#60a5fa" />
+
+                            <div style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.05)", borderRadius: "12px", padding: "1.25rem", position: "relative" }}>
+                                <label style={{ display: "block", color: "var(--accent-emerald)", marginBottom: "0.75rem", fontWeight: 600, fontSize: "1rem" }}>
+                                    5. Outputs
+                                </label>
+                                <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem", marginTop: "0.5rem" }}>
+                                    {[
+                                        { label: 'sessions', key: 'sessions' },
+                                        { label: 'meals', key: 'meals' },
+                                        { label: 'trained', key: 'trained' },
+                                        { label: 'families', key: 'families' }
+                                    ].map(out => (
+                                        <div key={out.key} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: "var(--text-muted)", fontSize: "0.9rem" }}>
+                                            <input type="number" placeholder="0" style={{ width: "60px", background: "rgba(0,0,0,0.3)", border: "1px solid var(--border-color)", padding: "0.25rem 0.5rem", borderRadius: "4px", color: "white", outline: "none" }}
+                                                value={tocData.outputs[out.key]} onChange={(e) => handleOutputChange(out.key, e.target.value)} />
+                                            {out.label}
+                                        </div>
+                                    ))}
                                 </div>
-                                <input type="text"
-                                    value={tocData.inputs}
-                                    onChange={(e) => handleTocChange('inputs', e.target.value)}
-                                    placeholder="e.g. Funding and Staff"
-                                    style={{ width: "100%", padding: "0.75rem", borderRadius: "8px", background: "rgba(0,0,0,0.3)", border: "1px solid var(--border-color)", color: "var(--text-main)", fontSize: "0.9rem", outline: "none", transition: "border 0.2s" }}
-                                    onFocus={(e) => e.target.style.borderColor = "#64748b"}
-                                    onBlur={(e) => e.target.style.borderColor = "var(--border-color)"}
-                                />
                             </div>
 
-                            {/* Activities */}
-                            <div style={{ flex: "1 0 200px", background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.05)", borderRadius: "12px", padding: "1.25rem", position: "relative" }}>
-                                <div style={{ borderBottom: "2px solid #3b82f6", paddingBottom: "0.5rem", marginBottom: "1rem" }}>
-                                    <div style={{ fontWeight: 700, color: "#60a5fa", fontSize: "0.85rem", textTransform: "uppercase", letterSpacing: "1px" }}>Activities</div>
-                                    <div style={{ fontSize: "0.85rem", color: "var(--text-muted)", marginTop: "0.25rem" }}>What we do</div>
-                                </div>
-                                <input type="text"
-                                    value={tocData.activities}
-                                    onChange={(e) => handleTocChange('activities', e.target.value)}
-                                    placeholder="e.g. Weekly Care Workshops"
-                                    style={{ width: "100%", padding: "0.75rem", borderRadius: "8px", background: "rgba(0,0,0,0.3)", border: "1px solid var(--border-color)", color: "var(--text-main)", fontSize: "0.9rem", outline: "none", transition: "border 0.2s" }}
-                                    onFocus={(e) => e.target.style.borderColor = "#3b82f6"}
-                                    onBlur={(e) => e.target.style.borderColor = "var(--border-color)"}
-                                />
-                            </div>
+                            <CheckGroup title="6. Outcomes" field="outcomes" options={["Increased Social Connections", "Improved Academic Performance", "Reduced Hunger", "Enhanced Mental Well-being"]} titleColor="#fbbf24" />
 
-                            {/* Outputs */}
-                            <div style={{ flex: "1 0 200px", background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.05)", borderRadius: "12px", padding: "1.25rem", position: "relative" }}>
-                                <div style={{ borderBottom: "2px solid var(--accent-emerald)", paddingBottom: "0.5rem", marginBottom: "1rem" }}>
-                                    <div style={{ fontWeight: 700, color: "var(--accent-emerald)", fontSize: "0.85rem", textTransform: "uppercase", letterSpacing: "1px" }}>Outputs</div>
-                                    <div style={{ fontSize: "0.85rem", color: "var(--text-muted)", marginTop: "0.25rem" }}>Direct products</div>
-                                </div>
-                                <input type="text"
-                                    value={tocData.outputs}
-                                    onChange={(e) => handleTocChange('outputs', e.target.value)}
-                                    placeholder="e.g. 50 sessions conducted"
-                                    style={{ width: "100%", padding: "0.75rem", borderRadius: "8px", background: "rgba(0,0,0,0.3)", border: "1px solid var(--border-color)", color: "var(--text-main)", fontSize: "0.9rem", outline: "none", transition: "border 0.2s" }}
-                                    onFocus={(e) => e.target.style.borderColor = "var(--accent-emerald)"}
-                                    onBlur={(e) => e.target.style.borderColor = "var(--border-color)"}
-                                />
-                            </div>
-
-                            {/* Outcomes */}
-                            <div style={{ flex: "1 0 200px", background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.05)", borderRadius: "12px", padding: "1.25rem", position: "relative" }}>
-                                <div style={{ borderBottom: "2px solid #f59e0b", paddingBottom: "0.5rem", marginBottom: "1rem" }}>
-                                    <div style={{ fontWeight: 700, color: "#fbbf24", fontSize: "0.85rem", textTransform: "uppercase", letterSpacing: "1px" }}>Outcomes</div>
-                                    <div style={{ fontSize: "0.85rem", color: "var(--text-muted)", marginTop: "0.25rem" }}>Changes achieved</div>
-                                </div>
-                                <input type="text"
-                                    value={tocData.outcomes}
-                                    onChange={(e) => handleTocChange('outcomes', e.target.value)}
-                                    placeholder="e.g. Increased Social Connections"
-                                    style={{ width: "100%", padding: "0.75rem", borderRadius: "8px", background: "rgba(0,0,0,0.3)", border: "1px solid var(--border-color)", color: "var(--text-main)", fontSize: "0.9rem", outline: "none", transition: "border 0.2s" }}
-                                    onFocus={(e) => e.target.style.borderColor = "#f59e0b"}
-                                    onBlur={(e) => e.target.style.borderColor = "var(--border-color)"}
-                                />
-                            </div>
-
-                            {/* Impact */}
-                            <div style={{ flex: "1 0 200px", background: "rgba(139, 92, 246, 0.05)", border: "1px solid rgba(139, 92, 246, 0.2)", borderRadius: "12px", padding: "1.25rem", position: "relative" }}>
-                                <div style={{ borderBottom: "2px solid var(--accent-purple)", paddingBottom: "0.5rem", marginBottom: "1rem" }}>
-                                    <div style={{ fontWeight: 700, color: "#a78bfa", fontSize: "0.85rem", textTransform: "uppercase", letterSpacing: "1px" }}>Impact</div>
-                                    <div style={{ fontSize: "0.85rem", color: "var(--text-muted)", marginTop: "0.25rem" }}>Long-term goal</div>
-                                </div>
-                                <input type="text"
-                                    value={tocData.impact}
-                                    onChange={(e) => handleTocChange('impact', e.target.value)}
-                                    placeholder="e.g. Systemic Resilience Building"
-                                    style={{ width: "100%", padding: "0.75rem", borderRadius: "8px", background: "rgba(0,0,0,0.3)", border: "1px solid rgba(139, 92, 246, 0.3)", color: "var(--text-main)", fontSize: "0.9rem", outline: "none", transition: "border 0.2s" }}
-                                    onFocus={(e) => e.target.style.borderColor = "var(--accent-purple)"}
-                                    onBlur={(e) => e.target.style.borderColor = "rgba(139, 92, 246, 0.3)"}
-                                />
-                            </div>
+                            <CheckGroup title="7. Impact" field="impact" options={["Systemic Resilience", "Poverty Cycle Disruption", "Sustainable Community Health"]} bg="rgba(139, 92, 246, 0.05)" border="rgba(139, 92, 246, 0.2)" titleColor="#a78bfa" />
                         </div>
                     </div>
                 </div>
