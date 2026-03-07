@@ -1817,7 +1817,7 @@
                 setTimeout(() => {
                     setStory({
                         text: `🌟 Incredible day at the ${topic || 'event'}! 🤝 We are continually humbled by the dedication of our volunteers and partners. Together, we are creating systemic change and building a stronger, more resilient community today. Thank you to everyone who made this possible! #Impact #CommunityEngagement #CharityOps`,
-                        image: `https://images.unsplash.com/photo-1593113514676-5fa33a1e0952?w=800&auto=format&fit=crop`
+                        image: `https://picsum.photos/seed/${encodeURIComponent(topic || 'event')}/800/400`
                     });
                     setIsGenerating(false);
                     setPostStatus('idle');
@@ -1828,6 +1828,9 @@
                 setPostStatus('posting');
                 setTimeout(() => {
                     setPostStatus('success');
+                    // Open actual LinkedIn share window
+                    const linkedinUrl = `https://www.linkedin.com/feed/?shareActive=true&text=${encodeURIComponent(story.text)}`;
+                    window.open(linkedinUrl, '_blank', 'noopener,noreferrer');
                 }, 1200);
             };
 
