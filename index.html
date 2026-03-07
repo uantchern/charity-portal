@@ -1828,19 +1828,17 @@
                 setPostStatus('posting');
 
                 try {
-                    // Try to download the image automatically
-                    const response = await fetch(story.image);
-                    const blob = await response.blob();
-                    const url = window.URL.createObjectURL(blob);
+                    // Workaround to trigger download without running into cross-origin blob issues
                     const a = document.createElement('a');
                     a.style.display = 'none';
-                    a.href = url;
+                    a.href = story.image;
+                    a.target = '_blank';
                     a.download = `generated-social-asset.jpg`;
                     document.body.appendChild(a);
                     a.click();
-                    window.URL.revokeObjectURL(url);
+                    document.body.removeChild(a);
 
-                    alert("💡 NOTE: LinkedIn's security prevents websites from auto-inserting images directly into your feed.\n\nTo make this easy, we have automatically downloaded the image to your computer! Just click the 'Media' button on LinkedIn to attach it.");
+                    alert("💡 NOTE: LinkedIn's security prevents websites from auto-inserting images directly into your feed.\n\nWe have triggered an automatic download of the image (or right-click save the image if it opens in a new tab). Just click the 'Media' button on LinkedIn to attach it!");
                 } catch (e) {
                     alert("💡 NOTE: LinkedIn's security prevents us from auto-inserting the image.\n\nPlease 'Right-Click -> Save Image' on the generated asset, and attach it to your LinkedIn post manually!");
                 }
