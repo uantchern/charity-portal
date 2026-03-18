@@ -10,8 +10,6 @@
     <script crossorigin src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
     <!-- Babel -->
     <script src="https://unpkg.com/@babel/standalone@7.23.3/babel.min.js"></script>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     
@@ -21,14 +19,12 @@
             color: #1B2B28;
             min-height: 100vh;
             display: flex;
-            flex-direction: column;
             align-items: center;
-            justify-content: flex-start;
+            justify-content: center;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             margin: 0;
             padding: 40px 20px;
             box-sizing: border-box;
-            gap: 40px;
         }
 
         .app-container {
@@ -38,7 +34,6 @@
             height: 90vh;
             max-height: 900px;
             min-height: 600px;
-            margin: 0 auto;
             background: rgba(255, 255, 255, 0.7);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
@@ -46,14 +41,12 @@
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
             border-radius: 24px;
             overflow: hidden;
-            flex-shrink: 0;
         }
 
-        /* Left Side (Logic Engine) */
         .setup-pane {
             background-color: rgba(255, 255, 255, 0.4);
             padding: 40px;
-            width: 480px;
+            width: 420px;
             display: flex;
             flex-direction: column;
             border-right: 1px solid rgba(210, 180, 140, 0.3);
@@ -61,14 +54,11 @@
             overflow-y: auto;
         }
 
-        .setup-pane::-webkit-scrollbar { width: 6px; }
-        .setup-pane::-webkit-scrollbar-thumb { background: rgba(210, 180, 140, 0.5); border-radius: 10px; }
-
         .setup-pane h1 {
             font-size: 28px;
             color: #1B2B28;
             font-weight: 900;
-            margin-bottom: 8px;
+            margin: 0 0 8px 0;
             font-family: Georgia, serif;
             line-height: 1.2;
         }
@@ -79,27 +69,36 @@
             font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 0.1em;
-            margin-bottom: 4px;
+            margin: 0 0 4px 0;
             display: flex;
             align-items: center;
             gap: 8px;
         }
 
+        .section-title {
+            font-weight: 700;
+            color: #1B2B28;
+            font-size: 18px;
+            margin-bottom: 24px;
+            letter-spacing: 0.02em;
+            border-bottom: 2px solid #D2B48C;
+            padding-bottom: 8px;
+            display: inline-block;
+        }
+
         .input-group {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 8px;
             margin-bottom: 24px;
         }
 
         .input-group label {
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 700;
             letter-spacing: 0.05em;
             color: #8B7355;
             text-transform: uppercase;
-            margin-bottom: 4px;
-            display: block;
         }
 
         .input-field, .preset-select {
@@ -113,6 +112,7 @@
             outline: none;
             transition: all 0.2s ease;
             font-family: inherit;
+            box-sizing: border-box;
         }
 
         .preset-select {
@@ -146,14 +146,7 @@
             gap: 8px;
             width: 100%;
             box-shadow: 0 4px 12px rgba(27, 43, 40, 0.2);
-            margin-top: auto;
-        }
-
-        [contenteditable]:empty:before {
-            content: attr(data-placeholder);
-            color: #A8A092;
-            pointer-events: none;
-            display: block;
+            margin-top: 16px;
         }
 
         .primary-btn:hover:not(:disabled) {
@@ -162,161 +155,112 @@
         }
 
         .primary-btn:disabled {
-            opacity: 0.5;
+            background-color: #A8A092;
             cursor: not-allowed;
+            opacity: 0.7;
+            transform: none;
             box-shadow: none;
         }
 
-        /* Question Stormer Phase Styling */
-        .q-card {
-            background: white;
-            border: 1px solid #EAE5D8;
-            border-radius: 8px;
-            padding: 16px;
-            margin-bottom: 12px;
-            font-size: 14px;
-            line-height: 1.5;
-            color: #1B2B28;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
-            display: flex;
-            gap: 12px;
-            align-items: flex-start;
-        }
-
-        .q-number {
-            font-family: Georgia, serif;
-            font-size: 18px;
+        .secondary-btn {
+            background-color: transparent;
             color: #8B7355;
-            font-weight: bold;
-            line-height: 1;
-        }
-
-        .wayfinding-box {
-            background: #FDFBF7;
-            border-left: 4px solid #D2B48C;
-            padding: 16px;
-            margin-top: 24px;
-            border-radius: 0 8px 8px 0;
+            border: 1px solid #D2B48C;
+            padding: 14px;
             font-size: 14px;
-            color: #5E5A4B;
+            font-weight: 600;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 100%;
+            text-align: center;
+            margin-top: 12px;
         }
 
-        /* Right Side (Output Module) */
+        .secondary-btn:hover {
+            background-color: rgba(210, 180, 140, 0.1);
+        }
+
         .preview-pane {
-            background-color: rgba(255, 255, 255, 0.5);
             flex: 1;
             display: flex;
             flex-direction: column;
-            overflow: hidden;
+            background-color: #FFFFFF;
+            overflow-y: auto;
             position: relative;
         }
 
-        .preview-header {
-            background-color: #1B2B28;
-            padding: 20px 24px;
-            display: flex;
-            align-items: center;
-            color: white;
-            gap: 12px;
+        .fade-in {
+            animation: fadeIn 0.4s ease-in-out;
         }
 
-        .preview-header h2 {
-            font-size: 18px;
-            font-weight: 600;
-            margin: 0;
-            flex-grow: 1;
-            font-family: Georgia, serif;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        .preview-content {
-            flex: 1;
-            overflow-y: auto;
-            padding: 40px;
-            background-image:
-                radial-gradient(circle at 100% 0%, rgba(210, 180, 140, 0.1) 0%, transparent 40%),
-                radial-gradient(circle at 0% 100%, rgba(139, 115, 85, 0.05) 0%, transparent 40%);
-        }
-
-        .document-canvas {
-            background: #ffffff;
-            border: 1px solid #EAE5D8;
-            border-radius: 8px;
-            padding: 60px 70px;
-            max-width: 800px;
-            margin: 0 auto;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-            min-height: 100%;
-        }
-
-        .document-title {
-            font-family: Georgia, serif;
-            font-size: 28px;
-            color: #1B2B28;
-            text-align: center;
-            border-bottom: 2px solid #D2B48C;
-            padding-bottom: 24px;
-            margin-bottom: 40px;
-            font-weight: 700;
-        }
-
-        .doc-section {
-            margin-bottom: 32px;
-        }
-
-        .doc-section h3 {
-            font-family: -apple-system, sans-serif;
-            color: #8B7355;
-            font-size: 15px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 12px;
-            border-bottom: 1px solid #EAE5D8;
-            padding-bottom: 6px;
-        }
-
-        .doc-section p, .doc-section ul {
-            color: #5E5A4B;
-            line-height: 1.6;
-            font-size: 15px;
-        }
-        
-        .doc-section ul {
-            padding-left: 24px;
-            margin-top: 8px;
-        }
-        
-        .doc-section li { margin-bottom: 6px; }
-
-        .progress-indicator {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 32px;
-        }
-        .progress-step {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 12px;
-            font-weight: 700;
-            color: #D2B48C;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-        .progress-step.active { color: #1B2B28; }
-        .progress-step.completed { color: #8B7355; }
-        .progress-line { height: 2px; width: 24px; background: #EAE5D8; }
-        
         .empty-state {
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
             height: 100%;
             color: #8B7355;
-            opacity: 0.5;
-            text-align: center;
+            font-size: 16px;
+            opacity: 0.6;
+            font-family: Georgia, serif;
+            padding: 40px;
+        }
+
+        .scenario-radio {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 16px;
+            border: 1px solid #EAE5D8;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 14px;
+            color: #1B2B28;
+            line-height: 1.5;
+        }
+
+        .scenario-radio:hover {
+            border-color: #D2B48C;
+            background-color: #FDFBF7;
+        }
+
+        .scenario-radio.selected {
+            border-color: #8B7355;
+            background-color: #FDFBF7;
+            box-shadow: 0 4px 12px rgba(210, 180, 140, 0.15);
+        }
+
+        .inline-input {
+            border: none;
+            border-bottom: 1px dashed #D2B48C;
+            background: transparent;
+            font-family: inherit;
+            font-size: inherit;
+            color: inherit;
+            outline: none;
+            width: 100%;
+            padding: 2px 4px;
+        }
+        
+        .inline-input:focus {
+            border-bottom: 1px solid #8B7355;
+        }
+
+        .context-card {
+            background-color: #FDFBF7;
+            border: 1px solid #EAE5D8;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 24px;
+            color: #1B2B28;
+            font-size: 15px;
+            line-height: 1.5;
         }
     </style>
 </head>
@@ -334,144 +278,201 @@
         const Bolt = ({size}) => <IconSvg size={size}><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></IconSvg>;
         const Check = ({size}) => <IconSvg size={size}><polyline points="20 6 9 17 4 12"/></IconSvg>;
         const ArrowRight = ({size}) => <IconSvg size={size}><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></IconSvg>;
-        const Compass = ({size}) => <IconSvg size={size}><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></IconSvg>;
 
-        // Generic Core Logic Engine Mocks
-        const QUESTION_BANK = {
+        const SCENARIO_BANK = {
             "Board Governance": [
-                "Are board meeting minutes sanitized to the point where dissenting voices and robust debate disappear?",
-                "Is the succession plan reliant strictly on who is friends with the current Chairman?",
-                "Are 'independent' directors truly challenging management, or just rubber-stamping the CEO's operational updates?",
-                "Has the board formally evaluated its own performance and composition in the last 2 years?",
-                "Are conflicts of interest actively managed during meetings, or is the annual declaration treated as a mere formality?"
+                "A vocal board member aggressively pushing a specific vendor for a major project.",
+                "The CEO threatening to resign if a specific strategic initiative isn't rubber-stamped.",
+                "A prolonged period where board meetings lack quorum but decisions are still passed."
             ],
             "Strategic Direction and Programme Management": [
-                "Are you tracking outcomes that genuinely measure impact, or just counting activities for the annual report?",
-                "If your largest programme's funding was cut by 50% tomorrow, how quickly would operations adapt?",
-                "How frequently does the Board review programme relevance against the evolving needs of your beneficiaries?",
-                "Do you have a formalized process to sunset legacy programmes that no longer serve the core mission?",
-                "Are operational targets routinely missed without triggering a strategic review?"
+                "A legacy programme consuming 40% of standard funding despite steadily dropping beneficiary numbers.",
+                "Management proposing a radical pivot into a new service sector without a pilot study.",
+                "A major programmatic partnership failing, leaving unmet deliverables and angry stakeholders."
             ],
             "Human Resource and Volunteer Management": [
-                "Is there a clear, documented process for handling serious grievances, and has it ever been tested?",
-                "Do volunteers have access to sensitive beneficiary data without proper offboarding protocols?",
-                "Are critical operations highly dependent on a single staff member without any cross-training or handover manual?",
-                "How often are performance reviews delayed or skipped entirely for key personnel?",
-                "Are background checks and safeguarding policies consistently applied to all volunteers before deployment?"
+                "A senior staff member facing severe whistleblower allegations of bullying and harassment.",
+                "Volunteers gaining unauthorized access to sensitive donor and beneficiary databases.",
+                "A sudden departure of the only executive who deeply understands the custom constituent CRM."
             ],
             "Financial Management and Internal Controls": [
-                "Are expense approvals occasionally bypassed or split to avoid triggering higher authorisation thresholds?",
-                "Can the person who processes payments also independently approve them in your banking portal?",
-                "How frequently are your restricted funds reconciled to ensure they haven't bled into unrestricted operations?",
-                "Are bank reconciliations performed by someone entirely independent of the cash handling process?",
-                "When was the last time the organization formally reviewed and updated its financial delegation of authority?"
+                "Finance executive submits significant expense claims verified only by a direct subordinate.",
+                "Vendor suddenly alters payment instructions right before a major invoice is due.",
+                "Restricted grant funds are urgently mapped to cover a short-term operational payroll deficit."
             ],
             "Fundraising Practices": [
-                "Are specific donor intent conditions truly firewalled in your accounting, or does cash mingle in operations?",
-                "If a major gala fails to break even, at what specific milestone is the trigger pulled to cut losses?",
-                "How are external commercial fundraisers engaged, and are their success fees skewing your stated cost-of-fundraising ratios?",
-                "Do you have a clear, enforceable policy on accepting or rejecting potentially controversial donations?",
-                "Are fundraising materials rigorously verified against actual program outcomes to prevent misrepresentation?"
+                "A commercial fundraiser aggressively soliciting funds using emotionally manipulative tactics.",
+                "A high net-worth donor insisting on dictating operational changes in exchange for a mega-gift.",
+                "A charity gala heavily underperforming, creating a direct operational cashflow crisis."
             ],
             "Disclosure and Transparency": [
-                "Would a member of the public easily understand how much goes to overhead versus actual programmes from your annual report?",
-                "Are related party transactions fully disclosed and rigorously justified, or treated as standard operational expenses?",
-                "If a serious governance lapse occurred, is there a clear protocol on what and when to disclose to your stakeholders?",
-                "Is executive remuneration confidentially managed, or is there absolute transparency around the exact bandings of the top 3 executives?",
-                "Does the public website provide an up-to-date and honest reflection of the charity's financial health and governance structure?"
+                "A local media outlet threatening to publish an exposé on the charity's opaque executive remuneration.",
+                "A major statutory compliance breach accidentally occurring and hidden from the annual report.",
+                "Conflicts of interest among the top 3 executives going unrecorded in public filings."
+            ]
+        };
+
+        const STORM_BANK = {
+            "Board Governance": [
+                ["Are board meeting minutes sanitized to hide dissenting voices?", "Is the succession plan reliant strictly on the Chairman's friends?", "Are 'independent' directors truly challenging management?"],
+                ["Has the board formally evaluated its own composition recently?", "Are conflicts of interest actively managed during debates?", "Do board members receive board papers at least 7 days in advance?"],
+                ["Is there a dominant personality that steamrolls decisions?", "Is the board diverse in skillsets or skewed to one profession?", "Does the board have direct access to junior staff?"]
+            ],
+            "Strategic Direction and Programme Management": [
+                ["Are you tracking outcomes that genuinely measure impact?", "If your largest programme's funding was cut by 50%, how quickly would you adapt?", "How frequently does the Board review programme relevance?"],
+                ["Do you have a formalized process to sunset legacy programmes?", "Are operational targets routinely missed without triggering a review?", "Are new initiatives rigorously stress-tested before launch?"],
+                ["Are beneficiary feedback loops actually influencing strategy?", "Is management overly focused on counting activities instead of impact?", "Does the charity have a clear risk-appetite statement for new projects?"]
+            ],
+            "Human Resource and Volunteer Management": [
+                ["Is there a clear, documented process for handling serious grievances?", "Do volunteers have access to sensitive beneficiary data?", "Are critical operations dependent on a single staff member?"],
+                ["How often are performance reviews delayed or skipped?", "Are background checks consistently applied to all volunteers?", "Is there a formal handover protocol for sudden staff departures?"],
+                ["Are staff turnover rates genuinely analyzed for toxic culture indicators?", "Are whistleblowers actively protected from subtle retaliation?", "Is volunteer training treated as a tick-box exercise?"]
+            ],
+            "Financial Management and Internal Controls": [
+                ["Are expense approvals bypassed to avoid higher authorisation thresholds?", "Can the person who processes payments also independently approve them?", "How frequently are restricted funds reconciled?"],
+                ["Are bank reconciliations performed by someone independent of cash handling?", "When was the financial delegation of authority last updated?", "Are manual journal entries rigorously reviewed?"],
+                ["Are petty cash floats occasionally used for personal loans?", "Is there a rigid competitive bidding process for contracts above $10k?", "How deep is the scrutiny on related-party transactions?"]
+            ],
+            "Fundraising Practices": [
+                ["Are specific donor intent conditions truly firewalled in accounting?", "If a gala fails, at what milestone is the trigger pulled to cut losses?", "Are external fundraiser success fees skewing cost ratios?"],
+                ["Do you have an enforceable policy on rejecting controversial donations?", "Are fundraising materials verified against actual program outcomes?", "Is the IPC tax deduction receipting process fully automated?"],
+                ["Are donor lists securely encrypted and access-logged?", "Do major donors receive unspoken preferential operational treatment?", "Is the board instantly notified of reputational risks from incoming funds?"]
+            ],
+            "Disclosure and Transparency": [
+                ["Would the public easily understand overhead vs programmes from the annual report?", "Are related party transactions fully disclosed or treated as standard expenses?", "Is there a clear protocol on what to disclose to stakeholders during a crisis?"],
+                ["Is executive remuneration confidentially managed or absolutely transparent?", "Does the website give an honest reflection of financial health?", "Are audit findings ever hidden from the general public report?"],
+                ["Are reserves policies publicly justified or just stated as a generic number?", "How rapid is the response time to public inquiries regarding governance?", "Are past governance failures actively acknowledged as learning points?"]
+            ]
+        };
+
+        const CHECKLIST_BANK = {
+            "Board Governance": [
+                "Review last 12 months of board meeting minutes for evidence of robust debate.",
+                "Verify attendance records and quorum status for all key decisions.",
+                "Check Conflict of Interest declaration forms for all current board members.",
+                "Examine the formal process and criteria used for the latest board appointment.",
+                "Review the documented succession plan for the CEO and key executive roles.",
+                "Audit the timeliness of board paper distribution prior to meetings.",
+                "Assess the diversity matrix of the current board composition.",
+                "Verify if an independent board evaluation has been conducted in the last 2 years.",
+                "Check if in-camera sessions (without management) are regularly scheduled.",
+                "Review the terms of reference for all active board sub-committees."
+            ],
+            "Strategic Direction and Programme Management": [
+                "Review the charity's strategic plan and verify documented progress tracking.",
+                "Audit the top 3 programmes for documented logic models and outcome KPIs.",
+                "Verify if legacy programmes have undergone a formal relevance review in the past 3 years.",
+                "Examine the risk-appetite statement regarding new programmatic expansions.",
+                "Check documentation detailing exactly how beneficiary feedback is collected.",
+                "Review instances where feedback explicitly altered programme direction.",
+                "Audit the financial efficiency and impact ratio of the largest signature programme.",
+                "Check the formal protocol for sunsetting or defunding underperforming initiatives.",
+                "Verify alignment of all active programmes with the registered constitutional objectives.",
+                "Review management reports to the board concerning programme delays or failures."
+            ],
+            "Human Resource and Volunteer Management": [
+                "Audit the grievance handling register and track resolution speeds.",
+                "Verify background checks and safeguarding compliance for 10 random active volunteers.",
+                "Review the offboarding checklist for staff terminated in the last 12 months.",
+                "Check system access logs to ensure ex-staff and volunteers are immediately deregistered.",
+                "Audit the staff handbook for clarity on whistleblower protections and non-retaliation.",
+                "Review the succession and cross-training manuals for the top 5 critical operational roles.",
+                "Verify that performance appraisals for all key executives were completed on time.",
+                "Check the volunteer training logs against the required safeguarding curriculum.",
+                "Review the methodology for calculating and reporting staff turnover to the board.",
+                "Examine the documented rationale for any exceptional bonuses or salary increments."
+            ],
+            "Financial Management and Internal Controls": [
+                "Audit 10 random expense claims above $1,000 for verified 2-tier approval.",
+                "Verify segregation of duties between payment preparation and payment authorization.",
+                "Review bank reconciliation statements for the past 6 months for independent sign-off.",
+                "Audit the tracking and deployment timeline of 3 major restricted funds.",
+                "Test the procurement competitive bidding process using 5 recent contracts.",
+                "Review the financial delegation of authority matrix and verify board approval date.",
+                "Check the petty cash register for anomalies, unauthorized IOUs, or unreceipted entries.",
+                "Verify the robustness of the fixed asset register and latest physical sighting.",
+                "Audit the approval workflow for manual journal entries hitting the general ledger.",
+                "Review all declared related-party transactions against standard commercial rates."
+            ],
+            "Fundraising Practices": [
+                "Audit the commercial fundraiser contracts for hidden success fees or prohibitive terms.",
+                "Verify IPC tax deduction receipt issuance timelines against statutory limits.",
+                "Review the documented risk assessment for the 2 largest fundraising events last year.",
+                "Check the accounting workflows separating restricted general donations from operations.",
+                "Examine standard fundraising collaterals for strict alignment with actual deliverables.",
+                "Audit the security, access logs, and encryption protocols for the donor database.",
+                "Review the board escalation protocol for ethically ambiguous or controversial donations.",
+                "Verify the refund or reallocation policy for cancelled programmatic fund targets.",
+                "Check the cost-of-fundraising ratio calculation against the 30% statutory guideline.",
+                "Review the documented due diligence process applied to corporate sponsors."
+            ],
+            "Disclosure and Transparency": [
+                "Review the annual report for absolute clarity on overhead vs programme expenditure.",
+                "Verify that top 3 executive remuneration banding is accurately declared per GEC.",
+                "Audit the charity's website for an up-to-date board roster and financial summaries.",
+                "Check the formal protocol for managing and reporting data breaches to stakeholders.",
+                "Review the disclosure depth regarding board attendance in the annual filing.",
+                "Examine the documented reserves policy and test its practical mathematical accuracy.",
+                "Verify the clarity and accessibility of the charity's whistleblower channels to the public.",
+                "Audit the timeline of reporting any statutory compliance breaches to the COC.",
+                "Check the conflict of interest disclosures published in the audited financial statements.",
+                "Review the corporate communications plan for crisis management and reputational risk."
             ]
         };
 
         const SuperApp = () => {
-            const [phase, setPhase] = useState(1); // 1 = Intake, 2 = Storming, 3 = Drafting
+            const [phase, setPhase] = useState(1);
             const [data, setData] = useState({
                 charityName: "",
-                ipcStatus: "Non-IPC",
-                auditDomain: ""
+                auditDomain: "",
+                sliderScore: "5"
             });
-            const [questions, setQuestions] = useState([]);
-            const [newQuestion, setNewQuestion] = useState("");
-
-            const handleChange = (e) => {
-                setData(prev => ({ ...prev, [e.target.name]: e.target.value }));
-            };
-
-            const startStorming = () => {
-                if(data.charityName && data.auditDomain) {
-                    const generics = QUESTION_BANK[data.auditDomain] || QUESTION_BANK["Board Governance"];
-                    setQuestions(generics.slice(0, 3));
-                    setPhase(2);
-                }
-            };
-
-            const addQuestion = () => {
-                if(newQuestion.trim()) {
-                    setQuestions([...questions, newQuestion.trim()]);
-                    setNewQuestion("");
-                } else {
-                    const bank = QUESTION_BANK[data.auditDomain] || QUESTION_BANK["Board Governance"];
-                    const available = bank.filter(q => !questions.includes(q));
-                    if (available.length > 0) {
-                        const randomQ = available[Math.floor(Math.random() * available.length)];
-                        setQuestions([...questions, randomQ]);
-                    } else {
-                        alert("No more base criteria to storm! Try writing a custom one.");
-                    }
-                }
-            };
-
-            const startDrafting = () => {
-                setPhase(3);
-            };
+            const [scenario, setScenario] = useState("");
+            const [customScenario, setCustomScenario] = useState("");
+            const [stormPicks, setStormPicks] = useState({ 0: "", 1: "", 2: "" });
 
             const shareViaWhatsApp = () => {
-                let text = `*Internal Audit Scope - ${data.auditDomain || 'Custom'}*\n*Charity:* ${data.charityName || 'Not specified'}\n\n*Agreed Questions:*\n`;
-                questions.forEach((q, i) => {
-                    if (q.trim()) text += `${i+1}. ${q.trim()}\n\n`;
+                let text = `*Internal Audit Scope - ${data.auditDomain}*\n*Charity:* ${data.charityName || 'Not specified'}\n*Status Score:* ${data.sliderScore}/10\n\n`;
+                text += `*Key Scenario Focus:*\n${scenario === 'custom' ? customScenario : scenario}\n\n`;
+                text += `*Core Inquiries (Stormed):*\n`;
+                Object.values(stormPicks).forEach((q, i) => {
+                    if (q) text += `${i+1}. ${q}\n`;
                 });
-                text += `_CONFIDENTIAL // SSC Internal Auditor_`;
+                text += `\n_CONFIDENTIAL // SSC Internal Auditor_`;
                 
                 const encodedText = encodeURIComponent(text);
                 window.open(`https://api.whatsapp.com/send?text=${encodedText}`, '_blank');
             };
 
+            const isPhase1Ready = data.auditDomain && (scenario && scenario !== 'custom' || (scenario === 'custom' && customScenario.trim()));
+            const isPhase2Ready = Object.values(stormPicks).every(v => v !== "");
+
             return (
                 <div className="app-container">
                     <div className="setup-pane">
-                        {/* CharityOps logo removed */ }
-                        
-                        <div style={{ marginBottom: '24px' }}>
+                        <div style={{ marginBottom: '40px' }}>
                             <p className="tagline"><Bolt size={14}/> SSC</p>
                             <h1>Internal Auditor</h1>
                         </div>
 
-                        {/* Progress Stepper */}
-                        <div className="progress-indicator">
-                            <div className={`progress-step ${phase >= 1 ? 'completed' : ''}`}>1. Intake</div>
-                            <div className="progress-line"></div>
-                            <div className={`progress-step ${phase === 2 ? 'active' : ''}`}>2. Storming</div>
-                        </div>
-
-                        {/* PHASE 1: INTAKE */}
                         {phase === 1 && (
-                            <div style={{animation: 'fadeIn 0.3s'}}>
-                                <div className="input-group" style={{marginTop: '16px'}}>
-                                    <label>1. Charity Name</label>
-                                    <input type="text" name="charityName" className="input-field" placeholder="e.g. Hope Foundation" value={data.charityName} onChange={handleChange} />
-                                </div>
-
+                            <div className="fade-in">
+                                <div className="section-title">1. Intake</div>
+                                
                                 <div className="input-group">
-                                    <label>2. IPC Status</label>
-                                    <select name="ipcStatus" className="preset-select" value={data.ipcStatus} onChange={handleChange}>
-                                        <option value="Non-IPC">Non-IPC (Standard Compliance)</option>
-                                        <option value="IPC">IPC (Enhanced Governance Requirements)</option>
-                                    </select>
+                                    <label>a) Name of Charity</label>
+                                    <input className="input-field" value={data.charityName} onChange={e => setData({...data, charityName: e.target.value})} placeholder="e.g. Hope Foundation"/>
                                 </div>
-
+                                
                                 <div className="input-group">
-                                    <label>3. Audit Areas</label>
-                                    <select name="auditDomain" className="preset-select" value={data.auditDomain} onChange={handleChange}>
-                                        <option value="">- Select Specific Area -</option>
+                                    <label>b) Audit Area</label>
+                                    <select className="preset-select" value={data.auditDomain} onChange={e => {
+                                        setData({...data, auditDomain: e.target.value}); 
+                                        setScenario(""); 
+                                        setCustomScenario("");
+                                        setStormPicks({0: "", 1: "", 2: ""});
+                                    }}>
+                                        <option value="">- Select Area -</option>
                                         <option value="Board Governance">Board Governance</option>
                                         <option value="Strategic Direction and Programme Management">Strategic Direction and Programme Management</option>
                                         <option value="Human Resource and Volunteer Management">Human Resource and Volunteer Management</option>
@@ -480,132 +481,192 @@
                                         <option value="Disclosure and Transparency">Disclosure and Transparency</option>
                                     </select>
                                 </div>
-
+                                
+                                <div className="input-group" style={{marginTop: '32px'}}>
+                                    <label>c) Assess Current State (Slider)</label>
+                                    <input type="range" min="1" max="10" value={data.sliderScore} onChange={e => setData({...data, sliderScore: e.target.value})} style={{accentColor: '#D2B48C', marginTop: '8px'}}/>
+                                    <div style={{display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: '#5E5A4B', marginTop: '8px', fontWeight: 'bold'}}>
+                                        <span>1: FIREFIGHTING</span>
+                                        <span style={{color: '#8B7355', fontSize: '13px'}}>{data.sliderScore} / 10</span>
+                                        <span>10: WELL MANAGED</span>
+                                    </div>
+                                </div>
+                                
                                 <button 
                                     className="primary-btn" 
-                                    onClick={startStorming}
-                                    disabled={!data.charityName || !data.auditDomain}
-                                    style={{marginTop: '24px'}}
+                                    disabled={!isPhase1Ready} 
+                                    onClick={() => setPhase(2)}
+                                    style={{marginTop: '40px'}}
                                 >
-                                    Proceed to Question Storming <ArrowRight size={18}/>
+                                    STORM #1 <ArrowRight size={16}/>
                                 </button>
                             </div>
                         )}
 
-                        {/* PHASE 2 & 3: QUESTION STORMING & WAYFINDING */}
                         {phase === 2 && (
-                            <div style={{animation: 'fadeIn 0.3s', display: 'flex', flexDirection: 'column', height: '100%'}}>
+                            <div className="fade-in">
+                                <div className="section-title">2. Storming</div>
                                 
-                                <div style={{backgroundColor: '#FDFBF7', border: '1px solid #EAE5D8', borderRadius: '8px', padding: '24px', marginBottom: '24px'}}>
-                                    <div style={{fontSize: '11px', fontWeight: 700, color: '#8B7355', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '8px'}}>Active Challenge</div>
-                                    <div style={{fontSize: '18px', fontWeight: 'bold', color: '#1B2B28', marginBottom: '8px'}}>{data.auditDomain}</div>
-                                    <div style={{fontSize: '13px', color: '#5E5A4B'}}>Target: {data.charityName || '[Charity Name]'} | Constraint: {data.ipcStatus}</div>
+                                <div className="context-card">
+                                    <div style={{fontWeight: 'bold', fontSize: '16px', marginBottom: '8px'}}>{data.charityName || '[Charity Name]'}</div>
+                                    <div style={{color: '#8B7355', fontSize: '14px', marginBottom: '8px'}}>{data.auditDomain}</div>
+                                    <div style={{fontSize: '12px', opacity: 0.8, fontStyle: 'italic'}}>Current State: {data.sliderScore}/10</div>
                                 </div>
+                                
+                                <p style={{fontSize: '14px', color: '#5E5A4B', lineHeight: '1.5'}}>
+                                    Systematically refine the audit scope. Select one high-impact probing question from each Storm block on the right.
+                                </p>
 
-                                <div style={{padding: '24px', backgroundColor: 'white', borderRadius: '12px', border: '1px solid #EAE5D8', marginBottom: '24px'}}>
-                                    <div style={{fontWeight: 700, color: '#8B7355', marginBottom: '16px', fontSize: '13px', textTransform: 'uppercase', letterSpacing: '0.05em'}}>Assess Current State</div>
-                                    <input type="range" min="1" max="10" defaultValue="5" style={{width: '100%', marginBottom: '12px', accentColor: '#D2B48C'}} />
-                                    <div style={{display: 'flex', justifyContent: 'space-between', fontSize: '12px', color: '#5E5A4B', fontWeight: 600}}>
-                                        <span>1: Firefighting</span>
-                                        <span>10: Well Managed</span>
+                                <button 
+                                    className="primary-btn" 
+                                    disabled={!isPhase2Ready} 
+                                    onClick={() => setPhase(3)}
+                                    style={{marginTop: '40px'}}
+                                >
+                                    Generate Instructions <ArrowRight size={16}/>
+                                </button>
+                                <button className="secondary-btn" onClick={() => setPhase(1)}>Back</button>
+                            </div>
+                        )}
+
+                        {phase === 3 && (
+                            <div className="fade-in">
+                                <div className="section-title">3. Instructions</div>
+                                
+                                <div className="context-card" style={{borderLeft: '4px solid #25D366'}}>
+                                    <div style={{display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 'bold', color: '#25D366', marginBottom: '8px'}}>
+                                        <Check size={18} /> Audit Scope Finalized
+                                    </div>
+                                    <div style={{fontSize: '13px', color: '#5E5A4B'}}>
+                                        The 10-point audit checklist and user self-assessment criteria have been successfully generated.
                                     </div>
                                 </div>
-
-                                <div style={{flex: 1}}></div>
-
-                                <div style={{display: 'flex', gap: '12px', marginTop: '24px'}}>
-                                    <button className="primary-btn" style={{backgroundColor: '#EAE5D8', color: '#1B2B28', flex: 0.5}} onClick={() => setPhase(1)}>
-                                        Back
-                                    </button>
-                                    <button className="primary-btn" style={{flex: 1, backgroundColor: '#25D366', color: 'white', border: 'none'}} onClick={shareViaWhatsApp}>
-                                        <i className="fab fa-whatsapp text-xl"></i> Share via WhatsApp
-                                    </button>
-                                </div>
+                                
+                                <p style={{fontSize: '14px', color: '#5E5A4B', lineHeight: '1.5'}}>
+                                    You can now route this formalized scope and the active score context directly to the SSC team.
+                                </p>
+                                
+                                <button 
+                                    className="primary-btn" 
+                                    style={{backgroundColor: '#25D366', marginTop: '40px'}} 
+                                    onClick={shareViaWhatsApp}
+                                >
+                                    <i className="fab fa-whatsapp"></i> stat score to SSC
+                                </button>
+                                <button className="secondary-btn" onClick={() => {
+                                    setPhase(1); 
+                                    setStormPicks({0: "", 1: "", 2: ""}); 
+                                    setScenario(""); 
+                                    setCustomScenario("");
+                                    setData({...data, auditDomain: ""});
+                                }}>Reset Engine</button>
                             </div>
                         )}
                     </div>
 
-                    {/* Right Pane Preview */}
                     <div className="preview-pane">
-                        <div className="preview-header">
-                            {phase === 2 && (
-                                <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%'}}>
-                                    <div style={{display: 'flex', alignItems: 'center', gap: '12px'}}>
-                                        <div style={{display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '32px', height: '32px', border: '1px solid #D2B48C', borderRadius: '50%', color: '#D2B48C', fontSize: '13px', fontWeight: 'bold'}}>QS</div>
-                                        <div style={{fontWeight: 'bold', fontSize: '15px'}}>Session Viewer</div>
-                                    </div>
-                                    <div style={{fontSize: '13px', display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', opacity: 0.8}} onClick={() => setPhase(1)}>
-                                        <i className="fas fa-home"></i> Back to Start
-                                    </div>
-                                </div>
-                            )}
-                        </div>
-                        
-                        <div className="preview-content">
-                            {phase === 1 ? (
-                                <div className="empty-state" style={{flexDirection: 'column', alignItems: 'stretch', padding: '0 40px', justifyContent: 'center'}}>
-                                    <div style={{background: 'white', padding: '40px', borderRadius: '16px', boxShadow: '0 10px 30px rgba(0,0,0,0.05)', textAlign: 'left', border: '1px solid #EAE5D8'}}>
-                                        <h2 style={{fontSize: '24px', fontFamily: 'Georgia, serif', color: '#1B2B28', marginBottom: '20px', borderBottom: '2px solid #D2B48C', paddingBottom: '16px'}}>What is Question Storming?</h2>
-                                        <p style={{fontSize: '15px', color: '#5E5A4B', lineHeight: 1.6, marginBottom: '16px'}}>
-                                            <strong style={{color: '#8B7355'}}>Question Storming</strong> is a framework where we systematically brainstorm tough, high-impact questions instead of rushing straight into 'fixing' things.
-                                        </p>
-                                        <p style={{fontSize: '15px', color: '#5E5A4B', lineHeight: 1.6}}>
-                                            By focusing on getting the questions right first, we surface hidden risks and bypass cognitive blind spots. This ensures we stop just firefighting the "loudest" problems or doing paper-chasing for compliance, and actually tackle the real, systemic issues on the ground.
-                                        </p>
-                                    </div>
-                                </div>
-                            ) : (
-                                <div style={{padding: '0 40px', marginTop: '24px'}} className="document-canvas">
-                                    {questions.map((q, i) => (
-                                        <div key={i} style={{ display: 'flex', gap: '24px', padding: '0 0 32px 0', borderLeft: '2px solid #D2B48C', paddingLeft: '24px', marginBottom: '32px', position: 'relative' }}>
-                                            <div style={{ color: '#8B7355', fontWeight: 'bold', fontSize: '14px', paddingTop: '4px' }}>{String(i+1).padStart(2, '0')}</div>
-                                            <div style={{ flex: 1, position: 'relative' }}>
-                                                <div 
-                                                    style={{ color: '#1B2B28', fontSize: '15px', lineHeight: 1.6, outline: 'none' }}
-                                                    contentEditable={true}
-                                                    suppressContentEditableWarning={true}
-                                                    onBlur={(e) => {
-                                                        const newQ = [...questions];
-                                                        newQ[i] = e.currentTarget.textContent;
-                                                        setQuestions(newQ);
-                                                    }}
-                                                >
-                                                    {q}
+                        {phase === 1 && (
+                            <div className="fade-in" style={{padding: '60px 40px'}}>
+                                {data.auditDomain ? (
+                                    <div>
+                                        <h2 style={{fontSize: '22px', fontFamily: 'Georgia, serif', marginBottom: '40px', color: '#1B2B28'}}>
+                                            d) Scenarios
+                                        </h2>
+                                        
+                                        <div style={{display: 'flex', flexDirection: 'column', gap: '16px'}}>
+                                            {SCENARIO_BANK[data.auditDomain].map((sc, i) => (
+                                                <label key={i} className={`scenario-radio ${scenario === sc ? 'selected' : ''}`}>
+                                                    <div style={{width: '24px', display: 'flex', justifyContent: 'center'}}>
+                                                        <input type="radio" name="scenario" checked={scenario === sc} onChange={() => {setScenario(sc); setCustomScenario("");}} style={{accentColor: '#8B7355', transform: 'scale(1.2)'}} />
+                                                    </div>
+                                                    <span style={{flex: 1}}>{i+1}) {sc}</span>
+                                                </label>
+                                            ))}
+                                            
+                                            <label className={`scenario-radio ${scenario === 'custom' ? 'selected' : ''}`}>
+                                                <div style={{width: '24px', display: 'flex', justifyContent: 'center'}}>
+                                                    <input type="radio" name="scenario" checked={scenario === 'custom'} onChange={() => setScenario('custom')} style={{accentColor: '#8B7355', transform: 'scale(1.2)'}} />
                                                 </div>
-                                                <div style={{position: 'absolute', top: 0, right: 0, fontSize: '10px', color: '#D2B48C', textTransform: 'uppercase', letterSpacing: '0.05em', cursor: 'pointer', userSelect: 'none'}} onClick={(e) => { e.currentTarget.previousSibling.focus(); }}>Refine</div>
-                                            </div>
-                                        </div>
-                                    ))}
-
-                                    <div style={{ display: 'flex', gap: '24px', padding: '0 0 32px 0', borderLeft: '2px solid #EAE5D8', paddingLeft: '24px', marginBottom: '32px' }}>
-                                        <div style={{ color: '#8B7355', fontWeight: 'bold', fontSize: '14px', paddingTop: '4px', opacity: 0.5 }}>{String(questions.length+1).padStart(2, '0')}</div>
-                                        <div style={{ flex: 1 }}>
-                                            <div 
-                                                style={{ color: '#5E5A4B', fontSize: '15px', lineHeight: 1.6, outline: 'none', minHeight: '30px' }}
-                                                contentEditable={true}
-                                                suppressContentEditableWarning={true}
-                                                data-placeholder="Type a new scenario or query here..."
-                                                onBlur={(e) => {
-                                                    const text = e.currentTarget.textContent.trim();
-                                                    if(text) {
-                                                        setQuestions([...questions, text]);
-                                                        e.currentTarget.textContent = ''; 
-                                                    }
-                                                }}
-                                                onInput={(e) => {
-                                                    if(e.currentTarget.textContent.trim() === '') e.currentTarget.innerHTML = ''; 
-                                                }}
-                                                className="empty-editable"
-                                            ></div>
+                                                <span style={{whiteSpace: 'nowrap'}}>4) </span>
+                                                <input 
+                                                    type="text" 
+                                                    className="inline-input" 
+                                                    placeholder="Enter new scenario..." 
+                                                    value={customScenario} 
+                                                    onChange={e => {
+                                                        setCustomScenario(e.target.value); 
+                                                        setScenario('custom');
+                                                    }} 
+                                                    onClick={() => setScenario('custom')}
+                                                />
+                                            </label>
                                         </div>
                                     </div>
-                                    
-                                    <div style={{textAlign: 'center', color: '#8B7355', fontSize: '13px', marginTop: '60px', opacity: 0.8}}>
-                                        Pick the scenario that feels the most real to you.
+                                ) : (
+                                    <div className="empty-state">Select an Audit Area on the left to view applicable Scenarios.</div>
+                                )}
+                            </div>
+                        )}
+
+                        {phase === 2 && (
+                            <div className="fade-in" style={{padding: '60px 40px'}}>
+                                <h2 style={{fontSize: '22px', fontFamily: 'Georgia, serif', marginBottom: '40px', color: '#1B2B28'}}>
+                                    Select Probing Inquiries
+                                </h2>
+                                
+                                {STORM_BANK[data.auditDomain].map((group, gIdx) => (
+                                    <div key={gIdx} style={{marginBottom: '48px'}}>
+                                        <h3 style={{fontSize: '13px', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#8B7355', marginBottom: '20px', fontWeight: 'bold'}}>
+                                            {gIdx === 0 ? "a) QUESTIONS" : `b) STORM #${gIdx + 1}`}
+                                        </h3>
+                                        <div style={{display: 'flex', flexDirection: 'column', gap: '12px', borderLeft: '2px solid #D2B48C', paddingLeft: '20px'}}>
+                                            {group.map((q, i) => (
+                                                <label key={i} className={`scenario-radio ${stormPicks[gIdx] === q ? 'selected' : ''}`} style={{padding: '12px 16px', background: 'white'}}>
+                                                    <div style={{width: '24px', display: 'flex', justifyContent: 'center'}}>
+                                                        <input type="radio" name={`stormG${gIdx}`} checked={stormPicks[gIdx] === q} onChange={() => setStormPicks({...stormPicks, [gIdx]: q})} style={{accentColor: '#8B7355'}} />
+                                                    </div>
+                                                    <span style={{flex: 1, fontSize: '14px'}}>{i+1}) {q}</span>
+                                                </label>
+                                            ))}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+
+                        {phase === 3 && (
+                            <div className="fade-in" style={{padding: '60px 40px', backgroundColor: '#FDFBF7', minHeight: '100%'}}>
+                                <h2 style={{fontSize: '24px', fontFamily: 'Georgia, serif', marginBottom: '12px', color: '#1B2B28'}}>Generated Instructions</h2>
+                                <p style={{fontSize: '14px', color: '#8B7355', marginBottom: '40px', fontStyle: 'italic'}}>Active Scope: {data.auditDomain}</p>
+
+                                <div style={{marginBottom: '40px'}}>
+                                    <h3 style={{fontSize: '14px', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#1B2B28', marginBottom: '20px', fontWeight: 'bold'}}>
+                                        a) Audit Checklist / Questionnaire
+                                    </h3>
+                                    <div style={{backgroundColor: 'white', border: '1px solid #EAE5D8', borderRadius: '12px', padding: '32px'}}>
+                                        {CHECKLIST_BANK[data.auditDomain].map((item, i) => (
+                                            <div key={i} style={{display: 'flex', gap: '16px', marginBottom: '20px', fontSize: '14px', color: '#1B2B28', lineHeight: '1.5'}}>
+                                                <div style={{color: '#8B7355', fontWeight: 'bold', width: '20px'}}>{i+1})</div>
+                                                <div style={{flex: 1}}>{item}</div>
+                                            </div>
+                                        ))}
                                     </div>
                                 </div>
-                            )}
-                        </div>
+
+                                <div style={{marginBottom: '32px'}}>
+                                    <h3 style={{fontSize: '14px', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#1B2B28', marginBottom: '20px', fontWeight: 'bold'}}>
+                                        b) User Complete Self Assessment
+                                    </h3>
+                                    <div style={{backgroundColor: 'white', border: '1px solid #EAE5D8', borderRadius: '12px', padding: '24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
+                                        <span style={{fontSize: '15px', color: '#5E5A4B', fontWeight: '500'}}>Validated Client Score:</span>
+                                        <div style={{display: 'flex', alignItems: 'baseline', gap: '4px'}}>
+                                            <span style={{fontSize: '32px', fontWeight: 'bold', color: '#1B2B28', fontFamily: 'Georgia, serif'}}>{data.sliderScore}</span>
+                                            <span style={{fontSize: '16px', color: '#8B7355'}}>/ 10</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
             );
