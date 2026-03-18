@@ -379,16 +379,7 @@
             return (
                 <div className="app-container">
                     <div className="setup-pane">
-                        <div className="font-serif text-3xl leading-none cursor-default select-none group"
-                            style={{ fontFamily: 'Georgia, serif', marginBottom: '1.5rem' }}>
-                            <span className="relative inline-block" style={{ position: 'relative', display: 'inline-block' }}>
-                                <span className="italic relative z-10"
-                                    style={{ color: '#103020', fontWeight: 500, paddingRight: '0.25rem', position: 'relative', zIndex: 10, fontStyle: 'italic' }}>Charity</span>
-                                <span
-                                    style={{ position: 'absolute', left: '-0.2em', right: 0, bottom: '12%', height: '2px', background: '#B08968', zIndex: 0, transformOrigin: 'left', transition: 'transform 0.7s ease-out' }}></span>
-                            </span><span className="relative z-10 tracking-tight"
-                                style={{ color: '#B08968', position: 'relative', zIndex: 10, fontWeight: 400, letterSpacing: '-0.025em', marginLeft: '-0.05em' }}>Ops</span>
-                        </div>
+                        {/* CharityOps logo removed */ }
                         
                         <div style={{ marginBottom: '24px' }}>
                             <p className="tagline"><Bolt size={14}/> Internal Audit Engine</p>
@@ -401,7 +392,7 @@
                             <div className="progress-line"></div>
                             <div className={`progress-step ${phase >= 2 ? (phase === 3 ? 'completed' : 'active') : ''}`}>2. Storming</div>
                             <div className="progress-line"></div>
-                            <div className={`progress-step ${phase === 3 ? 'active' : ''}`}>3. Drafting</div>
+                            <div className={`progress-step ${phase === 3 ? 'active' : ''}`}>3. Instructions</div>
                         </div>
 
                         {/* PHASE 1: INTAKE */}
@@ -473,7 +464,7 @@
                                         Back
                                     </button>
                                     <button className="primary-btn" style={{flex: 1}} onClick={startDrafting}>
-                                        Generate Audit Proposal <ArrowRight size={18}/>
+                                        Generate Instructions <ArrowRight size={18}/>
                                     </button>
                                 </div>
                             </div>
@@ -486,14 +477,11 @@
                                     <div style={{display: 'inline-flex', background: '#25D366', color: 'white', borderRadius: '50%', padding: '16px', marginBottom: '16px'}}>
                                         <Check size={32}/>
                                     </div>
-                                    <h3 style={{fontSize: '20px', fontFamily: 'Georgia, serif', color: '#1B2B28'}}>Proposal Generated</h3>
-                                    <p style={{ fontSize: '14px', color: '#5E5A4B', marginTop: '8px' }}>
-                                        Review the scope document on the right.
-                                    </p>
+                                    <h3 style={{fontSize: '20px', fontFamily: 'Georgia, serif', color: '#1B2B28'}}>Instructions Generated</h3>
                                 </div>
 
-                                <button className="primary-btn" onClick={() => window.print()}>
-                                    Export as Final PDF
+                                <button className="primary-btn" style={{backgroundColor: '#25D366', color: 'white'}} onClick={() => alert('WhatsApp sharing initiated.')}>
+                                    <i className="fab fa-whatsapp text-xl"></i> Share via WhatsApp
                                 </button>
                                 <button className="primary-btn" style={{backgroundColor: 'transparent', color: '#8B7355', border: '1px solid #D2B48C', marginTop: '12px'}} onClick={() => setPhase(1)}>
                                     Reset Prototype
@@ -505,8 +493,7 @@
                     {/* Right Pane Preview */}
                     <div className="preview-pane">
                         <div className="preview-header">
-                            <h2>Internal Audit Engine Output</h2>
-                            {phase === 3 && <span style={{fontSize: '12px', background: '#D2B48C', color: '#1B2B28', padding: '4px 8px', borderRadius: '12px', fontWeight: 'bold'}}>LIVE DRAFT</span>}
+                            {/* Content removed per design */}
                         </div>
                         
                         <div className="preview-content">
@@ -518,40 +505,23 @@
                                 </div>
                             ) : (
                                 <div className="document-canvas">
-                                    <h1 className="document-title">
-                                        Internal Audit Engagement Memo:<br/>
-                                        <span style={{color: '#8B7355', fontSize: '24px'}}>{data.auditDomain} Review</span>
+                                    <h1 className="document-title" style={{borderBottom: 'none', paddingBottom: '0', marginBottom: '16px'}}>
+                                        Instructions
                                     </h1>
+                                    <h2 style={{fontSize: '20px', color: '#8B7355', textAlign: 'center', marginBottom: '40px', fontFamily: 'Georgia, serif'}}>
+                                        {data.auditDomain} Review
+                                    </h2>
 
                                     <div className="doc-section">
-                                        <h3>1. Background & Scope</h3>
-                                        <p>In adherence to the Singapore Code of Governance for Charities and {data.ipcStatus === 'IPC' ? 'the enhanced guidelines for IPCs' : 'general sector best practices'}, <strong>{data.charityName}</strong> has provisioned an Internal Audit (IA) review focusing exclusively on the <strong>{data.auditDomain}</strong> cycle.</p>
-                                    </div>
-
-                                    <div className="doc-section">
-                                        <h3>2. Objective: "Fail on Purpose" Resilience</h3>
-                                        <p>This engagement transcends standard compliance ticking. We aim to pressure-test the underlying systems to uncover hidden risks, specifically addressing the systemic vulnerabilities identified during our Phase 2 Question Storming session. The primary goal is to ensure long-term operational resilience and value-add.</p>
-                                    </div>
-
-                                    <div className="doc-section">
-                                        <h3>3. Identified Audit Touchpoints</h3>
-                                        <p>Based on our iterative context probing, the precise areas targeted for fieldwork include:</p>
-                                        <ul>
-                                            {questions.slice(0, 3).map((q, i) => (
-                                                <li key={i}>{q}</li>
+                                        <p style={{fontSize: '16px'}}><strong>{data.charityName || '[Charity Name]'}</strong> affirms the following questions stormed as the agreed scope for the internal audit engagement:</p>
+                                        <ul style={{marginTop: '32px', paddingLeft: 0, listStyle: 'none'}}>
+                                            {questions.map((q, i) => (
+                                                <li key={i} style={{marginBottom: '16px', padding: '20px', backgroundColor: '#FDFBF7', borderRadius: '8px', borderLeft: '4px solid #D2B48C', fontSize: '15px', color: '#1B2B28'}}>
+                                                    <strong style={{color: '#8B7355', display: 'block', marginBottom: '8px', fontFamily: 'Georgia, serif'}}>Question {i+1}</strong>
+                                                    {q}
+                                                </li>
                                             ))}
-                                            <li>Evaluation of override controls and escalation routing mechanisms.</li>
                                         </ul>
-                                    </div>
-
-                                    <div className="doc-section">
-                                        <h3>4. Wayfinding & Methodology</h3>
-                                        <p>Fieldwork will be executed utilizing CharityOps "Really Useful Thing" (RUT) philosophy. Rather than extracting resources from operational teams, the audit will occur via rapid, deep-inquiry bursts. Document capture will prioritize active live processes over stale historical trails.</p>
-                                    </div>
-
-                                    <div className="doc-section">
-                                        <h3>5. Reporting & Closing</h3>
-                                        <p>Observations will be synthesized into a concise executive summary prioritizing immediate Wayfinding actions for the Board of Directors. Formal issuance is targeted for 4 weeks post-fieldwork.</p>
                                     </div>
                                     
                                     <p style={{textAlign: 'center', marginTop: '60px', color: '#D2B48C', fontSize: '12px', fontWeight: 'bold', letterSpacing: '0.1em'}}>CONFIDENTIAL // CHARITYOPS SUPER APP</p>
