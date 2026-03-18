@@ -432,7 +432,7 @@
             const [stormPicks, setStormPicks] = useState({ 0: "", 1: "", 2: "" });
 
             const shareViaWhatsApp = () => {
-                let text = `*Internal Audit Scope - ${data.auditDomain}*\n*Charity:* ${data.charityName || 'Not specified'}\n*Status Score:* ${data.sliderScore}/10\n\n`;
+                let text = `*Internal Audit Scope - ${data.auditDomain}*\n*Charity:* ${data.charityName || 'Not specified'}\n\n`;
                 text += `*Key Scenario Focus:*\n${scenario === 'custom' ? customScenario : scenario}\n\n`;
                 text += `*Core Inquiries (Stormed):*\n`;
                 Object.values(stormPicks).forEach((q, i) => {
@@ -482,16 +482,6 @@
                                     </select>
                                 </div>
                                 
-                                <div className="input-group" style={{marginTop: '32px'}}>
-                                    <label>c) Assess Current State (Slider)</label>
-                                    <input type="range" min="1" max="10" value={data.sliderScore} onChange={e => setData({...data, sliderScore: e.target.value})} style={{accentColor: '#D2B48C', marginTop: '8px'}}/>
-                                    <div style={{display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: '#5E5A4B', marginTop: '8px', fontWeight: 'bold'}}>
-                                        <span>1: FIREFIGHTING</span>
-                                        <span style={{color: '#8B7355', fontSize: '13px'}}>{data.sliderScore} / 10</span>
-                                        <span>10: WELL MANAGED</span>
-                                    </div>
-                                </div>
-                                
                                 <button 
                                     className="primary-btn" 
                                     disabled={!isPhase1Ready} 
@@ -509,8 +499,7 @@
                                 
                                 <div className="context-card">
                                     <div style={{fontWeight: 'bold', fontSize: '16px', marginBottom: '8px'}}>{data.charityName || '[Charity Name]'}</div>
-                                    <div style={{color: '#8B7355', fontSize: '14px', marginBottom: '8px'}}>{data.auditDomain}</div>
-                                    <div style={{fontSize: '12px', opacity: 0.8, fontStyle: 'italic'}}>Current State: {data.sliderScore}/10</div>
+                                    <div style={{color: '#8B7355', fontSize: '14px', marginBottom: '0'}}>{data.auditDomain}</div>
                                 </div>
                                 
                                 <p style={{fontSize: '14px', color: '#5E5A4B', lineHeight: '1.5'}}>
@@ -538,12 +527,12 @@
                                         <Check size={18} /> Audit Scope Finalized
                                     </div>
                                     <div style={{fontSize: '13px', color: '#5E5A4B'}}>
-                                        The 10-point audit checklist and user self-assessment criteria have been successfully generated.
+                                        The 10-point audit checklist has been successfully generated.
                                     </div>
                                 </div>
                                 
                                 <p style={{fontSize: '14px', color: '#5E5A4B', lineHeight: '1.5'}}>
-                                    You can now route this formalized scope and the active score context directly to the SSC team.
+                                    You can now send this formalized scope directly to the SSC team.
                                 </p>
                                 
                                 <button 
@@ -551,7 +540,7 @@
                                     style={{backgroundColor: '#25D366', marginTop: '40px'}} 
                                     onClick={shareViaWhatsApp}
                                 >
-                                    <i className="fab fa-whatsapp"></i> stat score to SSC
+                                    <i className="fab fa-whatsapp"></i> Send to SSC
                                 </button>
                                 <button className="secondary-btn" onClick={() => {
                                     setPhase(1); 
@@ -641,28 +630,21 @@
 
                                 <div style={{marginBottom: '40px'}}>
                                     <h3 style={{fontSize: '14px', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#1B2B28', marginBottom: '20px', fontWeight: 'bold'}}>
-                                        a) Audit Checklist / Questionnaire
+                                        a) Audit Areas
                                     </h3>
                                     <div style={{backgroundColor: 'white', border: '1px solid #EAE5D8', borderRadius: '12px', padding: '32px'}}>
                                         {CHECKLIST_BANK[data.auditDomain].map((item, i) => (
                                             <div key={i} style={{display: 'flex', gap: '16px', marginBottom: '20px', fontSize: '14px', color: '#1B2B28', lineHeight: '1.5'}}>
                                                 <div style={{color: '#8B7355', fontWeight: 'bold', width: '20px'}}>{i+1})</div>
-                                                <div style={{flex: 1}}>{item}</div>
+                                                <div 
+                                                    style={{flex: 1, outline: 'none'}} 
+                                                    contentEditable={true} 
+                                                    suppressContentEditableWarning={true}
+                                                >
+                                                    {item}
+                                                </div>
                                             </div>
                                         ))}
-                                    </div>
-                                </div>
-
-                                <div style={{marginBottom: '32px'}}>
-                                    <h3 style={{fontSize: '14px', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#1B2B28', marginBottom: '20px', fontWeight: 'bold'}}>
-                                        b) User Complete Self Assessment
-                                    </h3>
-                                    <div style={{backgroundColor: 'white', border: '1px solid #EAE5D8', borderRadius: '12px', padding: '24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
-                                        <span style={{fontSize: '15px', color: '#5E5A4B', fontWeight: '500'}}>Validated Client Score:</span>
-                                        <div style={{display: 'flex', alignItems: 'baseline', gap: '4px'}}>
-                                            <span style={{fontSize: '32px', fontWeight: 'bold', color: '#1B2B28', fontFamily: 'Georgia, serif'}}>{data.sliderScore}</span>
-                                            <span style={{fontSize: '16px', color: '#8B7355'}}>/ 10</span>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
