@@ -361,20 +361,31 @@
                 ipcStatus: "Non-IPC",
                 auditDomain: ""
             });
+            const [questions, setQuestions] = useState([]);
+            const [newQuestion, setNewQuestion] = useState("");
 
             const handleChange = (e) => {
                 setData(prev => ({ ...prev, [e.target.name]: e.target.value }));
             };
 
             const startStorming = () => {
-                if(data.charityName && data.auditDomain) setPhase(2);
+                if(data.charityName && data.auditDomain) {
+                    const generics = QUESTION_BANK[data.auditDomain] || QUESTION_BANK["Procurement"];
+                    setQuestions(generics.slice(0, 3));
+                    setPhase(2);
+                }
+            };
+
+            const addQuestion = () => {
+                if(newQuestion.trim()) {
+                    setQuestions([...questions, newQuestion.trim()]);
+                    setNewQuestion("");
+                }
             };
 
             const startDrafting = () => {
                 setPhase(3);
             };
-
-            const questions = QUESTION_BANK[data.auditDomain] || QUESTION_BANK["Procurement"]; // Generic Fallback
 
             return (
                 <div className="app-container">
@@ -440,7 +451,7 @@
                         {phase === 2 && (
                             <div style={{animation: 'fadeIn 0.3s', display: 'flex', flexDirection: 'column', height: '100%'}}>
                                 <p style={{ fontSize: '14px', color: '#5E5A4B', lineHeight: 1.6, margin: '0 0 16px 0', fontWeight: 600 }}>
-                                    Module A: Deep Inquiry. Here are the 5 high-impact risks surrounding {data.auditDomain}:
+                                    Module A: Deep Inquiry. Here are the 3 core areas of concern surrounding {data.auditDomain}:
                                 </p>
 
                                 <div style={{flex: 1, overflowY: 'auto', paddingRight: '4px'}}>
@@ -450,6 +461,22 @@
                                             <div>{q}</div>
                                         </div>
                                     ))}
+
+                                    <div style={{marginTop: '16px', borderTop: '1px solid #EAE5D8', paddingTop: '16px', paddingBottom: '16px'}}>
+                                        <div style={{fontWeight: 700, color: '#8B7355', marginBottom: '8px', fontSize: '12px', textTransform: 'uppercase', letterSpacing: '0.05em'}}>Storm Additional Question</div>
+                                        <div style={{display: 'flex', flexDirection: 'column', gap: '8px'}}>
+                                            <textarea 
+                                                className="input-field" 
+                                                style={{minHeight: '60px', width: '100%'}} 
+                                                placeholder="Type an additional question or custom scope here..." 
+                                                value={newQuestion}
+                                                onChange={e => setNewQuestion(e.target.value)}
+                                            ></textarea>
+                                            <button className="primary-btn" style={{padding: '12px', marginTop: '0', backgroundColor: '#EAE5D8', color: '#1B2B28'}} onClick={addQuestion}>
+                                                <i className="fas fa-plus"></i> Add to Scope
+                                            </button>
+                                        </div>
+                                    </div>
 
                                     <div className="wayfinding-box">
                                         <div style={{fontWeight: 700, color: '#8B7355', marginBottom: '8px', display: 'flex', alignItems: 'center', gap:'6px'}}>
@@ -497,11 +524,11 @@
                         </div>
                         
                         <div className="preview-content">
-                            {phase < 3 ? (
+                            {phase === 1 ? (
                                 <div className="empty-state">
                                     <i className="fas fa-file-contract text-5xl mb-4" style={{opacity: 0.2}}></i>
                                     <div style={{fontSize: '18px', fontWeight: 600}}>Waiting for Logic Engine...</div>
-                                    <p style={{fontSize: '14px', marginTop: '8px', maxWidth: '300px'}}>Complete the Question Storming sequence to synthesize an Internal Audit proposal.</p>
+                                    <p style={{fontSize: '14px', marginTop: '8px', maxWidth: '300px'}}>Complete the Context Intake to synthesize the Internal Audit scope.</p>
                                 </div>
                             ) : (
                                 <div className="document-canvas">
