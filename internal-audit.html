@@ -409,11 +409,7 @@
                         {/* PHASE 1: INTAKE */}
                         {phase === 1 && (
                             <div style={{animation: 'fadeIn 0.3s'}}>
-                                <p style={{ fontSize: '14px', color: '#5E5A4B', lineHeight: 1.6, margin: '0 0 24px 0' }}>
-                                    Let's establish the context for this engagement. Keep it frictionless.
-                                </p>
-
-                                <div className="input-group">
+                                <div className="input-group" style={{marginTop: '16px'}}>
                                     <label>1. Charity Name</label>
                                     <input type="text" name="charityName" className="input-field" placeholder="e.g. Hope Foundation" value={data.charityName} onChange={handleChange} />
                                 </div>
@@ -462,28 +458,6 @@
                                         </div>
                                     ))}
 
-                                    <div style={{marginTop: '16px', borderTop: '1px solid #EAE5D8', paddingTop: '16px', paddingBottom: '16px'}}>
-                                        <div style={{fontWeight: 700, color: '#8B7355', marginBottom: '8px', fontSize: '12px', textTransform: 'uppercase', letterSpacing: '0.05em'}}>Storm Additional Question</div>
-                                        <div style={{display: 'flex', flexDirection: 'column', gap: '8px'}}>
-                                            <textarea 
-                                                className="input-field" 
-                                                style={{minHeight: '60px', width: '100%'}} 
-                                                placeholder="Type an additional question or custom scope here..." 
-                                                value={newQuestion}
-                                                onChange={e => setNewQuestion(e.target.value)}
-                                            ></textarea>
-                                            <button className="primary-btn" style={{padding: '12px', marginTop: '0', backgroundColor: '#EAE5D8', color: '#1B2B28'}} onClick={addQuestion}>
-                                                <i className="fas fa-plus"></i> Add to Scope
-                                            </button>
-                                        </div>
-                                    </div>
-
-                                    <div className="wayfinding-box">
-                                        <div style={{fontWeight: 700, color: '#8B7355', marginBottom: '8px', display: 'flex', alignItems: 'center', gap:'6px'}}>
-                                            <Compass size={16}/> Wayfinding Checkpoint
-                                        </div>
-                                        Do these questions uncover real systemic vulnerabilities for <strong>{data.charityName}</strong>? Or are we stuck ticking compliance boxes? If we are aligned, let's formalize the scope.
-                                    </div>
                                 </div>
 
                                 <div style={{display: 'flex', gap: '12px', marginTop: '24px'}}>
@@ -499,19 +473,20 @@
 
                         {/* PHASE 4 BUTTONS */}
                         {phase === 3 && (
-                            <div style={{animation: 'fadeIn 0.3s'}}>
-                                <div style={{textAlign: 'center', padding: '40px 0'}}>
-                                    <div style={{display: 'inline-flex', background: '#25D366', color: 'white', borderRadius: '50%', padding: '16px', marginBottom: '16px'}}>
-                                        <Check size={32}/>
+                                <div style={{padding: '24px', backgroundColor: 'white', borderRadius: '12px', border: '1px solid #EAE5D8', marginBottom: '24px'}}>
+                                    <div style={{fontWeight: 700, color: '#8B7355', marginBottom: '16px', fontSize: '13px', textTransform: 'uppercase', letterSpacing: '0.05em'}}>Assess Current State</div>
+                                    <input type="range" min="1" max="10" defaultValue="5" style={{width: '100%', marginBottom: '12px', accentColor: '#D2B48C'}} />
+                                    <div style={{display: 'flex', justifyContent: 'space-between', fontSize: '12px', color: '#5E5A4B', fontWeight: 600}}>
+                                        <span>1: Firefighting</span>
+                                        <span>10: Well Managed</span>
                                     </div>
-                                    <h3 style={{fontSize: '20px', fontFamily: 'Georgia, serif', color: '#1B2B28'}}>Instructions Generated</h3>
                                 </div>
 
                                 <button className="primary-btn" style={{backgroundColor: '#25D366', color: 'white'}} onClick={() => alert('WhatsApp sharing initiated.')}>
                                     <i className="fab fa-whatsapp text-xl"></i> Share via WhatsApp
                                 </button>
                                 <button className="primary-btn" style={{backgroundColor: 'transparent', color: '#8B7355', border: '1px solid #D2B48C', marginTop: '12px'}} onClick={() => setPhase(1)}>
-                                    Reset Prototype
+                                    <i className="fas fa-home"></i> Home
                                 </button>
                             </div>
                         )}
@@ -525,10 +500,16 @@
                         
                         <div className="preview-content">
                             {phase === 1 ? (
-                                <div className="empty-state">
-                                    <i className="fas fa-file-contract text-5xl mb-4" style={{opacity: 0.2}}></i>
-                                    <div style={{fontSize: '18px', fontWeight: 600}}>Waiting for Logic Engine...</div>
-                                    <p style={{fontSize: '14px', marginTop: '8px', maxWidth: '300px'}}>Complete the Context Intake to synthesize the Internal Audit scope.</p>
+                                <div className="empty-state" style={{flexDirection: 'column', alignItems: 'stretch', padding: '0 40px', justifyContent: 'center'}}>
+                                    <div style={{background: 'white', padding: '40px', borderRadius: '16px', boxShadow: '0 10px 30px rgba(0,0,0,0.05)', textAlign: 'left', border: '1px solid #EAE5D8'}}>
+                                        <h2 style={{fontSize: '24px', fontFamily: 'Georgia, serif', color: '#1B2B28', marginBottom: '20px', borderBottom: '2px solid #D2B48C', paddingBottom: '16px'}}>What is Question Storming?</h2>
+                                        <p style={{fontSize: '15px', color: '#5E5A4B', lineHeight: 1.6, marginBottom: '16px'}}>
+                                            <strong style={{color: '#8B7355'}}>Question Storming</strong> is a framework to rapidly generate divergent, high-impact inquiries rather than jumping straight to solutions.
+                                        </p>
+                                        <p style={{fontSize: '15px', color: '#5E5A4B', lineHeight: 1.6}}>
+                                            By focusing on uncovering the right questions, we expose hidden risks, bypass cognitive biases, and ultimately arrive at far more rigorous and resilient solutions. It ensures we aren't just solving the loud problems, but the underlying systemic vulnerabilities.
+                                        </p>
+                                    </div>
                                 </div>
                             ) : (
                                 <div className="document-canvas">
@@ -545,13 +526,21 @@
                                             {questions.map((q, i) => (
                                                 <li key={i} style={{marginBottom: '16px', padding: '20px', backgroundColor: '#FDFBF7', borderRadius: '8px', borderLeft: '4px solid #D2B48C', fontSize: '15px', color: '#1B2B28'}}>
                                                     <strong style={{color: '#8B7355', display: 'block', marginBottom: '8px', fontFamily: 'Georgia, serif'}}>Question {i+1}</strong>
-                                                    {q}
+                                                    <textarea 
+                                                        value={q} 
+                                                        onChange={(e) => {
+                                                            const newQ = [...questions];
+                                                            newQ[i] = e.target.value;
+                                                            setQuestions(newQ);
+                                                        }}
+                                                        style={{width: '100%', minHeight: '60px', background: 'transparent', border: '1px dashed transparent', padding: '4px', outline: 'none', resize: 'vertical', fontFamily: 'inherit', color: 'inherit'}}
+                                                        onFocus={(e) => e.target.style.border = '1px dashed #D2B48C'}
+                                                        onBlur={(e) => e.target.style.border = '1px dashed transparent'}
+                                                    />
                                                 </li>
                                             ))}
                                         </ul>
                                     </div>
-                                    
-                                    <p style={{textAlign: 'center', marginTop: '60px', color: '#D2B48C', fontSize: '12px', fontWeight: 'bold', letterSpacing: '0.1em'}}>CONFIDENTIAL // CHARITYOPS SUPER APP</p>
                                 </div>
                             )}
                         </div>
