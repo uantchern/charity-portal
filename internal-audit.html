@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Internal Audit Super App | CharityOps</title>
+    
+    <!-- React & ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@18.2.0/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
+    <!-- Babel -->
+    <script src="https://unpkg.com/@babel/standalone@7.23.3/babel.min.js"></script>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        body {
+            background-color: #F2EFE9;
+            color: #1B2B28;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 40px 20px;
+            box-sizing: border-box;
+            gap: 40px;
+        }
+
+        .app-container {
+            display: flex;
+            width: 100%;
+            max-width: 1300px;
+            height: 90vh;
+            max-height: 900px;
+            min-height: 600px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+            border-radius: 24px;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        /* Left Side (Logic Engine) */
+        .setup-pane {
+            background-color: rgba(255, 255, 255, 0.4);
+            padding: 40px;
+            width: 480px;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid rgba(210, 180, 140, 0.3);
+            flex-shrink: 0;
+            overflow-y: auto;
+        }
+
+        .setup-pane::-webkit-scrollbar { width: 6px; }
+        .setup-pane::-webkit-scrollbar-thumb { background: rgba(210, 180, 140, 0.5); border-radius: 10px; }
+
+        .setup-pane h1 {
+            font-size: 28px;
+            color: #1B2B28;
+            font-weight: 900;
+            margin-bottom: 8px;
+            font-family: Georgia, serif;
+            line-height: 1.2;
+        }
+
+        .tagline {
+            color: #8B7355;
+            font-size: 12px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .input-group label {
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            color: #8B7355;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+            display: block;
+        }
+
+        .input-field, .preset-select {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 8px;
+            border: 1px solid #D2B48C;
+            font-size: 14px;
+            color: #1B2B28;
+            background-color: white;
+            outline: none;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+
+        .preset-select {
+            cursor: pointer;
+            -webkit-appearance: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238B7355' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1em;
+        }
+
+        .input-field:focus, .preset-select:focus {
+            border-color: #8B7355;
+            box-shadow: 0 0 0 4px rgba(210, 180, 140, 0.3);
+        }
+
+        .primary-btn {
+            background-color: #1B2B28;
+            color: white;
+            border: none;
+            padding: 16px;
+            font-size: 15px;
+            font-weight: 600;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            box-shadow: 0 4px 12px rgba(27, 43, 40, 0.2);
+            margin-top: auto;
+        }
+
+        .primary-btn:hover:not(:disabled) {
+            background-color: #8B7355;
+            transform: translateY(-2px);
+        }
+
+        .primary-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        /* Question Stormer Phase Styling */
+        .q-card {
+            background: white;
+            border: 1px solid #EAE5D8;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 12px;
+            font-size: 14px;
+            line-height: 1.5;
+            color: #1B2B28;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+        .q-number {
+            font-family: Georgia, serif;
+            font-size: 18px;
+            color: #8B7355;
+            font-weight: bold;
+            line-height: 1;
+        }
+
+        .wayfinding-box {
+            background: #FDFBF7;
+            border-left: 4px solid #D2B48C;
+            padding: 16px;
+            margin-top: 24px;
+            border-radius: 0 8px 8px 0;
+            font-size: 14px;
+            color: #5E5A4B;
+        }
+
+        /* Right Side (Output Module) */
+        .preview-pane {
+            background-color: rgba(255, 255, 255, 0.5);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .preview-header {
+            background-color: #1B2B28;
+            padding: 20px 24px;
+            display: flex;
+            align-items: center;
+            color: white;
+            gap: 12px;
+        }
+
+        .preview-header h2 {
+            font-size: 18px;
+            font-weight: 600;
+            margin: 0;
+            flex-grow: 1;
+            font-family: Georgia, serif;
+        }
+
+        .preview-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 40px;
+            background-image:
+                radial-gradient(circle at 100% 0%, rgba(210, 180, 140, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 0% 100%, rgba(139, 115, 85, 0.05) 0%, transparent 40%);
+        }
+
+        .document-canvas {
+            background: #ffffff;
+            border: 1px solid #EAE5D8;
+            border-radius: 8px;
+            padding: 60px 70px;
+            max-width: 800px;
+            margin: 0 auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            min-height: 100%;
+        }
+
+        .document-title {
+            font-family: Georgia, serif;
+            font-size: 28px;
+            color: #1B2B28;
+            text-align: center;
+            border-bottom: 2px solid #D2B48C;
+            padding-bottom: 24px;
+            margin-bottom: 40px;
+            font-weight: 700;
+        }
+
+        .doc-section {
+            margin-bottom: 32px;
+        }
+
+        .doc-section h3 {
+            font-family: -apple-system, sans-serif;
+            color: #8B7355;
+            font-size: 15px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 12px;
+            border-bottom: 1px solid #EAE5D8;
+            padding-bottom: 6px;
+        }
+
+        .doc-section p, .doc-section ul {
+            color: #5E5A4B;
+            line-height: 1.6;
+            font-size: 15px;
+        }
+        
+        .doc-section ul {
+            padding-left: 24px;
+            margin-top: 8px;
+        }
+        
+        .doc-section li { margin-bottom: 6px; }
+
+        .progress-indicator {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 32px;
+        }
+        .progress-step {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            color: #D2B48C;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .progress-step.active { color: #1B2B28; }
+        .progress-step.completed { color: #8B7355; }
+        .progress-line { height: 2px; width: 24px; background: #EAE5D8; }
+        
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: #8B7355;
+            opacity: 0.5;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState } = React;
+        
+        const IconSvg = ({ children, size = 20, color = "currentColor" }) => (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                {children}
+            </svg>
+        );
+        const Bolt = ({size}) => <IconSvg size={size}><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></IconSvg>;
+        const Check = ({size}) => <IconSvg size={size}><polyline points="20 6 9 17 4 12"/></IconSvg>;
+        const ArrowRight = ({size}) => <IconSvg size={size}><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></IconSvg>;
+        const Compass = ({size}) => <IconSvg size={size}><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></IconSvg>;
+
+        // Generic Core Logic Engine Mocks
+        const QUESTION_BANK = {
+            "Procurement": [
+                "If your primary vendor suddenly increased prices by 30%, how fast could you pivot to a pre-approved alternative?",
+                "Are quotes being split intentionally to bypass the threshold for board approval?",
+                "How do you currently verify that a vendor does not have a hidden conflict of interest with management?",
+                "Are emergency procurements being retroactively justified just to save time on paperwork?",
+                "If an auditor pulled the 5 largest transactions from last month, would the trail to the initial need be entirely clean?"
+            ],
+            "Fundraising": [
+                "Are specific donor intent conditions truly firewalled in your accounting, or does cash mingle in operations?",
+                "If a major gala fails to break even, at what specific milestone is the trigger pulled to cut losses?",
+                "How are the commercial fundraisers engaged, and are their success fees skewing your stated cost-of-fundraising ratios?",
+                "Is the IPC tax deduction receipting process automated, or reliant on a single person's manual Excel sheet?",
+                "Would your board know if an illicit or reputation-damaging donation was quietly accepted?"
+            ],
+            "Board Governance": [
+                "Are board meeting minutes sanitized to the point where dissenting voices and robust debate disappear?",
+                "Is the succession plan reliant strictly on who is friends with the current Chairman?",
+                "Are 'independent' directors truly challenging management, or just rubber-stamping the CEO's operational updates?",
+                "How quickly does the board receive notice of a major reputational or statutory compliance breach?",
+                "If the top 3 executives resigned tomorrow, what happens to operations in week 1?"
+            ]
+        };
+
+        const SuperApp = () => {
+            const [phase, setPhase] = useState(1); // 1 = Intake, 2 = Storming, 3 = Drafting
+            const [data, setData] = useState({
+                charityName: "",
+                ipcStatus: "Non-IPC",
+                auditDomain: ""
+            });
+
+            const handleChange = (e) => {
+                setData(prev => ({ ...prev, [e.target.name]: e.target.value }));
+            };
+
+            const startStorming = () => {
+                if(data.charityName && data.auditDomain) setPhase(2);
+            };
+
+            const startDrafting = () => {
+                setPhase(3);
+            };
+
+            const questions = QUESTION_BANK[data.auditDomain] || QUESTION_BANK["Procurement"]; // Generic Fallback
+
+            return (
+                <div className="app-container">
+                    <div className="setup-pane">
+                        <div className="font-serif text-3xl leading-none cursor-default select-none group"
+                            style={{ fontFamily: 'Georgia, serif', marginBottom: '1.5rem' }}>
+                            <span className="relative inline-block" style={{ position: 'relative', display: 'inline-block' }}>
+                                <span className="italic relative z-10"
+                                    style={{ color: '#103020', fontWeight: 500, paddingRight: '0.25rem', position: 'relative', zIndex: 10, fontStyle: 'italic' }}>Charity</span>
+                                <span
+                                    style={{ position: 'absolute', left: '-0.2em', right: 0, bottom: '12%', height: '2px', background: '#B08968', zIndex: 0, transformOrigin: 'left', transition: 'transform 0.7s ease-out' }}></span>
+                            </span><span className="relative z-10 tracking-tight"
+                                style={{ color: '#B08968', position: 'relative', zIndex: 10, fontWeight: 400, letterSpacing: '-0.025em', marginLeft: '-0.05em' }}>Ops</span>
+                        </div>
+                        
+                        <div style={{ marginBottom: '24px' }}>
+                            <p className="tagline"><Bolt size={14}/> Internal Audit Engine</p>
+                            <h1>Super App Prototype</h1>
+                        </div>
+
+                        {/* Progress Stepper */}
+                        <div className="progress-indicator">
+                            <div className={`progress-step ${phase >= 1 ? 'completed' : ''}`}>1. Intake</div>
+                            <div className="progress-line"></div>
+                            <div className={`progress-step ${phase >= 2 ? (phase === 3 ? 'completed' : 'active') : ''}`}>2. Storming</div>
+                            <div className="progress-line"></div>
+                            <div className={`progress-step ${phase === 3 ? 'active' : ''}`}>3. Drafting</div>
+                        </div>
+
+                        {/* PHASE 1: INTAKE */}
+                        {phase === 1 && (
+                            <div style={{animation: 'fadeIn 0.3s'}}>
+                                <p style={{ fontSize: '14px', color: '#5E5A4B', lineHeight: 1.6, margin: '0 0 24px 0' }}>
+                                    Let's establish the context for this engagement. Keep it frictionless.
+                                </p>
+
+                                <div className="input-group">
+                                    <label>1. Charity Name</label>
+                                    <input type="text" name="charityName" className="input-field" placeholder="e.g. Hope Foundation" value={data.charityName} onChange={handleChange} />
+                                </div>
+
+                                <div className="input-group">
+                                    <label>2. IPC Status</label>
+                                    <select name="ipcStatus" className="preset-select" value={data.ipcStatus} onChange={handleChange}>
+                                        <option value="Non-IPC">Non-IPC (Standard Compliance)</option>
+                                        <option value="IPC">IPC (Enhanced Governance Requirements)</option>
+                                    </select>
+                                </div>
+
+                                <div className="input-group">
+                                    <label>3. Audit Universe (Domain)</label>
+                                    <select name="auditDomain" className="preset-select" value={data.auditDomain} onChange={handleChange}>
+                                        <option value="">- Select Specific Area -</option>
+                                        <option value="Procurement">Procurement & Payments</option>
+                                        <option value="Fundraising">Fundraising & Donations</option>
+                                        <option value="Board Governance">Board Governance & Strategy</option>
+                                    </select>
+                                </div>
+
+                                <button 
+                                    className="primary-btn" 
+                                    onClick={startStorming}
+                                    disabled={!data.charityName || !data.auditDomain}
+                                    style={{marginTop: '24px'}}
+                                >
+                                    Proceed to Question Storming <ArrowRight size={18}/>
+                                </button>
+                            </div>
+                        )}
+
+                        {/* PHASE 2 & 3: QUESTION STORMING & WAYFINDING */}
+                        {phase === 2 && (
+                            <div style={{animation: 'fadeIn 0.3s', display: 'flex', flexDirection: 'column', height: '100%'}}>
+                                <p style={{ fontSize: '14px', color: '#5E5A4B', lineHeight: 1.6, margin: '0 0 16px 0', fontWeight: 600 }}>
+                                    Module A: Deep Inquiry. Here are the 5 high-impact risks surrounding {data.auditDomain}:
+                                </p>
+
+                                <div style={{flex: 1, overflowY: 'auto', paddingRight: '4px'}}>
+                                    {questions.map((q, idx) => (
+                                        <div key={idx} className="q-card">
+                                            <div className="q-number">Q{idx+1}</div>
+                                            <div>{q}</div>
+                                        </div>
+                                    ))}
+
+                                    <div className="wayfinding-box">
+                                        <div style={{fontWeight: 700, color: '#8B7355', marginBottom: '8px', display: 'flex', alignItems: 'center', gap:'6px'}}>
+                                            <Compass size={16}/> Wayfinding Checkpoint
+                                        </div>
+                                        Do these questions uncover real systemic vulnerabilities for <strong>{data.charityName}</strong>? Or are we stuck ticking compliance boxes? If we are aligned, let's formalize the scope.
+                                    </div>
+                                </div>
+
+                                <div style={{display: 'flex', gap: '12px', marginTop: '24px'}}>
+                                    <button className="primary-btn" style={{backgroundColor: '#EAE5D8', color: '#1B2B28', flex: 0.5}} onClick={() => setPhase(1)}>
+                                        Back
+                                    </button>
+                                    <button className="primary-btn" style={{flex: 1}} onClick={startDrafting}>
+                                        Generate Audit Proposal <ArrowRight size={18}/>
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* PHASE 4 BUTTONS */}
+                        {phase === 3 && (
+                            <div style={{animation: 'fadeIn 0.3s'}}>
+                                <div style={{textAlign: 'center', padding: '40px 0'}}>
+                                    <div style={{display: 'inline-flex', background: '#25D366', color: 'white', borderRadius: '50%', padding: '16px', marginBottom: '16px'}}>
+                                        <Check size={32}/>
+                                    </div>
+                                    <h3 style={{fontSize: '20px', fontFamily: 'Georgia, serif', color: '#1B2B28'}}>Proposal Generated</h3>
+                                    <p style={{ fontSize: '14px', color: '#5E5A4B', marginTop: '8px' }}>
+                                        Review the scope document on the right.
+                                    </p>
+                                </div>
+
+                                <button className="primary-btn" onClick={() => window.print()}>
+                                    Export as Final PDF
+                                </button>
+                                <button className="primary-btn" style={{backgroundColor: 'transparent', color: '#8B7355', border: '1px solid #D2B48C', marginTop: '12px'}} onClick={() => setPhase(1)}>
+                                    Reset Prototype
+                                </button>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Right Pane Preview */}
+                    <div className="preview-pane">
+                        <div className="preview-header">
+                            <h2>Internal Audit Engine Output</h2>
+                            {phase === 3 && <span style={{fontSize: '12px', background: '#D2B48C', color: '#1B2B28', padding: '4px 8px', borderRadius: '12px', fontWeight: 'bold'}}>LIVE DRAFT</span>}
+                        </div>
+                        
+                        <div className="preview-content">
+                            {phase < 3 ? (
+                                <div className="empty-state">
+                                    <i className="fas fa-file-contract text-5xl mb-4" style={{opacity: 0.2}}></i>
+                                    <div style={{fontSize: '18px', fontWeight: 600}}>Waiting for Logic Engine...</div>
+                                    <p style={{fontSize: '14px', marginTop: '8px', maxWidth: '300px'}}>Complete the Question Storming sequence to synthesize an Internal Audit proposal.</p>
+                                </div>
+                            ) : (
+                                <div className="document-canvas">
+                                    <h1 className="document-title">
+                                        Internal Audit Engagement Memo:<br/>
+                                        <span style={{color: '#8B7355', fontSize: '24px'}}>{data.auditDomain} Review</span>
+                                    </h1>
+
+                                    <div className="doc-section">
+                                        <h3>1. Background & Scope</h3>
+                                        <p>In adherence to the Singapore Code of Governance for Charities and {data.ipcStatus === 'IPC' ? 'the enhanced guidelines for IPCs' : 'general sector best practices'}, <strong>{data.charityName}</strong> has provisioned an Internal Audit (IA) review focusing exclusively on the <strong>{data.auditDomain}</strong> cycle.</p>
+                                    </div>
+
+                                    <div className="doc-section">
+                                        <h3>2. Objective: "Fail on Purpose" Resilience</h3>
+                                        <p>This engagement transcends standard compliance ticking. We aim to pressure-test the underlying systems to uncover hidden risks, specifically addressing the systemic vulnerabilities identified during our Phase 2 Question Storming session. The primary goal is to ensure long-term operational resilience and value-add.</p>
+                                    </div>
+
+                                    <div className="doc-section">
+                                        <h3>3. Identified Audit Touchpoints</h3>
+                                        <p>Based on our iterative context probing, the precise areas targeted for fieldwork include:</p>
+                                        <ul>
+                                            {questions.slice(0, 3).map((q, i) => (
+                                                <li key={i}>{q}</li>
+                                            ))}
+                                            <li>Evaluation of override controls and escalation routing mechanisms.</li>
+                                        </ul>
+                                    </div>
+
+                                    <div className="doc-section">
+                                        <h3>4. Wayfinding & Methodology</h3>
+                                        <p>Fieldwork will be executed utilizing CharityOps "Really Useful Thing" (RUT) philosophy. Rather than extracting resources from operational teams, the audit will occur via rapid, deep-inquiry bursts. Document capture will prioritize active live processes over stale historical trails.</p>
+                                    </div>
+
+                                    <div className="doc-section">
+                                        <h3>5. Reporting & Closing</h3>
+                                        <p>Observations will be synthesized into a concise executive summary prioritizing immediate Wayfinding actions for the Board of Directors. Formal issuance is targeted for 4 weeks post-fieldwork.</p>
+                                    </div>
+                                    
+                                    <p style={{textAlign: 'center', marginTop: '60px', color: '#D2B48C', fontSize: '12px', fontWeight: 'bold', letterSpacing: '0.1em'}}>CONFIDENTIAL // CHARITYOPS SUPER APP</p>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<SuperApp />);
+    </script>
+</body>
+</html>
