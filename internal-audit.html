@@ -19,8 +19,10 @@
             color: #1B2B28;
             min-height: 100vh;
             display: flex;
+            flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start;
+            gap: 40px;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             margin: 0;
             padding: 40px 20px;
@@ -262,10 +264,218 @@
             font-size: 15px;
             line-height: 1.5;
         }
+
+        .checklist-item {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #1B2B28;
+            line-height: 1.5;
+            position: relative;
+        }
+        
+        .checklist-item .delete-btn {
+            opacity: 0;
+            background: none;
+            border: none;
+            color: #A8A092;
+            cursor: pointer;
+            transition: opacity 0.2s, color 0.2s;
+            padding: 4px;
+            display: flex;
+            align-items: center;
+        }
+
+        .checklist-item:hover .delete-btn {
+            opacity: 1;
+        }
+
+        .checklist-item .delete-btn:hover {
+            color: #D2B48C;
+        }
+
+        /* Case Study Styles */
+        .cs-container {
+            max-width: 1024px;
+            width: 100%;
+            margin: 0 auto;
+            background-color: #FDFBF7;
+            padding: 40px;
+            border-radius: 24px;
+            border: 1px solid #EAE5D8;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+            box-sizing: border-box;
+            flex-shrink: 0;
+        }
+        
+        .cs-heading {
+            font-family: Georgia, serif;
+            font-size: 28px;
+            color: #1B2B28;
+            margin-bottom: 24px;
+            border-bottom: 2px solid #EAE5D8;
+            padding-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .cs-label {
+            color: #D2B48C;
+        }
+
+        .cs-section-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1B2B28;
+            margin-top: 32px;
+            margin-bottom: 8px;
+        }
+        
+        .cs-text {
+            color: #5E5A4B;
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+        
+        .cs-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+            margin-bottom: 32px;
+            align-items: center;
+        }
+        
+        @media (min-width: 768px) {
+            .cs-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        
+        .cs-card {
+            background-color: #EAE5D8;
+            padding: 24px;
+            border-radius: 12px;
+            border: 1px solid #D2B48C;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 250px;
+        }
+        
+        .cs-card-step {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #8B7355;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+        
+        .cs-inner-card {
+            background-color: white;
+            padding: 16px;
+            border-radius: 8px;
+            border: 1px solid #D2B48C;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+        
+        .cs-inner-label {
+            font-size: 10px;
+            font-weight: bold;
+            color: #8B7355;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+        
+        .cs-inner-text {
+            color: #1B2B28;
+            font-size: 13px;
+        }
+        
+        .cs-scroll-indicator {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #8B7355;
+            animation: bounce 2s infinite;
+            margin-top: -10px;
+        }
     </style>
 </head>
 <body>
     <div id="root"></div>
+
+    <div class="cs-scroll-indicator">
+        <span style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.2em; font-weight: bold; margin-bottom: 8px;">Scroll for Case Study</span>
+        <i class="fas fa-arrow-down" style="font-size: 18px;"></i>
+    </div>
+
+    <div class="cs-container">
+        <h2 class="cs-heading">
+            <span class="cs-label">Case Study:</span> Internal Auditor Super App
+        </h2>
+        
+        <p class="cs-text">
+            To understand how empowering a "Really Useful Thing" (RUT) can be for capacity building in charities, let's dissect the <strong>Internal Auditor Super App</strong>. 
+        </p>
+
+        <h3 class="cs-section-title">The Problem: "Checkbox Compliance" is Failing</h3>
+        <p class="cs-text">
+            Most local small charities view internal auditing as a pure compliance exercise. They inherit generic 80-item checklists (like the Governance Evaluation Checklist) and rapidly tick boxes just to maintain IPC status or appease regulators. This approach completely misses actual, localized operational risks. A generic question like <em>"Are financial controls adequate?"</em> means nothing without context. Worse, many charity founders or 'Admin Aunties' find formal audit language profoundly intimidating.
+        </p>
+
+        <h3 class="cs-section-title">The Solution: Contextual Scenario Generation</h3>
+        <p class="cs-text">
+            Instead of presenting users with an academic checklist, the app deploys <strong>Question Storming</strong> via hyper-localized scenarios. Using the 'Fail on Purpose' mindset, we instantly confront users with scenarios rooted in very real, chaotic local context—like storing petty cash in a biscuit tin or running board meetings un-minuted at the kopitiam.
+        </p>
+
+        <h3 class="cs-section-title" style="margin-bottom: 24px;">How the System Architects Risk</h3>
+        
+        <div class="cs-grid">
+             <div class="cs-card">
+                 <div class="cs-card-step"><i class="fas fa-bolt"></i> 1. Scenarios</div>
+                 <div class="cs-inner-card">
+                     <div class="cs-inner-label">Audit Area: Financial Management</div>
+                     <div class="cs-inner-text">"Donations received via PayNow go directly into the general account with no clear tracking of restricted funds."</div>
+                 </div>
+             </div>
+             <div>
+                 <strong style="color: #1B2B28; font-size: 18px; display: block; margin-bottom: 8px;">Anchoring in Reality</strong>
+                 <p class="cs-text" style="font-size: 15px; margin-bottom: 0;">By identifying the exact contextual scenario they face, the user anchors the otherwise abstract audit into their daily reality. We provide a custom text input for uniquely specific localized nightmares.</p>
+             </div>
+        </div>
+
+        <div class="cs-grid">
+             <div style="order: 2;">
+                 <strong style="color: #1B2B28; font-size: 18px; display: block; margin-bottom: 8px;">Dynamic Inquiries</strong>
+                 <p class="cs-text" style="font-size: 15px; margin-bottom: 0;">Once an area is locked, the engine forces the user to pick 3 tough, highly-scrutable questions from a curated bank. Instead of "Is there a conflict policy?", the forced prompt is: "Are related party transactions fully disclosed or treated as standard expenses?"</p>
+             </div>
+             <div class="cs-card" style="order: 1;">
+                 <div class="cs-card-step"><i class="fas fa-question-circle"></i> 2. Question Storming</div>
+                 <div class="cs-inner-card" style="border-left: 3px solid #D2B48C;">
+                      <div class="cs-inner-text" style="font-weight: 500;">"Can the person who processes payments also independently approve them?"</div>
+                 </div>
+             </div>
+        </div>
+        
+        <div class="cs-grid">
+             <div class="cs-card" style="background-color: #FDFBF7; border-color: #25D366;">
+                 <div class="cs-card-step" style="color: #25D366;"><i class="fas fa-check-circle"></i> 3. Instructions & Action</div>
+                 <div class="cs-inner-card" style="border: 1px solid #25D366;">
+                     <div class="cs-inner-label" style="color: #25D366;">Checklist Item Generated</div>
+                     <div class="cs-inner-text">"Review bank reconciliation statements for the past 6 months for independent sign-off."</div>
+                 </div>
+             </div>
+             <div>
+                 <strong style="color: #1B2B28; font-size: 18px; display: block; margin-bottom: 8px;">Real-time Collaboration</strong>
+                 <p class="cs-text" style="font-size: 15px; margin-bottom: 0;">In Phase 3, a rigorous 10-point checklist is generated and locked. Crucially, the checklist is fully <strong>editable</strong> using raw content-editable web tags, allowing the auditor to instantly refine bullets. Finally, a 1-click WhatsApp Integration packages the scope safely out of the browser and alerts the internal team.</p>
+             </div>
+        </div>
+    </div>
 
     <script type="text/babel">
         const { useState } = React;
@@ -430,6 +640,7 @@
             const [scenario, setScenario] = useState("");
             const [customScenario, setCustomScenario] = useState("");
             const [stormPicks, setStormPicks] = useState({ 0: "", 1: "", 2: "" });
+            const [checklist, setChecklist] = useState([]);
 
             const shareViaWhatsApp = () => {
                 let text = `*Internal Audit Scope - ${data.auditDomain}*\n*Charity:* ${data.charityName || 'Not specified'}\n\n`;
@@ -437,6 +648,10 @@
                 text += `*Core Inquiries (Stormed):*\n`;
                 Object.values(stormPicks).forEach((q, i) => {
                     if (q) text += `${i+1}. ${q}\n`;
+                });
+                text += `\n*Final Audit Areas:*\n`;
+                checklist.forEach((item, i) => {
+                    if (item) text += `${i+1}. ${item}\n`;
                 });
                 text += `\n_CONFIDENTIAL // SSC Internal Auditor_`;
                 
@@ -509,7 +724,10 @@
                                 <button 
                                     className="primary-btn" 
                                     disabled={!isPhase2Ready} 
-                                    onClick={() => setPhase(3)}
+                                    onClick={() => {
+                                        setChecklist([...CHECKLIST_BANK[data.auditDomain]]);
+                                        setPhase(3);
+                                    }}
                                     style={{marginTop: '40px'}}
                                 >
                                     Generate Instructions <ArrowRight size={16}/>
@@ -548,6 +766,7 @@
                                     setScenario(""); 
                                     setCustomScenario("");
                                     setData({...data, auditDomain: ""});
+                                    setChecklist([]);
                                 }}>Reset Engine</button>
                             </div>
                         )}
@@ -633,18 +852,55 @@
                                         a) Audit Areas
                                     </h3>
                                     <div style={{backgroundColor: 'white', border: '1px solid #EAE5D8', borderRadius: '12px', padding: '32px'}}>
-                                        {CHECKLIST_BANK[data.auditDomain].map((item, i) => (
-                                            <div key={i} style={{display: 'flex', gap: '16px', marginBottom: '20px', fontSize: '14px', color: '#1B2B28', lineHeight: '1.5'}}>
+                                        {checklist.map((item, i) => (
+                                            <div key={i} className="checklist-item">
                                                 <div style={{color: '#8B7355', fontWeight: 'bold', width: '20px'}}>{i+1})</div>
                                                 <div 
-                                                    style={{flex: 1, outline: 'none'}} 
+                                                    style={{flex: 1, outline: 'none', borderBottom: '1px dashed transparent', padding: '2px 4px', transition: 'all 0.2s', minHeight: '1.5em'}} 
                                                     contentEditable={true} 
                                                     suppressContentEditableWarning={true}
+                                                    onBlur={(e) => {
+                                                        const newChecklist = [...checklist];
+                                                        newChecklist[i] = e.target.innerText;
+                                                        setChecklist(newChecklist);
+                                                    }}
+                                                    onFocus={(e) => e.target.style.borderBottom = '1px dashed #D2B48C'}
                                                 >
                                                     {item}
                                                 </div>
+                                                <button 
+                                                    className="delete-btn"
+                                                    title="Remove Area"
+                                                    onClick={() => {
+                                                        const newChecklist = checklist.filter((_, idx) => idx !== i);
+                                                        setChecklist(newChecklist);
+                                                    }}
+                                                >
+                                                    <X size={16} />
+                                                </button>
                                             </div>
                                         ))}
+                                        
+                                        <button 
+                                            onClick={() => setChecklist([...checklist, "New audit area item..."])}
+                                            style={{
+                                                background: 'transparent', 
+                                                border: '1px dashed #D2B48C', 
+                                                color: '#8B7355', 
+                                                padding: '12px', 
+                                                width: '100%', 
+                                                borderRadius: '8px', 
+                                                cursor: 'pointer', 
+                                                fontSize: '13px', 
+                                                fontWeight: 'bold', 
+                                                marginTop: '16px', 
+                                                transition: 'all 0.2s'
+                                            }}
+                                            onMouseOver={e => e.target.style.backgroundColor = '#FDFBF7'}
+                                            onMouseOut={e => e.target.style.backgroundColor = 'transparent'}
+                                        >
+                                            + Add Specific Area
+                                        </button>
                                     </div>
                                 </div>
                             </div>
