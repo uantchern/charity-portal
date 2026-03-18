@@ -481,6 +481,21 @@
                                         </div>
                                     ))}
 
+                                    <div style={{marginTop: '16px', borderTop: '1px solid #EAE5D8', paddingTop: '16px', paddingBottom: '16px'}}>
+                                        <div style={{fontWeight: 700, color: '#8B7355', marginBottom: '8px', fontSize: '12px', textTransform: 'uppercase', letterSpacing: '0.05em'}}>Storm Additional Question</div>
+                                        <div style={{display: 'flex', flexDirection: 'column', gap: '8px'}}>
+                                            <textarea 
+                                                className="input-field" 
+                                                style={{minHeight: '60px', width: '100%', resize: 'vertical'}} 
+                                                placeholder="Type an additional question or custom scope here..." 
+                                                value={newQuestion}
+                                                onChange={e => setNewQuestion(e.target.value)}
+                                            ></textarea>
+                                            <button className="primary-btn" style={{padding: '12px', marginTop: '0', backgroundColor: '#EAE5D8', color: '#1B2B28'}} onClick={addQuestion}>
+                                                <i className="fas fa-bolt"></i> Storm & Add
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div style={{display: 'flex', gap: '12px', marginTop: '24px'}}>
@@ -549,29 +564,23 @@
                                             {questions.map((q, i) => (
                                                 <li key={i} style={{marginBottom: '16px', padding: '20px', backgroundColor: '#FDFBF7', borderRadius: '8px', borderLeft: '4px solid #D2B48C', fontSize: '15px', color: '#1B2B28'}}>
                                                     <strong style={{color: '#8B7355', display: 'block', marginBottom: '8px', fontFamily: 'Georgia, serif'}}>Question {i+1}</strong>
-                                                    <textarea 
-                                                        value={q} 
-                                                        onChange={(e) => {
+                                                    <div 
+                                                        contentEditable={phase < 3}
+                                                        suppressContentEditableWarning={true}
+                                                        onBlur={(e) => {
                                                             const newQ = [...questions];
-                                                            newQ[i] = e.target.value;
+                                                            newQ[i] = e.currentTarget.textContent;
                                                             setQuestions(newQ);
                                                         }}
-                                                        style={{width: '100%', minHeight: '60px', background: 'transparent', border: '1px dashed transparent', padding: '4px', outline: 'none', resize: 'vertical', fontFamily: 'inherit', color: 'inherit'}}
-                                                        onFocus={(e) => e.target.style.border = '1px dashed #D2B48C'}
-                                                        onBlur={(e) => e.target.style.border = '1px dashed transparent'}
-                                                    />
+                                                        style={{width: '100%', minHeight: '30px', border: phase < 3 ? '1px dashed transparent' : 'none', padding: '4px', outline: 'none', lineHeight: '1.6'}}
+                                                        onFocus={(e) => { if (phase < 3) e.target.style.border = '1px dashed #D2B48C'; }}
+                                                        onMouseLeave={(e) => { if (phase < 3 && document.activeElement !== e.target) e.target.style.border = '1px dashed transparent'; }}
+                                                    >
+                                                        {q}
+                                                    </div>
                                                 </li>
                                             ))}
                                         </ul>
-
-                                        {phase === 2 && (
-                                            <button 
-                                                onClick={() => setQuestions([...questions, ''])}
-                                                style={{background: 'transparent', border: '1px dashed #D2B48C', color: '#8B7355', padding: '12px 20px', borderRadius: '8px', width: '100%', cursor: 'pointer', fontWeight: 'bold'}}
-                                            >
-                                                + Add Area of Concern
-                                            </button>
-                                        )}
                                     </div>
                                 </div>
                             )}
