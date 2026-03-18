@@ -396,6 +396,17 @@
                 setPhase(3);
             };
 
+            const shareViaWhatsApp = () => {
+                let text = `*Internal Audit Scope - ${data.auditDomain || 'Custom'}*\n*Charity:* ${data.charityName || 'Not specified'}\n\n*Agreed Questions:*\n`;
+                questions.forEach((q, i) => {
+                    if (q.trim()) text += `${i+1}. ${q.trim()}\n\n`;
+                });
+                text += `_CONFIDENTIAL // SSC Internal Auditor_`;
+                
+                const encodedText = encodeURIComponent(text);
+                window.open(`https://api.whatsapp.com/send?text=${encodedText}`, '_blank');
+            };
+
             return (
                 <div className="app-container">
                     <div className="setup-pane">
@@ -495,7 +506,7 @@
                                     </div>
                                 </div>
 
-                                <button className="primary-btn" style={{backgroundColor: '#25D366', color: 'white'}} onClick={() => alert('WhatsApp sharing initiated.')}>
+                                <button className="primary-btn" style={{backgroundColor: '#25D366', color: 'white'}} onClick={shareViaWhatsApp}>
                                     <i className="fab fa-whatsapp text-xl"></i> Share via WhatsApp
                                 </button>
                                 <button className="primary-btn" style={{backgroundColor: 'transparent', color: '#8B7355', border: '1px solid #D2B48C', marginTop: '12px'}} onClick={() => setPhase(1)}>
