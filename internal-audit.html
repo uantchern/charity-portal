@@ -331,26 +331,35 @@
 
         // Generic Core Logic Engine Mocks
         const QUESTION_BANK = {
-            "Procurement": [
-                "If your primary vendor suddenly increased prices by 30%, how fast could you pivot to a pre-approved alternative?",
-                "Are quotes being split intentionally to bypass the threshold for board approval?",
-                "How do you currently verify that a vendor does not have a hidden conflict of interest with management?",
-                "Are emergency procurements being retroactively justified just to save time on paperwork?",
-                "If an auditor pulled the 5 largest transactions from last month, would the trail to the initial need be entirely clean?"
-            ],
-            "Fundraising": [
-                "Are specific donor intent conditions truly firewalled in your accounting, or does cash mingle in operations?",
-                "If a major gala fails to break even, at what specific milestone is the trigger pulled to cut losses?",
-                "How are the commercial fundraisers engaged, and are their success fees skewing your stated cost-of-fundraising ratios?",
-                "Is the IPC tax deduction receipting process automated, or reliant on a single person's manual Excel sheet?",
-                "Would your board know if an illicit or reputation-damaging donation was quietly accepted?"
-            ],
             "Board Governance": [
                 "Are board meeting minutes sanitized to the point where dissenting voices and robust debate disappear?",
                 "Is the succession plan reliant strictly on who is friends with the current Chairman?",
-                "Are 'independent' directors truly challenging management, or just rubber-stamping the CEO's operational updates?",
-                "How quickly does the board receive notice of a major reputational or statutory compliance breach?",
-                "If the top 3 executives resigned tomorrow, what happens to operations in week 1?"
+                "Are 'independent' directors truly challenging management, or just rubber-stamping the CEO's operational updates?"
+            ],
+            "Strategic Direction and Programme Management": [
+                "Are you tracking outcomes that genuinely measure impact, or just counting activities for the annual report?",
+                "If your largest programme's funding was cut by 50% tomorrow, how quickly would operations adapt?",
+                "How frequently does the Board review programme relevance against the evolving needs of your beneficiaries?"
+            ],
+            "Human Resource and Volunteer Management": [
+                "Is there a clear, documented process for handling serious grievances, and has it ever been tested?",
+                "Do volunteers have access to sensitive beneficiary data without proper offboarding protocols?",
+                "Are critical operations highly dependent on a single staff member without any cross-training or handover manual?"
+            ],
+            "Financial Management and Internal Controls": [
+                "Are expense approvals occasionally bypassed or split to avoid triggering higher authorisation thresholds?",
+                "Can the person who processes payments also independently approve them in your banking portal?",
+                "How frequently are your restricted funds reconciled to ensure they haven't bled into unrestricted operations?"
+            ],
+            "Fundraising Practices": [
+                "Are specific donor intent conditions truly firewalled in your accounting, or does cash mingle in operations?",
+                "If a major gala fails to break even, at what specific milestone is the trigger pulled to cut losses?",
+                "How are external commercial fundraisers engaged, and are their success fees skewing your stated cost-of-fundraising ratios?"
+            ],
+            "Disclosure and Transparency": [
+                "Would a member of the public easily understand how much goes to overhead versus actual programmes from your annual report?",
+                "Are related party transactions fully disclosed and rigorously justified, or treated as standard operational expenses?",
+                "If a serious governance lapse occurred, is there a clear protocol on what and when to disclose to your stakeholders?"
             ]
         };
 
@@ -370,7 +379,7 @@
 
             const startStorming = () => {
                 if(data.charityName && data.auditDomain) {
-                    const generics = QUESTION_BANK[data.auditDomain] || QUESTION_BANK["Procurement"];
+                    const generics = QUESTION_BANK[data.auditDomain] || QUESTION_BANK["Board Governance"];
                     setQuestions(generics.slice(0, 3));
                     setPhase(2);
                 }
@@ -426,9 +435,12 @@
                                     <label>3. Audit Areas</label>
                                     <select name="auditDomain" className="preset-select" value={data.auditDomain} onChange={handleChange}>
                                         <option value="">- Select Specific Area -</option>
-                                        <option value="Procurement">Procurement & Payments</option>
-                                        <option value="Fundraising">Fundraising & Donations</option>
-                                        <option value="Board Governance">Board Governance & Strategy</option>
+                                        <option value="Board Governance">Board Governance</option>
+                                        <option value="Strategic Direction and Programme Management">Strategic Direction and Programme Management</option>
+                                        <option value="Human Resource and Volunteer Management">Human Resource and Volunteer Management</option>
+                                        <option value="Financial Management and Internal Controls">Financial Management and Internal Controls</option>
+                                        <option value="Fundraising Practices">Fundraising Practices</option>
+                                        <option value="Disclosure and Transparency">Disclosure and Transparency</option>
                                     </select>
                                 </div>
 
@@ -447,7 +459,7 @@
                         {phase === 2 && (
                             <div style={{animation: 'fadeIn 0.3s', display: 'flex', flexDirection: 'column', height: '100%'}}>
                                 <p style={{ fontSize: '14px', color: '#5E5A4B', lineHeight: 1.6, margin: '0 0 16px 0', fontWeight: 600 }}>
-                                    Module A: Deep Inquiry. Here are the 3 core areas of concern surrounding {data.auditDomain}:
+                                    Here are the 3 core areas of concern surrounding {data.auditDomain}:
                                 </p>
 
                                 <div style={{flex: 1, overflowY: 'auto', paddingRight: '4px'}}>
@@ -522,7 +534,6 @@
                                     </h2>
 
                                     <div className="doc-section">
-                                        <p style={{fontSize: '16px'}}><strong>{data.charityName || '[Charity Name]'}</strong> affirms the following questions stormed as the agreed scope for the internal audit engagement:</p>
                                         <ul style={{marginTop: '32px', paddingLeft: 0, listStyle: 'none'}}>
                                             {questions.map((q, i) => (
                                                 <li key={i} style={{marginBottom: '16px', padding: '20px', backgroundColor: '#FDFBF7', borderRadius: '8px', borderLeft: '4px solid #D2B48C', fontSize: '15px', color: '#1B2B28'}}>
@@ -541,6 +552,15 @@
                                                 </li>
                                             ))}
                                         </ul>
+
+                                        {phase === 2 && (
+                                            <button 
+                                                onClick={() => setQuestions([...questions, ''])}
+                                                style={{background: 'transparent', border: '1px dashed #D2B48C', color: '#8B7355', padding: '12px 20px', borderRadius: '8px', width: '100%', cursor: 'pointer', fontWeight: 'bold'}}
+                                            >
+                                                + Add Area of Concern
+                                            </button>
+                                        )}
                                     </div>
                                 </div>
                             )}
