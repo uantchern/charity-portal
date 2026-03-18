@@ -411,6 +411,52 @@
             animation: bounce 2s infinite;
             margin-top: -10px;
         }
+
+        /* Mobile Layout */
+        @media (max-width: 768px) {
+            body {
+                padding: 16px 12px;
+                gap: 24px;
+            }
+            .app-container {
+                flex-direction: column;
+                height: auto;
+                max-height: none;
+                min-height: auto;
+                border-radius: 16px;
+            }
+            .setup-pane {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid rgba(210, 180, 140, 0.3);
+                padding: 24px;
+                height: auto;
+                overflow-y: visible;
+            }
+            .preview-pane {
+                flex: none;
+                height: auto;
+                overflow-y: visible;
+                display: block;
+            }
+            .preview-pane > div {
+                padding: 32px 20px !important;
+                min-height: auto !important;
+            }
+            .cs-container {
+                padding: 24px;
+                border-radius: 16px;
+            }
+            .cs-heading {
+                flex-direction: column;
+                align-items: flex-start;
+                font-size: 22px;
+                gap: 2px;
+            }
+            .scenario-radio {
+                padding: 12px;
+            }
+        }
     </style>
 </head>
 <body>
