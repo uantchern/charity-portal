@@ -261,7 +261,7 @@
                 <div class="cs-col">
                     <h3 class="cs-section-title" style="margin-top:0">2. Honest Self-Assessment</h3>
                     <p class="cs-text">
-                        In Step 2, board members use simple sliders to rate their board's qualities, like Culture and Expertise, out of 10. These honest scores are recorded and directly shape the rest of the exercise.
+                        In Step 2, board members use simple sliders to accurately input their board's qualities (like Culture and Expertise) out of 100, perfectly mirroring the Intensity Scores detailed in their formal BoardPulse Report.
                     </p>
                 </div>
                 <div class="cs-col">
@@ -269,10 +269,10 @@
                         <div class="cs-mock-title">Step 2. Assess Qualities</div>
                         <div class="cs-mock-card">
                            <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
-                               <div class="cs-mock-label">Bandwidth (Meeting Attendance)</div>
-                               <div class="cs-mock-val" style="font-weight:800; font-size:16px;">3/10</div>
+                               <div class="cs-mock-label">Expertise (Fundraising)</div>
+                               <div class="cs-mock-val" style="font-weight:800; font-size:16px;">12.5</div>
                            </div>
-                           <div style="width:100%; height:6px; background:#E2E8F0; border-radius:4px;"><div style="width:30%; height:6px; background:#3E402D; border-radius:4px;"></div></div>
+                           <div style="width:100%; height:6px; background:#E2E8F0; border-radius:4px;"><div style="width:12.5%; height:6px; background:#3E402D; border-radius:4px;"></div></div>
                         </div>
                     </div>
                 </div>
@@ -510,7 +510,7 @@
             // State: Step 2
             const [currentInterventions, setCurrentInterventions] = useState("");
             const [qualityScores, setQualityScores] = useState({
-                bandwidth: 5, board_culture: 5, expertise: 5, independence: 5, social_capital: 5
+                bandwidth: 50.0, board_culture: 50.0, expertise: 50.0, independence: 50.0, social_capital: 50.0
             });
 
             // State: Step 3
@@ -685,7 +685,7 @@
                                 </button>
                                 
                                 <h2 className="text-2xl font-bold text-navy mb-2">Step 2: Assess Board Qualities</h2>
-                                <p className="text-slate-600 mb-8">Rate the structural input qualities of your board out of 10. Honesty is critical here.</p>
+                                <p className="text-slate-600 mb-8">Match these sliders to the exact Intensity Scores (out of 100) recorded in your latest BoardPulse Report.</p>
 
                                 <div className="bg-white p-6 rounded-2xl border border-slate-200 mb-8 shadow-sm">
                                     <label className="block text-sm font-bold text-navy mb-2 uppercase tracking-wide">Context: What are we doing about the flagged issues today?</label>
@@ -728,15 +728,16 @@
                                                     <h3 className="font-bold text-navy">{quality.title}</h3>
                                                     <p className="text-xs text-slate-500 uppercase font-semibold tracking-wider mt-1">{quality.subQualities.join(' • ')}</p>
                                                 </div>
-                                                <div className="text-2xl font-black text-navy w-12 text-right">{qualityScores[quality.id]}</div>
+                                                <div className="text-2xl font-black text-navy w-20 text-right">{qualityScores[quality.id]}</div>
                                             </div>
                                             <div className="relative pt-2">
                                                 <input 
                                                     type="range" 
-                                                    min="1" 
-                                                    max="10" 
+                                                    min="0" 
+                                                    max="100" 
+                                                    step="0.1"
                                                     value={qualityScores[quality.id]} 
-                                                    onChange={(e) => setQualityScores({...qualityScores, [quality.id]: parseInt(e.target.value)})}
+                                                    onChange={(e) => setQualityScores({...qualityScores, [quality.id]: parseFloat(e.target.value)})}
                                                     className="custom-slider"
                                                 />
                                             </div>
