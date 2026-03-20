@@ -138,6 +138,76 @@
             margin-bottom: 16px;
             font-size: 15px;
         }
+
+        .cs-zigzag {
+            display: flex;
+            flex-direction: column;
+            gap: 60px;
+            margin-top: 40px;
+        }
+
+        .cs-row {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            align-items: center;
+        }
+
+        @media (min-width: 768px) {
+            .cs-row {
+                flex-direction: row;
+            }
+            .cs-row:nth-child(even) {
+                flex-direction: row-reverse;
+            }
+        }
+
+        .cs-col {
+            flex: 1;
+            width: 100%;
+        }
+
+        .cs-mock-ui {
+            background-color: #F8FAFC;
+            border: 1px solid #E2E8F0;
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .cs-mock-title {
+            font-size: 11px;
+            font-weight: 800;
+            color: #64748B;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin-bottom: 20px;
+        }
+
+        .cs-mock-card {
+            background: white;
+            border: 1px solid #CBD5E1;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 6px rgba(15, 23, 42, 0.04);
+        }
+
+        .cs-mock-label {
+            font-size: 10px;
+            font-weight: 800;
+            color: #94A3B8;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+
+        .cs-mock-val {
+            font-size: 14px;
+            color: #0F172A;
+            font-weight: 600;
+        }
         
         @media (max-width: 768px) {
             .cs-container {
@@ -162,24 +232,98 @@
             <span class="cs-label">Case Study:</span> BoardPulse Navigator
         </h2>
         
-        <p class="cs-text">
+        <p class="cs-text" style="font-size: 18px; color: #0F172A; margin-bottom: 40px; font-weight: 500;">
             To understand how empowering an interactive application can be for diagnosing charity governance, let's dissect the <strong>BoardPulse Navigator</strong>. Built rigidly on the <strong>CBLS 2025 Charity Board Performance Framework</strong>, the engine bridges theoretical board principles with actionable, localized workflows.
         </p>
 
-        <h3 class="cs-section-title">1. The Wizard Architecture: Form Follows Flow</h3>
-        <p class="cs-text">
-            Traditional board evaluation surveys suffer from overwhelming fatigue. To counter this, the application is intentionally sequenced into four distinct steps using <em>Framer Motion</em> sliding layouts. This rigid transition forces the board to process their challenges sequentially: diagnosing the precise Outputs (Step 1), acknowledging the actual Inputs (Step 2), disrupting deeply held assumptions via questioning (Step 3), and formally committing that disruption to action (Step 4). This architecture physically prevents users from skipping straight to comfortable, pre-determined "solutions".
-        </p>
+        <div class="cs-zigzag">
+            <!-- Row 1: Step 1 -->
+            <div class="cs-row">
+                <div class="cs-col">
+                    <h3 class="cs-section-title" style="margin-top:0">1. The Wizard Architecture: Form Follows Flow</h3>
+                    <p class="cs-text">
+                        Traditional board evaluation surveys suffer from overwhelming fatigue. To counter this, the application is intentionally sequenced into four distinct steps using <em>Framer Motion</em> sliding layouts. This rigid transition forced upon the end-user physically prevents them from skipping straight to comfortable, pre-determined "solutions". They must explicitly diagnose the precise Outputs (Step 1) and acknowledge the actual Inputs (Step 2) before arriving at an action plan.
+                    </p>
+                </div>
+                <div class="cs-col">
+                    <div class="cs-mock-ui">
+                        <div class="cs-mock-title">Step 1. Identify Issues</div>
+                        <div class="cs-mock-card" style="border-color: #0F172A; border-width: 2px; box-shadow: 0 8px 16px rgba(15,23,42,0.1);">
+                            <div class="cs-mock-label" style="color: #0F172A">Selected Function</div>
+                            <div class="cs-mock-val">Strategic Direction</div>
+                        </div>
+                        <div class="cs-mock-card" style="opacity: 0.5;">
+                            <div class="cs-mock-label">Unselected</div>
+                            <div class="cs-mock-val">Advocacy</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-        <h3 class="cs-section-title">2. AI-Generated "Fail on Purpose" Data Points</h3>
-        <p class="cs-text">
-            The core psychological engine of the application is the <strong>Question Storm Engine (Step 3)</strong>. Instead of static, generic governance advice, the <em>"What if" scenarios</em> (the core inquiries stored within the internal JSON bank) were uniquely generated by AI through a localized 'Fail on Purpose' lens. By targeting actual operational realities—such as "What if we appointed a dedicated 'Devil's Advocate' for every major decision?" or strict 3-strike absentee enforcement—the AI deliberately provokes psychological safety boundaries. These highly specific generative data points push leaders far past standard checking-the-box compliance.
-        </p>
+            <!-- Row 2: Step 2 -->
+            <div class="cs-row">
+                <div class="cs-col">
+                    <h3 class="cs-section-title" style="margin-top:0">2. Anchored to the BoardPulse Report Scores</h3>
+                    <p class="cs-text">
+                        The critical bridge to individual accountability lies in <strong>Step 2</strong>. During this phase, users subjectively drag five sliders to diagnose their own structural input Qualities (e.g., Bandwidth, Culture, Expertise) out of a score of 10. The system algorithmically indexes these exact numerical scores against the flagged Board Functions explicitly chosen in Step 1.
+                    </p>
+                </div>
+                <div class="cs-col">
+                    <div class="cs-mock-ui">
+                        <div class="cs-mock-title">Step 2. Assess Qualities</div>
+                        <div class="cs-mock-card">
+                           <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+                               <div class="cs-mock-label">Bandwidth (Meeting Attendance)</div>
+                               <div class="cs-mock-val" style="font-weight:800; font-size:16px;">3/10</div>
+                           </div>
+                           <div style="width:100%; height:6px; background:#E2E8F0; border-radius:4px;"><div style="width:30%; height:6px; background:#0F172A; border-radius:4px;"></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-        <h3 class="cs-section-title">3. Tying it back: The BoardPulse Report Scores</h3>
-        <p class="cs-text">
-            The critical bridge to individual accountability lies in Step 2: The <strong>BoardPulse Report Scores</strong>. During this phase, users are forced to drag five sliders to subjectively diagnose their own structural input Qualities (Bandwidth, Culture, Expertise, Independence, and Social Capital) out of a score of 10. The system algorithmically indexes these exact scores against the flagged Board Functions explicitly chosen in Step 1. The lower the slider drops, the more intensely the mathematical engine zeroes in on those vulnerabilities, effectively harvesting only the most relevant AI-generated scenarios to construct that specific charity's final SMART execution sheet.
-        </p>
+            <!-- Row 3: Step 3 -->
+            <div class="cs-row">
+                <div class="cs-col">
+                    <h3 class="cs-section-title" style="margin-top:0">3. AI-Generated "Fail on Purpose" Data Points</h3>
+                    <p class="cs-text">
+                        The core psychological driver of the application is the <strong>Question Storm Engine (Step 3)</strong>. The mathematical engine zeroes in on exclusively the lowest slider scores computed from Step 2. Instead of static compliance advice, the core generative inquiries were curated by AI through a localized 'Fail on Purpose' lens. By targeting actual operational realities (such as enforcing strict 3-strike absentee rules), the AI deliberately provokes psychological safety boundaries.
+                    </p>
+                </div>
+                <div class="cs-col">
+                    <div class="cs-mock-ui">
+                        <div class="cs-mock-title">Step 3. Question Storm</div>
+                        <div class="cs-mock-card">
+                            <div class="cs-mock-val" style="font-style: italic; color: #334155; line-height: 1.5;">"What if we strictly enforced a 3-strike rule for meeting absenteeism?"</div>
+                            <div style="text-align:right; margin-top:16px;"><span style="font-size:10px; font-weight:800; color:#EA580C; background:#FFEDD5; padding:4px 8px; border-radius:4px;">TARGETING: BANDWIDTH</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Row 4: Step 4 -->
+            <div class="cs-row">
+                <div class="cs-col">
+                    <h3 class="cs-section-title" style="margin-top:0">4. Formulating the Final SMART Output</h3>
+                    <p class="cs-text">
+                        Ultimately, the most challenging voted questions from the storm are ported into a robust execution table. Board members formally assign specific interventions, allocate lead personnel, and designate rigid deadlines. By formatting the finale directly for clean PDF exportation alongside WhatsApp integration, the system ensures that decisions can be seamlessly appended to official board minutes.
+                    </p>
+                </div>
+                <div class="cs-col">
+                    <div class="cs-mock-ui">
+                        <div class="cs-mock-title">Step 4. Action Plan</div>
+                        <div class="cs-mock-card">
+                            <div class="cs-mock-label">Goal Generated</div>
+                            <div class="cs-mock-val" style="border-bottom: 2px dotted #E2E8F0; padding-bottom:12px; margin-bottom:16px;">Enforce absolute attendance limits for sub-committees.</div>
+                            <div style="display:flex; justify-content:space-between; gap: 16px;">
+                                <div style="flex:1"><div class="cs-mock-label">Lead</div><div class="cs-mock-val" style="border-bottom: 1px solid #E2E8F0; padding-bottom:4px;">Chairperson</div></div>
+                                <div style="flex:1"><div class="cs-mock-label">Deadline</div><div class="cs-mock-val" style="border-bottom: 1px solid #E2E8F0; padding-bottom:4px;">Nov 2026</div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script type="text/babel">
