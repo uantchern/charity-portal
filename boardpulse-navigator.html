@@ -53,6 +53,7 @@
 
         .custom-slider {
             -webkit-appearance: none;
+            appearance: none;
             width: 100%;
             height: 6px;
             background: #E2E8F0;
@@ -100,7 +101,7 @@
 
     <script type="text/babel">
         const { useState, useEffect, useRef } = React;
-        const { motion, AnimatePresence } = window.Motion;
+        const { motion, AnimatePresence } = window.FramerMotion || { motion: { div: 'div' }, AnimatePresence: ({children}) => <>{children}</> };
 
         // --- Icons ---
         const IconSvg = ({ children, size = 20, className = "" }) => (
