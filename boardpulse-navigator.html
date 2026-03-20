@@ -238,24 +238,26 @@
 
     <div class="cs-container">
         <h2 class="cs-heading">
-            <span class="cs-label">Case Study:</span> BoardPulse Navigator
+            <span class="cs-label">User Guide:</span> BoardPulse Navigator
         </h2>
         
         <div class="cs-zigzag">
             <!-- Row 1: Step 1 -->
             <div class="cs-row">
                 <div class="cs-col">
-                    <h3 class="cs-section-title" style="margin-top:0">1. Step-by-Step Focus</h3>
+                    <h3 class="cs-section-title" style="margin-top:0">Step 1: Review & Target Functions</h3>
                     <p class="cs-text">
-                        Traditional board surveys are often long and tiring. BoardPulse Navigator breaks the process into a structured data ingestion piece. The board starts by mapping the Intensity Scores (out of 100) exactly as they appear in their formal BoardPulse 2.0 Report regarding core Board Functions. 
+                        To begin the process, review your latest formal BoardPulse 2.0 Report. First, transcribe your core Board Function numeric scores into the system using the precise 100-point sliders. Next, manually click the <strong>Target</strong> button to formally flag the specific foundational function that your board wants to isolate for this interactive session.
                     </p>
                 </div>
                 <div class="cs-col">
                     <div class="cs-mock-ui">
                         <div class="cs-mock-title">Step 1. Assess Functions</div>
-                        <div class="cs-mock-card">
+                        <div class="cs-mock-card" style="border: 2px solid #3E402D; background-color: #f8fafc;">
                            <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
-                               <div class="cs-mock-label">Advocacy</div>
+                               <div class="cs-mock-label" style="display:flex; align-items:center; gap:8px;">
+                                   Advocacy <span style="font-size:10px; background:#3E402D; color:#fff; padding:2px 6px; border-radius:12px;">FLAGGED</span>
+                               </div>
                                <div class="cs-mock-val" style="font-weight:800; font-size:16px;">23.0</div>
                            </div>
                            <div style="width:100%; height:6px; background:#E2E8F0; border-radius:4px;"><div style="width:23%; height:6px; background:#3E402D; border-radius:4px;"></div></div>
@@ -267,9 +269,9 @@
             <!-- Row 2: Step 2 -->
             <div class="cs-row">
                 <div class="cs-col">
-                    <h3 class="cs-section-title" style="margin-top:0">2. Honest Self-Assessment</h3>
+                    <h3 class="cs-section-title" style="margin-top:0">Step 2: Identify Critical Blockers</h3>
                     <p class="cs-text">
-                        In Step 2, board members use simple sliders to accurately input their board's qualities (like Culture and Expertise) out of 100, perfectly mirroring the Intensity Scores detailed in their formal BoardPulse Report.
+                        The application will dynamically filter the available context scenarios based on the specific Function you flagged in Step 1. Your team must now honestly assess the Qualities dragging your board down. Again, simply transcribe the exact Intensity Scores (out of 100) directly from your BoardPulse Report onto the 5 Quality sliders.
                     </p>
                 </div>
                 <div class="cs-col">
@@ -289,17 +291,20 @@
             <!-- Row 3: Step 3 -->
             <div class="cs-row">
                 <div class="cs-col">
-                    <h3 class="cs-section-title" style="margin-top:0">3. Targeted "Fail on Purpose" Questions</h3>
+                    <h3 class="cs-section-title" style="margin-top:0">Step 3: The 'Question Storm' Debate</h3>
                     <p class="cs-text">
-                        The system identifies the 3 lowest-scoring weaknesses from Step 2. For each weakness, it randomly pulls 2 "What if" scenarios from a curated internal bank of 100 AI-generated questions. <br/><br/><strong>Crucially, the app does not digitally brainstorm.</strong> It acts as a silent facilitator, displaying prompts for the board to debate verbally in real life. Once the physical 'storm' settles, the members click to 'vote' on their highest-priority provocations, porting them straight into the formal Action Plan.
+                        The engine mathematically calculates your 3 absolute weakest Qualities and randomly pulls curated "Fail on Purpose" provocations for each. Project these cards onto a screen to drive verbal debate. You can click into any card to edit the question text directly. Once the verbal storm settles, <strong>click to vote</strong> on the best insights to lock them in.
                     </p>
                 </div>
                 <div class="cs-col">
                     <div class="cs-mock-ui">
                         <div class="cs-mock-title">Step 3. Question Storm</div>
-                        <div class="cs-mock-card">
-                            <div class="cs-mock-val" style="font-style: italic; color: #334155; line-height: 1.5;">"What if we strictly enforced a 3-strike rule for meeting absenteeism?"</div>
-                            <div style="text-align:right; margin-top:16px;"><span style="font-size:10px; font-weight:800; color:#EA580C; background:#FFEDD5; padding:4px 8px; border-radius:4px;">TARGETING: BANDWIDTH</span></div>
+                        <div class="cs-mock-card" style="border: 2px solid #3E402D; background-color: #f8fafc; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);">
+                            <div class="cs-mock-val" style="font-style: italic; color: #334155; line-height: 1.5; font-weight:600;">"What if we strictly enforced a 3-strike rule for meeting absenteeism?"</div>
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:16px;">
+                                <span style="font-size:10px; font-weight:800; color:#EA580C; background:#FFEDD5; padding:4px 8px; border-radius:4px;">TARGETING: BANDWIDTH</span>
+                                <span style="font-size:12px; font-weight:800; color:#fff; background:#3E402D; padding:4px 12px; border-radius:6px;">Voted</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -308,20 +313,19 @@
             <!-- Row 4: Step 4 -->
             <div class="cs-row">
                 <div class="cs-col">
-                    <h3 class="cs-section-title" style="margin-top:0">4. Clear Action Plans</h3>
+                    <h3 class="cs-section-title" style="margin-top:0">Step 4: Smart Action Generation</h3>
                     <p class="cs-text">
-                        Finally, the most useful questions are turned into concrete tasks. The board assigns an owner and a deadline to each action. The final plan can be easily exported as a PDF or shared via WhatsApp to be included directly in the board meeting minutes.
+                        Your voted questions are automatically carried into a highly-interactive final ledger. Furthermore, a natural language algorithm intuitively auto-generates a baseline 'SMART Action' based on the keywords in your specific provocations! You can freely edit these generated tasks, assign team Leads, set strict Deadlines, add custom rows, and export directly to PDF or WhatsApp!
                     </p>
                 </div>
                 <div class="cs-col">
                     <div class="cs-mock-ui">
                         <div class="cs-mock-title">Step 4. Action Plan</div>
-                        <div class="cs-mock-card">
-                            <div class="cs-mock-label">Goal Generated</div>
-                            <div class="cs-mock-val" style="border-bottom: 2px dotted #E2E8F0; padding-bottom:12px; margin-bottom:16px;">Enforce absolute attendance limits for sub-committees.</div>
+                        <div class="cs-mock-card border">
+                            <div class="cs-mock-val" style="border-bottom: 2px dotted #E2E8F0; padding-bottom:12px; margin-bottom:12px; color:#3E402D; font-weight:700;">Amend constitution to automatically table the resignation of any member under 75% attendance.</div>
                             <div style="display:flex; justify-content:space-between; gap: 16px;">
-                                <div style="flex:1"><div class="cs-mock-label">Lead</div><div class="cs-mock-val" style="border-bottom: 1px solid #E2E8F0; padding-bottom:4px;">Chairperson</div></div>
-                                <div style="flex:1"><div class="cs-mock-label">Deadline</div><div class="cs-mock-val" style="border-bottom: 1px solid #E2E8F0; padding-bottom:4px;">Nov 2026</div></div>
+                                <div style="flex:1"><div class="cs-mock-label">Lead</div><div class="cs-mock-val" style="border-bottom: 1px solid #E2E8F0; padding-bottom:4px; font-size:14px; font-weight:500; color:#64748b;">Nominations Comm.</div></div>
+                                <div style="flex:1"><div class="cs-mock-label">Deadline</div><div class="cs-mock-val" style="border-bottom: 1px solid #E2E8F0; padding-bottom:4px; font-size:14px; font-weight:500; color:#64748b;">Q3 2026</div></div>
                             </div>
                         </div>
                     </div>
