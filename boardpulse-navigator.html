@@ -586,10 +586,52 @@
                 }
             };
 
+            const generateSmartAction = (q) => {
+                const text = q.toLowerCase();
+                if (text.includes("vendor") || text.includes("procurement") || text.includes("cousin") || text.includes("conflict")) {
+                    return "Draft and implement a zero-tolerance conflict-of-interest policy for all vendor procurement within 30 days.";
+                }
+                if (text.includes("partnership") || text.includes("brokered") || text.includes("network") || text.includes("cdc")) {
+                    return "Map out 3 high-value strategic partners and mandate specific board members to initiate formal introductions.";
+                }
+                if (text.includes("attendance") || text.includes("meetings") || text.includes("absent") || text.includes("miss")) {
+                    return "Amend constitution to automatically table the resignation of any board member dropping below 75% attendance.";
+                }
+                if (text.includes("audit") || text.includes("financial") || text.includes("fraud")) {
+                    return "Appoint an external, independent auditor to conduct a surprise review of tier-1 financial controls.";
+                }
+                if (text.includes("fundraising") || text.includes("donor") || text.includes("donations") || text.includes("gala")) {
+                    return "Set a definitive, non-negotiable target of $50,000 in 'give or get' fundraising per board member this fiscal year.";
+                }
+                if (text.includes("culture") || text.includes("toxic") || text.includes("speak up") || text.includes("debate")) {
+                    return "Implement a mandatory 'devil's advocate' role for every major strategic decision to enforce constructive debate.";
+                }
+                if (text.includes("ceo") || text.includes("ed ") || text.includes("executive director") || text.includes("micromanage")) {
+                    return "Formalize a clear delegation of authority matrix separating board oversight from ED operational execution.";
+                }
+                if (text.includes("skills") || text.includes("expertise") || text.includes("onboard")) {
+                    return "Perform a rigorous board skills matrix audit and launch a targeted recruitment campaign to fill the two largest gaps.";
+                }
+                if (text.includes("impact") || text.includes("measure") || text.includes("kpi")) {
+                    return "Develop a standardized impact dashboard to track 3 core operational KPIs, mandatory for review at every meeting.";
+                }
+                if (text.includes("term") || text.includes("tenure") || text.includes("retire")) {
+                    return "Enforce strict 6-year maximum term limits for all EXCO members to systematically refresh board leadership.";
+                }
+            
+                const genericActions = [
+                    "Convene a dedicated sub-committee to formally review this risk, with a mandated report due next board cycle.",
+                    "Commission an independent advisory review to establish new governance benchmarks regarding this issue.",
+                    "Revise the existing Terms of Reference (ToR) to codify hard rules preventing this structural friction.",
+                    "Schedule a mandatory 2-hour strategic retreat exclusively focused on resolving this specific operational blocker."
+                ];
+                return genericActions[q.length % genericActions.length];
+            };
+
             const proceedToActionPlan = () => {
                 const initialPlan = votedQuestions.map(q => ({
                     question: q,
-                    action: "",
+                    action: generateSmartAction(q),
                     lead: "",
                     deadline: "",
                     function: selectedFlags[0] || 'advocacy' // Default to first flagged function
