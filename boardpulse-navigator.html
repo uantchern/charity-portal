@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BoardPulse Navigator</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: '#0F172A',
+                        slate: '#475569',
+                        slateLight: '#F1F5F9',
+                        accent: '#3B82F6',
+                        wayfinding: '#F8FAFC'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+                        serif: ['Georgia', 'ui-serif', 'serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- React & ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    
+    <!-- Framer Motion -->
+    <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
+    
+    <!-- Babel -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <!-- html2pdf -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <style>
+        body {
+            background-color: #F8FAFC;
+            color: #0F172A;
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        .custom-slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 6px;
+            background: #E2E8F0;
+            border-radius: 3px;
+            outline: none;
+        }
+        .custom-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #0F172A;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .custom-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.1);
+            background: #1E293B;
+        }
+        
+        .pdf-container {
+            background: white;
+        }
+
+        /* Hide scrollbar for clean aesthetic but keep functionality */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F1F5F9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #CBD5E1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94A3B8;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+        const { motion, AnimatePresence } = window.Motion;
+
+        // --- Icons ---
+        const IconSvg = ({ children, size = 20, className = "" }) => (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+                {children}
+            </svg>
+        );
+        const AlertCircle = ({size, className}) => <IconSvg size={size} className={className}><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></IconSvg>;
+        const CheckCircle = ({size, className}) => <IconSvg size={size} className={className}><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></IconSvg>;
+        const ArrowRight = ({size, className}) => <IconSvg size={size} className={className}><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></IconSvg>;
+        const Download = ({size, className}) => <IconSvg size={size} className={className}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></IconSvg>;
+        const ShieldAlert = ({size, className}) => <IconSvg size={size} className={className}><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></IconSvg>;
+        const HeartHandshake = ({size, className}) => <IconSvg size={size} className={className}><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/><path d="M12 5 9.04 7.96a2.17 2.17 0 0 0 0 3.08v0c.82.82 2.13.85 3 .07l2.07-1.9a2.82 2.82 0 0 1 3.79 0l2.96 2.66"/><path d="M18 15l-2-2"/><path d="M15 18l-2-2"/></IconSvg>;
+        const Compass = ({size, className}) => <IconSvg size={size} className={className}><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></IconSvg>;
+        const Flame = ({size, className}) => <IconSvg size={size} className={className}><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></IconSvg>;
+        const ThumbsUp = ({size, className}) => <IconSvg size={size} className={className}><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></IconSvg>;
+
+        // --- Data ---
+        const CBLS_FRAMEWORK = {
+            functions: [
+                { id: 'advocacy', title: 'Advocacy', description: 'Championing the charity’s cause externally, fundraising, and stakeholder relations.', icon: HeartHandshake },
+                { id: 'oversight', title: 'Oversight', description: 'Ensuring compliance, monitoring financial health, and enterprise risk management.', icon: ShieldAlert },
+                { id: 'strategic_direction', title: 'Strategic Direction', description: 'Setting long-term goals, guiding the executive team, and measuring impact.', icon: Compass }
+            ],
+            qualities: [
+                { id: 'bandwidth', title: 'Bandwidth', subQualities: ['Meeting Attendance', 'Time Commitment', 'Preparation'] },
+                { id: 'board_culture', title: 'Board Culture', subQualities: ['Psychological Safety', 'Constructive Debate', 'Inclusivity'] },
+                { id: 'expertise', title: 'Expertise', subQualities: ['Domain Knowledge', 'Financial Literacy', 'Governance Acumen'] },
+                { id: 'independence', title: 'Independence', subQualities: ['Objective Decision Making', 'Conflict Management', 'Tenure Diversity'] },
+                { id: 'social_capital', title: 'Social Capital', subQualities: ['Network Access', 'Fundraising Reach', 'Partnership Building'] }
+            ]
+        };
+
+        const QUESTION_BANK = {
+            bandwidth: [
+                "What if we strictly enforced a 3-strike rule for meeting absenteeism?",
+                "What if board prep materials were limited to a 2-page executive summary?",
+                "What if we radically reduced committee sizes to free up director time?"
+            ],
+            board_culture: [
+                "What if we appointed a dedicated 'Devil's Advocate' for every major decision?",
+                "What if the ED was absent for the first 15 minutes of every board meeting?",
+                "What if we mandated anonymous polling for controversial votes?"
+            ],
+            expertise: [
+                "What if we recruited a tech-founder specifically to overhaul our digital strategy?",
+                "What if we required all board members to pass a basic charity finance quiz?",
+                "What if we brought in external subject matter experts as non-voting advisors?"
+            ],
+            independence: [
+                "What if we implemented a hard, non-negotiable 6-year tenure limit?",
+                "What if we actively recruited board members completely outside our founder's network?",
+                "What if we published a public framework for navigating complex related-party transactions?"
+            ],
+            social_capital: [
+                "What if every board member was held responsible for one corporate introduction per year?",
+                "What if we audited the overlapping networks of our current board to spot gaps?",
+                "What if we hosted closed-door networking dinners leveraging our directors' clout?"
+            ]
+        };
+
+        // --- Components ---
+        const ProgressBar = ({ currentStep }) => {
+            const steps = ["Issues", "Current State", "Question Storm", "Action Plan"];
+            return (
+                <div className="w-full max-w-3xl mx-auto mb-12 mt-8 px-4">
+                    <div className="flex items-center justify-between relative">
+                        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-1 bg-slate-200 -z-10 rounded-full"></div>
+                        <div className="absolute left-0 top-1/2 -translate-y-1/2 h-1 bg-navy transition-all duration-500 ease-in-out rounded-full -z-10" style={{ width: `${((currentStep - 1) / 3) * 100}%` }}></div>
+                        
+                        {steps.map((label, index) => {
+                            const stepNum = index + 1;
+                            const isActive = currentStep === stepNum;
+                            const isPast = currentStep > stepNum;
+                            return (
+                                <div key={stepNum} className="flex flex-col items-center gap-2">
+                                    <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-colors duration-300 shadow-sm ${isActive ? 'bg-navy text-white scale-110 ring-4 ring-navy/20' : isPast ? 'bg-slate-800 text-white' : 'bg-white text-slate-400 border-2 border-slate-200'}`}>
+                                        {isPast ? <CheckCircle size={18} /> : stepNum}
+                                    </div>
+                                    <span className={`text-xs font-semibold uppercase tracking-wider ${isActive ? 'text-navy' : isPast ? 'text-slate-600' : 'text-slate-400'} hidden md:block`}>
+                                        {label}
+                                    </span>
+                                </div>
+                            );
+                        })}
+                    </div>
+                </div>
+            );
+        };
+
+        const App = () => {
+            const [step, setStep] = useState(1);
+            
+            // State: Step 1
+            const [selectedFlags, setSelectedFlags] = useState([]);
+            
+            // State: Step 2
+            const [currentInterventions, setCurrentInterventions] = useState("");
+            const [qualityScores, setQualityScores] = useState({
+                bandwidth: 5, board_culture: 5, expertise: 5, independence: 5, social_capital: 5
+            });
+
+            // State: Step 3
+            const [stormQuestions, setStormQuestions] = useState([]);
+            const [votedQuestions, setVotedQuestions] = useState([]);
+
+            // State: Step 4
+            const [actionPlan, setActionPlan] = useState([]);
+
+            // Handlers
+            const toggleFlag = (id) => {
+                if (selectedFlags.includes(id)) {
+                    setSelectedFlags(selectedFlags.filter(f => f !== id));
+                } else {
+                    setSelectedFlags([...selectedFlags, id]);
+                }
+            };
+
+            const generateQuestions = () => {
+                let questions = [];
+                // Sort qualities by score (lowest first)
+                const sortedQualities = Object.entries(qualityScores).sort((a, b) => a[1] - b[1]);
+                // Take the 3 lowest scoring qualities and pull 2 random questions from each
+                sortedQualities.slice(0, 3).forEach(([qualityId, score]) => {
+                    const pool = [...QUESTION_BANK[qualityId]];
+                    // Shuffle pool
+                    pool.sort(() => 0.5 - Math.random());
+                    questions.push(...pool.slice(0, 2).map(q => ({ quality: qualityId, text: q, score })));
+                });
+                
+                // Shuffle final list
+                questions.sort(() => 0.5 - Math.random());
+                setStormQuestions(questions);
+                setStep(3);
+            };
+
+            const toggleVote = (qText) => {
+                if (votedQuestions.includes(qText)) {
+                    setVotedQuestions(votedQuestions.filter(q => q !== qText));
+                } else {
+                    setVotedQuestions([...votedQuestions, qText]);
+                }
+            };
+
+            const proceedToActionPlan = () => {
+                const initialPlan = votedQuestions.map(q => ({
+                    question: q,
+                    action: "",
+                    lead: "",
+                    deadline: "",
+                    function: selectedFlags[0] || 'advocacy' // Default to first flagged function
+                }));
+                setActionPlan(initialPlan);
+                setStep(4);
+            };
+
+            const updateActionPlan = (index, field, value) => {
+                const newPlan = [...actionPlan];
+                newPlan[index][field] = value;
+                setActionPlan(newPlan);
+            };
+
+            const generatePDF = () => {
+                const element = document.getElementById('pdf-export-area');
+                const opt = {
+                    margin:       10,
+                    filename:     'BoardPulse_ActionPlan.pdf',
+                    image:        { type: 'jpeg', quality: 0.98 },
+                    html2canvas:  { scale: 2, useCORS: true },
+                    jsPDF:        { unit: 'mm', format: 'a4', orientation: 'landscape' }
+                };
+                html2pdf().set(opt).from(element).save();
+            };
+
+            // Transitions
+            const pageVariants = {
+                initial: { opacity: 0, y: 20 },
+                in: { opacity: 1, y: 0 },
+                out: { opacity: 0, y: -20 }
+            };
+
+            return (
+                <div className="max-w-6xl mx-auto p-4 md:p-8">
+                    {/* Header */}
+                    <div className="text-center mb-8">
+                        <h1 className="text-4xl md:text-5xl font-serif font-bold text-navy mb-3 tracking-tight">BoardPulse Navigator</h1>
+                        <p className="text-slate-500 font-medium tracking-wide uppercase text-sm">CBLS 2025 Board Performance Framework</p>
+                    </div>
+
+                    <ProgressBar currentStep={step} />
+
+                    <AnimatePresence mode="wait">
+                        {step === 1 && (
+                            <motion.div key="step1" variants={pageVariants} initial="initial" animate="in" exit="out" transition={{duration: 0.3}} className="glass-panel p-8">
+                                <h2 className="text-2xl font-bold text-navy mb-2">Step 1: Identify Red Flags</h2>
+                                <p className="text-slate-600 mb-8">Select the Board Functions where you are currently experiencing the most friction or underperformance.</p>
+                                
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                                    {CBLS_FRAMEWORK.functions.map(func => {
+                                        const Icon = func.icon;
+                                        const isSelected = selectedFlags.includes(func.id);
+                                        return (
+                                            <div 
+                                                key={func.id} 
+                                                onClick={() => toggleFlag(func.id)}
+                                                className={`p-6 rounded-2xl cursor-pointer transition-all duration-300 border-2 ${isSelected ? 'border-navy bg-navy text-white shadow-lg translate-y--1' : 'border-slate-200 bg-white hover:border-slate-400 text-slate-800 hover:shadow-md'}`}
+                                            >
+                                                <div className="flex items-center gap-3 mb-4">
+                                                    <div className={`p-3 rounded-xl ${isSelected ? 'bg-white/20' : 'bg-slate-100 text-navy'}`}>
+                                                        <Icon size={24} />
+                                                    </div>
+                                                    <h3 className="font-bold text-lg leading-tight">{func.title}</h3>
+                                                </div>
+                                                <p className={`text-sm ${isSelected ? 'text-slate-200' : 'text-slate-600'}`}>{func.description}</p>
+                                                
+                                                <div className="mt-6 flex items-center gap-2 font-bold text-sm">
+                                                    <div className={`w-5 h-5 rounded-full border flex items-center justify-center ${isSelected ? 'border-white bg-white text-navy' : 'border-slate-300'}`}>
+                                                        {isSelected && <CheckCircle size={12} />}
+                                                    </div>
+                                                    {isSelected ? 'Flagged for Review' : 'Select'}
+                                                </div>
+                                            </div>
+                                        )
+                                    })}
+                                </div>
+                                <div className="flex justify-end">
+                                    <button 
+                                        onClick={() => setStep(2)}
+                                        disabled={selectedFlags.length === 0}
+                                        className={`flex items-center gap-2 px-8 py-4 rounded-xl font-bold text-white transition-all ${selectedFlags.length > 0 ? 'bg-navy hover:bg-slate-800 shadow-md hover:shadow-lg' : 'bg-slate-300 cursor-not-allowed'}`}
+                                    >
+                                        Proceed to Qualities <ArrowRight size={20} />
+                                    </button>
+                                </div>
+                            </motion.div>
+                        )}
+
+                        {step === 2 && (
+                            <motion.div key="step2" variants={pageVariants} initial="initial" animate="in" exit="out" transition={{duration: 0.3}} className="glass-panel p-8">
+                                <button onClick={() => setStep(1)} className="text-slate-500 hover:text-navy font-bold text-sm mb-6 flex items-center gap-1">
+                                    &larr; Back to Issues
+                                </button>
+                                
+                                <h2 className="text-2xl font-bold text-navy mb-2">Step 2: Assess Board Qualities</h2>
+                                <p className="text-slate-600 mb-8">Rate the structural input qualities of your board out of 10. Honesty is critical here.</p>
+
+                                <div className="bg-white p-6 rounded-2xl border border-slate-200 mb-8 shadow-sm">
+                                    <label className="block text-sm font-bold text-navy mb-2 uppercase tracking-wide">Context: What are we doing about the flagged issues today?</label>
+                                    <textarea 
+                                        className="w-full bg-slate-50 border border-slate-200 rounded-xl p-4 text-slate-800 focus:outline-none focus:ring-2 focus:ring-navy focus:border-transparent transition-all"
+                                        rows="3"
+                                        placeholder="e.g. We formed a temporary sub-committee, but attendance has been poor..."
+                                        value={currentInterventions}
+                                        onChange={(e) => setCurrentInterventions(e.target.value)}
+                                    ></textarea>
+                                </div>
+
+                                <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-8 mb-8">
+                                    {CBLS_FRAMEWORK.qualities.map(quality => (
+                                        <div key={quality.id}>
+                                            <div className="flex justify-between items-end mb-2">
+                                                <div>
+                                                    <h3 className="font-bold text-navy">{quality.title}</h3>
+                                                    <p className="text-xs text-slate-500 uppercase font-semibold tracking-wider mt-1">{quality.subQualities.join(' • ')}</p>
+                                                </div>
+                                                <div className="text-2xl font-black text-navy w-12 text-right">{qualityScores[quality.id]}</div>
+                                            </div>
+                                            <div className="relative pt-2">
+                                                <input 
+                                                    type="range" 
+                                                    min="1" 
+                                                    max="10" 
+                                                    value={qualityScores[quality.id]} 
+                                                    onChange={(e) => setQualityScores({...qualityScores, [quality.id]: parseInt(e.target.value)})}
+                                                    className="custom-slider"
+                                                />
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+
+                                <div className="flex justify-end">
+                                    <button 
+                                        onClick={generateQuestions}
+                                        className="flex items-center gap-2 px-8 py-4 rounded-xl font-bold text-white bg-navy hover:bg-slate-800 transition-all shadow-md hover:shadow-lg"
+                                    >
+                                        Execute Question Storm <Zap size={20} />
+                                    </button>
+                                </div>
+                            </motion.div>
+                        )}
+
+                        {step === 3 && (
+                            <motion.div key="step3" variants={pageVariants} initial="initial" animate="in" exit="out" transition={{duration: 0.3}} className="glass-panel p-8">
+                                <button onClick={() => setStep(2)} className="text-slate-500 hover:text-navy font-bold text-sm mb-6 flex items-center gap-1">
+                                    &larr; Back to Qualities
+                                </button>
+                                
+                                <div className="flex items-center gap-3 mb-2">
+                                    <Flame size={28} className="text-orange-500" />
+                                    <h2 className="text-2xl font-bold text-navy">Step 3: Question Storm</h2>
+                                </div>
+                                <p className="text-slate-600 mb-8">Based on your lowest scoring qualities, we've generated provocative "What if" scenarios. Vote for the hardest questions to tackle.</p>
+
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                                    {stormQuestions.map((q, idx) => {
+                                        const isVoted = votedQuestions.includes(q.text);
+                                        const qualityName = CBLS_FRAMEWORK.qualities.find(x => x.id === q.quality).title;
+                                        return (
+                                            <div 
+                                                key={idx} 
+                                                onClick={() => toggleVote(q.text)}
+                                                className={`p-6 rounded-xl cursor-pointer border-2 transition-all ${isVoted ? 'border-navy bg-slate-50 shadow-md' : 'border-slate-100 bg-white hover:border-slate-300'}`}
+                                            >
+                                                <div className="text-xs font-bold text-orange-600 mb-3 uppercase tracking-wider flex items-center gap-2">
+                                                    Targeting: {qualityName}
+                                                </div>
+                                                <p className="text-slate-800 font-medium text-lg leading-snug mb-6">{q.text}</p>
+                                                <div className="flex justify-end">
+                                                    <div className={`px-4 py-2 rounded-lg font-bold text-sm flex items-center gap-2 ${isVoted ? 'bg-navy text-white' : 'bg-slate-100 text-slate-500'}`}>
+                                                        <ThumbsUp size={16} /> {isVoted ? 'Voted' : 'Vote'}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )
+                                    })}
+                                </div>
+
+                                <div className="flex justify-end">
+                                    <button 
+                                        onClick={proceedToActionPlan}
+                                        disabled={votedQuestions.length === 0}
+                                        className={`flex items-center gap-2 px-8 py-4 rounded-xl font-bold text-white transition-all ${votedQuestions.length > 0 ? 'bg-navy hover:bg-slate-800 shadow-md hover:shadow-lg' : 'bg-slate-300 cursor-not-allowed'}`}
+                                    >
+                                        Draft Action Plan ({votedQuestions.length}) <ArrowRight size={20} />
+                                    </button>
+                                </div>
+                            </motion.div>
+                        )}
+
+                        {step === 4 && (
+                            <motion.div key="step4" variants={pageVariants} initial="initial" animate="in" exit="out" transition={{duration: 0.3}} className="glass-panel p-8">
+                                <button onClick={() => setStep(3)} className="text-slate-500 hover:text-navy font-bold text-sm mb-6 flex items-center gap-1">
+                                    &larr; Back to Storming
+                                </button>
+                                
+                                <div className="flex justify-between items-center mb-8">
+                                    <div>
+                                        <h2 className="text-2xl font-bold text-navy mb-2">Step 4: SMART Action Plan</h2>
+                                        <p className="text-slate-600">Convert the hardest questions into concrete assigned actions.</p>
+                                    </div>
+                                    <button 
+                                        onClick={generatePDF}
+                                        className="flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-navy bg-slate-100 hover:bg-slate-200 border border-slate-300 transition-all shadow-sm"
+                                    >
+                                        <Download size={18} /> Generate PDF
+                                    </button>
+                                </div>
+
+                                <div id="pdf-export-area" className="pdf-container rounded-2xl overflow-hidden border border-slate-200 shadow-sm">
+                                    <div className="p-8 pb-4">
+                                        <h1 className="text-2xl font-serif font-bold text-navy mb-1" style={{fontFamily: 'Georgia, serif'}}>BoardPulse Action Plan</h1>
+                                        <p className="text-slate-500 text-sm italic mb-6">Generated on {new Date().toLocaleDateString()}</p>
+                                    </div>
+                                    
+                                    <div className="overflow-x-auto px-8 pb-8">
+                                        <table className="w-full text-left border-collapse">
+                                            <thead>
+                                                <tr className="bg-slate-50 border-y border-slate-200 text-xs uppercase tracking-wider text-slate-500 font-bold">
+                                                    <th className="p-4 w-1/3">Core Inquiry (From Storm)</th>
+                                                    <th className="p-4 w-1/4">SMART Action</th>
+                                                    <th className="p-4 w-1/6">Lead</th>
+                                                    <th className="p-4 w-1/6">Deadline</th>
+                                                    <th className="p-4 w-1/6">Function</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody className="align-top">
+                                                {actionPlan.map((task, idx) => (
+                                                    <tr key={idx} className="border-b border-slate-100">
+                                                        <td className="p-4 text-sm font-medium text-navy bg-slate-50/50">
+                                                            {task.question}
+                                                        </td>
+                                                        <td className="p-4">
+                                                            <textarea 
+                                                                className="w-full bg-transparent border-b border-slate-200 focus:border-navy outline-none text-sm resize-none pb-1"
+                                                                rows="2"
+                                                                placeholder="Specific task..."
+                                                                value={task.action}
+                                                                onChange={(e) => updateActionPlan(idx, 'action', e.target.value)}
+                                                            ></textarea>
+                                                        </td>
+                                                        <td className="p-4">
+                                                            <input 
+                                                                type="text"
+                                                                className="w-full bg-transparent border-b border-slate-200 focus:border-navy outline-none text-sm pb-1"
+                                                                placeholder="Name..."
+                                                                value={task.lead}
+                                                                onChange={(e) => updateActionPlan(idx, 'lead', e.target.value)}
+                                                            />
+                                                        </td>
+                                                        <td className="p-4">
+                                                            <input 
+                                                                type="date"
+                                                                className="w-full bg-transparent border-b border-slate-200 focus:border-navy outline-none text-sm pb-1 text-slate-700 font-medium"
+                                                                value={task.deadline}
+                                                                onChange={(e) => updateActionPlan(idx, 'deadline', e.target.value)}
+                                                            />
+                                                        </td>
+                                                        <td className="p-4">
+                                                            <select 
+                                                                className="w-full bg-transparent border-b border-slate-200 focus:border-navy outline-none text-sm pb-1 text-slate-700"
+                                                                value={task.function}
+                                                                onChange={(e) => updateActionPlan(idx, 'function', e.target.value)}
+                                                            >
+                                                                {CBLS_FRAMEWORK.functions.map(f => (
+                                                                    <option key={f.id} value={f.id}>{f.title}</option>
+                                                                ))}
+                                                            </select>
+                                                        </td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div className="bg-navy p-6 w-full text-center text-slate-400 text-xs font-bold uppercase tracking-widest">
+                                        End of Action Plan
+                                    </div>
+                                </div>
+                                <div className="mt-8 flex justify-center pb-8">
+                                     <button onClick={() => {
+                                        setStep(1);
+                                        setSelectedFlags([]);
+                                        setCurrentInterventions("");
+                                        setQualityScores({bandwidth: 5, board_culture: 5, expertise: 5, independence: 5, social_capital: 5});
+                                        setStormQuestions([]);
+                                        setVotedQuestions([]);
+                                        setActionPlan([]);
+                                     }} className="text-slate-500 hover:text-navy font-bold text-sm underline">Start New Session</button>
+                                </div>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
