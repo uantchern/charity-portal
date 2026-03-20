@@ -76,6 +76,15 @@
             background: #8B7355;
         }
         
+        @keyframes subtlePulse {
+            0% { box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 0 0 0 rgba(62, 64, 45, 0.4); border-color: rgba(62, 64, 45, 1); }
+            50% { box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 0 0 6px rgba(62, 64, 45, 0); border-color: rgba(62, 64, 45, 0.4); }
+            100% { box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 0 0 0 rgba(62, 64, 45, 0); border-color: rgba(62, 64, 45, 1); }
+        }
+        .card-pulse {
+            animation: subtlePulse 2s ease-in-out infinite;
+        }
+
         .pdf-container {
             background: white;
         }
@@ -810,7 +819,7 @@
                                             <div 
                                                 key={idx} 
                                                 onClick={() => toggleVote(q.text)}
-                                                className={`p-6 rounded-xl cursor-pointer border-2 transition-all ${isVoted ? 'border-navy bg-slate-50 shadow-md' : 'border-slate-100 bg-white hover:border-slate-300'}`}
+                                                className={`p-6 rounded-xl cursor-pointer border-2 transition-all ${isVoted ? 'border-navy bg-slate-50 shadow-md card-pulse' : 'border-slate-100 bg-white hover:border-slate-300'}`}
                                             >
                                                 <div className="text-xs font-bold text-orange-600 mb-3 uppercase tracking-wider flex items-center gap-2">
                                                     Targeting: {qualityName}
