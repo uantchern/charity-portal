@@ -351,13 +351,35 @@
 
                                 <div className="bg-white p-6 rounded-2xl border border-slate-200 mb-8 shadow-sm">
                                     <label className="block text-sm font-bold text-navy mb-2 uppercase tracking-wide">Context: What are we doing about the flagged issues today?</label>
-                                    <textarea 
-                                        className="w-full bg-slate-50 border border-slate-200 rounded-xl p-4 text-slate-800 focus:outline-none focus:ring-2 focus:ring-navy focus:border-transparent transition-all"
-                                        rows="3"
-                                        placeholder="e.g. We formed a temporary sub-committee, but attendance has been poor..."
-                                        value={currentInterventions}
-                                        onChange={(e) => setCurrentInterventions(e.target.value)}
-                                    ></textarea>
+                                    <div className="flex flex-col gap-3">
+                                        <div className="relative">
+                                            <select 
+                                                className="w-full bg-slate-50 border border-slate-200 rounded-xl p-4 text-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-navy appearance-none cursor-pointer"
+                                                onChange={(e) => {
+                                                    if (e.target.value) setCurrentInterventions(e.target.value);
+                                                    e.target.value = ""; // Reset to placeholder instantly
+                                                }}
+                                                defaultValue=""
+                                            >
+                                                <option value="" disabled>Choose a common scenario to auto-fill, or type your own...</option>
+                                                <option value="We formed a sub-committee, but attendance and momentum have been extremely poor.">We formed a sub-committee, but attendance and momentum have been poor.</option>
+                                                <option value="The Board considers this an 'operational matter' and passed it fully to the Executive Director.">The Board considers this an 'operational matter' and passed it fully to the ED.</option>
+                                                <option value="No formal action taken yet; we rely solely on informal 'catch-ups' over meals.">No formal action taken yet; we rely on informal chats over meals.</option>
+                                                <option value="We hired external consultants, but the resulting report sits on a shelf un-implemented.">We hired external consultants, but the report sits on a shelf.</option>
+                                                <option value="We routinely 'tick the box' for annual compliance but lack any genuine strategic debate.">We 'tick the box' for compliance but lack genuine strategic discussion.</option>
+                                            </select>
+                                            <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
+                                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="6 9 12 15 18 9"/></svg>
+                                            </div>
+                                        </div>
+                                        <textarea 
+                                            className="w-full bg-white border border-slate-200 rounded-xl p-4 text-slate-800 focus:outline-none focus:ring-2 focus:ring-navy focus:border-transparent transition-all"
+                                            rows="3"
+                                            placeholder="Write your own custom context or edit a selected preset..."
+                                            value={currentInterventions}
+                                            onChange={(e) => setCurrentInterventions(e.target.value)}
+                                        ></textarea>
+                                    </div>
                                 </div>
 
                                 <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-8 mb-8">
