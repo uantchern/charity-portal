@@ -513,11 +513,10 @@
             const [step, setStep] = useState(1);
             
             // State: Step 1
+            const [selectedFlags, setSelectedFlags] = useState([]);
             const [functionScores, setFunctionScores] = useState({
                 advocacy: 50.0, oversight: 50.0, strategic_direction: 50.0
             });
-            const minFuncScore = Math.min(...Object.values(functionScores));
-            const selectedFlags = Object.keys(functionScores).filter(k => functionScores[k] === minFuncScore);
             
             // State: Step 2
             const [currentInterventions, setCurrentInterventions] = useState("");
@@ -533,6 +532,13 @@
             const [actionPlan, setActionPlan] = useState([]);
 
             // Handlers
+            const toggleFlag = (id) => {
+                if (selectedFlags.includes(id)) {
+                    setSelectedFlags(selectedFlags.filter(f => f !== id));
+                } else {
+                    setSelectedFlags([...selectedFlags, id]);
+                }
+            };
 
             const generateQuestions = () => {
                 let questions = [];
@@ -643,20 +649,33 @@
                                 <h2 className="text-2xl font-bold text-navy mb-2">Step 1: Assess Board Functions</h2>
                                 <p className="text-slate-600 mb-8">Match these sliders to the exact Intensity Scores (out of 100) recorded in your latest BoardPulse Report for your core functions.</p>
                                 
-                                <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-8 mb-8">
+                                <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col gap-4 mb-8">
                                     {CBLS_FRAMEWORK.functions.map(func => {
                                         const Icon = func.icon;
+                                        const isSelected = selectedFlags.includes(func.id);
                                         return (
-                                            <div key={func.id}>
-                                                <div className="flex justify-between items-end mb-2">
-                                                    <div>
-                                                        <div className="flex items-center gap-2 mb-1">
-                                                            <div className="bg-slate-50 text-navy p-1.5 rounded-lg border border-slate-100"><Icon size={16} /></div>
-                                                            <h3 className="font-bold text-navy text-lg">{func.title}</h3>
+                                            <div 
+                                                key={func.id}
+                                                className={`p-5 rounded-xl border-2 transition-all ${isSelected ? 'border-navy bg-slate-50 shadow-md card-pulse' : 'border-transparent hover:border-slate-200'}`}
+                                            >
+                                                <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-4">
+                                                    <div className="flex-1">
+                                                        <div className="flex items-center gap-3 mb-2">
+                                                            <div className={`p-2 rounded-lg border ${isSelected ? 'bg-navy text-white border-navy' : 'bg-slate-50 text-navy border-slate-100'}`}><Icon size={18} /></div>
+                                                            <h3 className="font-bold text-navy text-xl">{func.title}</h3>
                                                         </div>
-                                                        <p className="text-xs text-slate-500 uppercase font-semibold tracking-wider mt-1">{func.description}</p>
+                                                        <p className="text-sm text-slate-500 uppercase font-semibold tracking-wider">{func.description}</p>
                                                     </div>
-                                                    <div className="text-2xl font-black text-navy w-20 text-right">{functionScores[func.id]}</div>
+                                                    <div className="flex items-center gap-4 w-full md:w-auto justify-between md:justify-end border-t md:border-t-0 border-slate-100 pt-4 md:pt-0">
+                                                        <div className="text-3xl font-black text-navy w-20 text-right">{functionScores[func.id]}</div>
+                                                        <button 
+                                                            onClick={(e) => { e.stopPropagation(); toggleFlag(func.id); }}
+                                                            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-sm transition-all border-2 w-32 justify-center ${isSelected ? 'bg-navy border-navy text-white shadow-md' : 'bg-white border-slate-200 text-slate-500 hover:text-navy hover:border-navy hover:shadow-sm'}`}
+                                                        >
+                                                            {isSelected ? <CheckCircle size={16} /> : <div className="w-4 h-4 rounded-full border-2 border-current" />}
+                                                            {isSelected ? 'Flagged' : 'Target'}
+                                                        </button>
+                                                    </div>
                                                 </div>
                                                 <div className="relative pt-2">
                                                     <input 
