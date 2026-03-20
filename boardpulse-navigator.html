@@ -238,19 +238,18 @@
                 <div class="cs-col">
                     <h3 class="cs-section-title" style="margin-top:0">1. Step-by-Step Focus</h3>
                     <p class="cs-text">
-                        Traditional board surveys are often long and tiring. BoardPulse Navigator breaks the process into four simple steps. Users cannot skip straight to the "solutions". They must first honestly point out where the board is currently underperforming.
+                        Traditional board surveys are often long and tiring. BoardPulse Navigator breaks the process into a structured data ingestion piece. The board starts by mapping the Intensity Scores (out of 100) exactly as they appear in their formal BoardPulse 2.0 Report regarding core Board Functions. 
                     </p>
                 </div>
                 <div class="cs-col">
                     <div class="cs-mock-ui">
-                        <div class="cs-mock-title">Step 1. Identify Issues</div>
-                        <div class="cs-mock-card" style="border-color: #3E402D; border-width: 2px; box-shadow: 0 8px 16px rgba(15,23,42,0.1);">
-                            <div class="cs-mock-label" style="color: #3E402D">Selected Function</div>
-                            <div class="cs-mock-val">Strategic Direction</div>
-                        </div>
-                        <div class="cs-mock-card" style="opacity: 0.5;">
-                            <div class="cs-mock-label">Unselected</div>
-                            <div class="cs-mock-val">Advocacy</div>
+                        <div class="cs-mock-title">Step 1. Assess Functions</div>
+                        <div class="cs-mock-card">
+                           <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+                               <div class="cs-mock-label">Advocacy</div>
+                               <div class="cs-mock-val" style="font-weight:800; font-size:16px;">23.0</div>
+                           </div>
+                           <div style="width:100%; height:6px; background:#E2E8F0; border-radius:4px;"><div style="width:23%; height:6px; background:#3E402D; border-radius:4px;"></div></div>
                         </div>
                     </div>
                 </div>
@@ -505,7 +504,11 @@
             const [step, setStep] = useState(1);
             
             // State: Step 1
-            const [selectedFlags, setSelectedFlags] = useState([]);
+            const [functionScores, setFunctionScores] = useState({
+                advocacy: 50.0, oversight: 50.0, strategic_direction: 50.0
+            });
+            const minFuncScore = Math.min(...Object.values(functionScores));
+            const selectedFlags = Object.keys(functionScores).filter(k => functionScores[k] === minFuncScore);
             
             // State: Step 2
             const [currentInterventions, setCurrentInterventions] = useState("");
@@ -521,13 +524,6 @@
             const [actionPlan, setActionPlan] = useState([]);
 
             // Handlers
-            const toggleFlag = (id) => {
-                if (selectedFlags.includes(id)) {
-                    setSelectedFlags(selectedFlags.filter(f => f !== id));
-                } else {
-                    setSelectedFlags([...selectedFlags, id]);
-                }
-            };
 
             const generateQuestions = () => {
                 let questions = [];
@@ -635,32 +631,34 @@
                     <AnimatePresence mode="wait">
                         {step === 1 && (
                             <motion.div key="step1" variants={pageVariants} initial="initial" animate="in" exit="out" transition={{duration: 0.3}} className="glass-panel p-8">
-                                <h2 className="text-2xl font-bold text-navy mb-2">Step 1: Identify Red Flags</h2>
-                                <p className="text-slate-600 mb-8">Select the Board Functions where you are currently experiencing the most friction or underperformance.</p>
+                                <h2 className="text-2xl font-bold text-navy mb-2">Step 1: Assess Board Functions</h2>
+                                <p className="text-slate-600 mb-8">Match these sliders to the exact Intensity Scores (out of 100) recorded in your latest BoardPulse Report for your core functions.</p>
                                 
-                                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                                <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-8 mb-8">
                                     {CBLS_FRAMEWORK.functions.map(func => {
                                         const Icon = func.icon;
-                                        const isSelected = selectedFlags.includes(func.id);
                                         return (
-                                            <div 
-                                                key={func.id} 
-                                                onClick={() => toggleFlag(func.id)}
-                                                className={`p-6 rounded-2xl cursor-pointer transition-all duration-300 border-2 ${isSelected ? 'border-navy bg-navy text-white shadow-lg translate-y--1' : 'border-slate-200 bg-white hover:border-slate-400 text-slate-800 hover:shadow-md'}`}
-                                            >
-                                                <div className="flex items-center gap-3 mb-4">
-                                                    <div className={`p-3 rounded-xl ${isSelected ? 'bg-white/20' : 'bg-slate-100 text-navy'}`}>
-                                                        <Icon size={24} />
+                                            <div key={func.id}>
+                                                <div className="flex justify-between items-end mb-2">
+                                                    <div>
+                                                        <div className="flex items-center gap-2 mb-1">
+                                                            <div className="bg-slate-50 text-navy p-1.5 rounded-lg border border-slate-100"><Icon size={16} /></div>
+                                                            <h3 className="font-bold text-navy text-lg">{func.title}</h3>
+                                                        </div>
+                                                        <p className="text-xs text-slate-500 uppercase font-semibold tracking-wider mt-1">{func.description}</p>
                                                     </div>
-                                                    <h3 className="font-bold text-lg leading-tight">{func.title}</h3>
+                                                    <div className="text-2xl font-black text-navy w-20 text-right">{functionScores[func.id]}</div>
                                                 </div>
-                                                <p className={`text-sm ${isSelected ? 'text-slate-200' : 'text-slate-600'}`}>{func.description}</p>
-                                                
-                                                <div className="mt-6 flex items-center gap-2 font-bold text-sm">
-                                                    <div className={`w-5 h-5 rounded-full border flex items-center justify-center ${isSelected ? 'border-white bg-white text-navy' : 'border-slate-300'}`}>
-                                                        {isSelected && <CheckCircle size={12} />}
-                                                    </div>
-                                                    {isSelected ? 'Flagged for Review' : 'Select'}
+                                                <div className="relative pt-2">
+                                                    <input 
+                                                        type="range" 
+                                                        min="0" 
+                                                        max="100" 
+                                                        step="0.1"
+                                                        value={functionScores[func.id]} 
+                                                        onChange={(e) => setFunctionScores({...functionScores, [func.id]: parseFloat(e.target.value)})}
+                                                        className="custom-slider"
+                                                    />
                                                 </div>
                                             </div>
                                         )
