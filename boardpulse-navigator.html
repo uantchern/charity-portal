@@ -688,6 +688,20 @@
                                 <p className="text-slate-600 mb-8">Match these sliders to the exact Intensity Scores (out of 100) recorded in your latest BoardPulse Report.</p>
 
                                 <div className="bg-white p-6 rounded-2xl border border-slate-200 mb-8 shadow-sm">
+                                    <div className="mb-6 pb-6 border-b border-slate-100">
+                                        <h3 className="text-xs font-bold text-slate-400 mb-3 uppercase tracking-wider">Targeting Functions:</h3>
+                                        <div className="flex flex-wrap gap-2">
+                                            {selectedFlags.map(flagId => {
+                                                const func = CBLS_FRAMEWORK.functions.find(f => f.id === flagId);
+                                                const Icon = func.icon;
+                                                return (
+                                                    <div key={flagId} className="bg-orange-50 text-orange-700 px-3 py-1.5 rounded-lg text-sm font-bold flex items-center gap-2 border border-orange-200">
+                                                        <Icon size={16} /> {func.title}
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
+                                    </div>
                                     <label className="block text-sm font-bold text-navy mb-2 uppercase tracking-wide">Context: What are we doing about the flagged issues today?</label>
                                     <div className="flex flex-col gap-3">
                                         <div className="relative">
@@ -699,12 +713,32 @@
                                                 }}
                                                 defaultValue=""
                                             >
-                                                <option value="" disabled>Choose a common scenario to auto-fill, or type your own...</option>
-                                                <option value="We formed a sub-committee, but attendance and momentum have been extremely poor.">We formed a sub-committee, but attendance and momentum have been poor.</option>
-                                                <option value="The Board considers this an 'operational matter' and passed it fully to the Executive Director.">The Board considers this an 'operational matter' and passed it fully to the ED.</option>
-                                                <option value="No formal action taken yet; we rely solely on informal 'catch-ups' over meals.">No formal action taken yet; we rely on informal chats over meals.</option>
-                                                <option value="We hired external consultants, but the resulting report sits on a shelf un-implemented.">We hired external consultants, but the report sits on a shelf.</option>
-                                                <option value="We routinely 'tick the box' for annual compliance but lack any genuine strategic debate.">We 'tick the box' for compliance but lack genuine strategic discussion.</option>
+                                                <option value="" disabled>Choose a typical scenario for your selected functions, or type your own...</option>
+                                                {selectedFlags.includes('advocacy') && (
+                                                    <optgroup label="Advocacy Scenarios">
+                                                        <option value="Our fundraising galas are seeing diminishing returns year over year, but no one wants to try anything new.">Diminishing returns on fundraising galas.</option>
+                                                        <option value="Board members are reluctant to open their personal networks for the charity or directly ask for money.">Board reluctance to open networks or ask for money.</option>
+                                                        <option value="We struggle to articulate our impact to major donors beyond generic statistics.">Struggle to articulate impact to major donors.</option>
+                                                    </optgroup>
+                                                )}
+                                                {selectedFlags.includes('oversight') && (
+                                                    <optgroup label="Oversight Scenarios">
+                                                        <option value="We routinely 'tick the box' for annual compliance but lack any genuine enterprise risk debate.">We 'tick the box' for compliance but lack genuine risk debate.</option>
+                                                        <option value="The Board considers this an 'operational matter' and passed it fully to the Executive Director.">The Board passed this to the ED as an 'operational matter'.</option>
+                                                        <option value="We act mostly as a rubber-stamp committee for the ED's pre-made financial decisions.">We act as a rubber-stamp for financial decisions.</option>
+                                                    </optgroup>
+                                                )}
+                                                {selectedFlags.includes('strategic_direction') && (
+                                                    <optgroup label="Strategic Direction Scenarios">
+                                                        <option value="We keep pivoting our mission based on whichever government grant is currently available.">Mission drift chasing available funding programs.</option>
+                                                        <option value="We formed a sub-committee, but attendance and momentum have been extremely poor.">Sub-committee formed, but poor attendance and momentum.</option>
+                                                        <option value="The board is deeply divided on whether to scale up digitally or focus on existing core physical programs.">Board divided on scaling up vs. focusing on core programs.</option>
+                                                    </optgroup>
+                                                )}
+                                                <optgroup label="Generic Scenarios">
+                                                    <option value="No formal action taken yet; we rely solely on informal 'catch-ups' over meals.">No formal action; we rely on informal chats over meals.</option>
+                                                    <option value="We hired external consultants, but the resulting report sits on a shelf un-implemented.">Consultant report sits on a shelf un-implemented.</option>
+                                                </optgroup>
                                             </select>
                                             <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
                                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="6 9 12 15 18 9"/></svg>
