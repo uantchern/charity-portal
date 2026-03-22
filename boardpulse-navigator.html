@@ -711,6 +711,14 @@
 
             const generatePDF = () => {
                 const element = document.getElementById('pdf-export-area');
+                
+                // FIX: html2canvas does not natively capture React controlled textareas/inputs properly.
+                // We manually sync the dynamic value down to the static DOM attribute before printing.
+                const textareas = element.querySelectorAll('textarea');
+                textareas.forEach(ta => { ta.innerHTML = ta.value; });
+                const inputs = element.querySelectorAll('input');
+                inputs.forEach(inp => { inp.setAttribute('value', inp.value); });
+                
                 const opt = {
                     margin:       10,
                     filename:     'BoardPulse_ActionPlan.pdf',
