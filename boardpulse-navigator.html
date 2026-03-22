@@ -807,7 +807,21 @@
                                 </button>
                                 
                                 <h2 className="text-2xl font-bold text-navy mb-2">Step 2: Assess Board Qualities</h2>
-                                <p className="text-slate-600 mb-8">Move sliders to the Intensity Scores (out of 100) recorded in your latest BoardPulse Report, or guess.</p>
+                                <p className="text-slate-600 mb-6">Move sliders to the Intensity Scores (out of 100) recorded in your latest BoardPulse Report, or guess.</p>
+                                
+                                <div className="flex flex-wrap items-center gap-2 mb-8">
+                                    <span className="text-xs font-bold text-slate-400 uppercase tracking-wider mr-2">Targeting Functions:</span>
+                                    {selectedFlags.map(flagId => {
+                                        const func = CBLS_FRAMEWORK.functions.find(f => f.id === flagId);
+                                        const Icon = func.icon;
+                                        return (
+                                            <div key={flagId} className="bg-orange-50 text-orange-700 px-3 py-1 rounded-lg text-xs font-bold flex items-center gap-1.5 border border-orange-200 shadow-sm">
+                                                <Icon size={14} /> {func.title}
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+
 
 
 
